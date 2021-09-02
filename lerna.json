@@ -10,7 +10,7 @@
       "registry": "https://registry.npmjs.org",
       "access": "public",
       "npmClient": "npm",
-      "allowBranch": ["master", "feature/*"]
+      "allowBranch": ["master", "release", "feature/*"]
     },
 
     "bootstrap": {
