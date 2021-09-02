@@ -1,7 +1,7 @@
 type ArgumentsItem = string | {[k: string]: boolean};
 type Arguments = Array<ArgumentsItem | ArgumentsItem[]>;
 
-interface ClassListInterface {
+interface ClassNamesInterface {
   (...args: Arguments): string;
 }
 /* ************************************************************************* */
@@ -11,7 +11,7 @@ const is = (source: any, targetTypeName?: string): string | boolean => {
   return targetTypeName ? sourceTypeName === targetTypeName : sourceTypeName;
 };
 
-const classList: ClassListInterface = (...args) => {
+const classnames: ClassNamesInterface = (...args) => {
   let classes: string[] = [];
 
   function pushClasses(cls: string): void {
@@ -28,11 +28,11 @@ const classList: ClassListInterface = (...args) => {
       }
     }
     else if (is(classname, "array")) {
-      pushClasses(classList(...classname));
+      pushClasses(classnames(...classname));
     }
   });
 
   return Array.from(new Set(classes)).join(" ").replace(/\s+/g, " ");;
 };
 
-export { classList as default, classList };
+export { classnames as default, classnames };
