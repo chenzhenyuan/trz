@@ -1,6 +1,6 @@
 {
   "name": "@enya/classnames",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple utility for conditionally joining classNames together",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/enya/tree/development/packages/classnames",
