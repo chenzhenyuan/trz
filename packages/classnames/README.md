@@ -1,11 +1,11 @@
-# `@enya/classnames`
+# `@hitz/classnames`
 
 > TODO: description
 
 ## Usage
 
 ```
-const classnames = require('@enya/classnames');
+const classnames = require('@hitz/classnames');
 
 // TODO: DEMONSTRATE API
 ```

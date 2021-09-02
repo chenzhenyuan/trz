@@ -2,6 +2,6 @@
 
 const classnames = require('..');
 
-describe('@enya/classnames', () => {
+describe('@hitz/classnames', () => {
     it('needs tests');
 });

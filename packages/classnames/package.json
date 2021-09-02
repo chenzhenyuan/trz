@@ -1,9 +1,9 @@
 {
-  "name": "@enya/classnames",
-  "version": "0.1.1",
+  "name": "@hitz/classnames",
+  "version": "0.1.2",
   "description": "A simple utility for conditionally joining classNames together",
-  "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
-  "homepage": "https://github.com/chenzhenyuan/enya/tree/development/packages/classnames",
+  "author": "ZHENYUAN <jayne@chenzhenyuan.com>",
+  "homepage": "https://github.com/chenzhenyuan/hitz/tree/development/packages/classnames",
   "license": "MIT",
   "main": "lib/classnames.js",
   "types": "lib/classnames.d.ts",
@@ -11,6 +11,7 @@
     "lib": "lib",
     "test": "__tests__"
   },
+  "path": {},
   "files": [
     "lib"
   ],
