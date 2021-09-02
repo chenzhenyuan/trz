@@ -1,0 +1,22 @@
+{
+  "version": "0.1.0",
+  "npmClient": "npm",
+  "packages": ["packages/*"],
+  "ignoreChanges": ["**/*.md"],
+
+  "command": {
+    "publish": {
+      "conventionalCommits": true,
+      "registry": "https://registry.npmjs.org",
+      "access": "public",
+      "npmClient": "npm",
+      "allowBranch": ["master", "feature/*"]
+    },
+
+    "bootstrap": {
+      "hoist": true,
+      "ignore": "component-*",
+      "npmClientArgs": ["--no-package-lock"]
+    }
+  }
+}
