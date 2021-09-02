@@ -2,8 +2,8 @@
   "name": "@enya/classnames",
   "version": "0.1.0",
   "description": "A simple utility for conditionally joining classNames together",
-  "author": "振源 <JAYNE@CHENZHENYUAN.COM>",
-  "homepage": "",
+  "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
+  "homepage": "https://github.com/chenzhenyuan/enya/tree/development/packages/classnames",
   "license": "MIT",
   "main": "lib/classnames.js",
   "types": "lib/classnames.d.ts",
@@ -15,9 +15,9 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "https://packages.aliyun.com/5faa3678e6f9d07f148517ac/npm/npm-registry/"
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "jest"
   }
 }
