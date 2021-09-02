@@ -9,7 +9,7 @@
   "types": "lib/classnames.d.ts",
   "directories": {
     "lib": "lib",
-    "test": "jest"
+    "test": "__tests__"
   },
   "files": [
     "lib"
