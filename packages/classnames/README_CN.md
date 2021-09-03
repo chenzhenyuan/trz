@@ -1,20 +1,20 @@
 # `@trz/classnames`
 
-> A tool for conditionally linking classNames together.
+> 用于有条件地将classNames连接在一起的工具。
 
-## Install
+## 安装
 
 ```zsh
 npm install @trz/classnames
 
-# Or
+# 或者
 
 yarn add @trz/classnames
 ```
 
-## Usage
+## 使用
 
-### Import
+### 导入
 
 ```js
 // ES5
@@ -24,18 +24,18 @@ import classnames from '@trz/classnames';
 const classnames  = require('@trz/classnames');
 ```
 
-### Interface
+### 接口
 
 ---
 
 #### `(classname1: string, classname2: string, ...) => string;`
 
-* description:
-  > Pass in an unlimited number of arguments of string type. All incoming parameters will be combined into a string, separated by a space.
+* 描述:
+  > 传入不定个数的参数，参数为字符串类型。所有传入的参数将会被合并成字符串，该字符串以一个空格分隔。
   >
-  > If there are duplicate values in the incoming string, only the first incoming value will be retained in the order it was passed.
+  > 如果传入的字符串中，存在重复的值，将会以传入的顺序仅保留最先传入的值。
 
-* example:
+* 例子:
 
   ```ts
   import classnames from '@trz/classnames';
@@ -49,12 +49,12 @@ const classnames  = require('@trz/classnames');
 
 #### `(classname1: {[key: string]: boolean}, classname2: {[key: string]: boolean}, ...) => string`
 
-* description:
-  > When the Value of the object is true, the Key of the object will be recognized as a reserved value, and the tool will merge the compliant Key into a string, which is separated by a space.
+* 描述:
+  > 传入不定个数的参数，参数为K-V格式的对象，当对象的Value为true时，将会认定对象的Key为保留值，本工具则会将合规的Key合并成字符串，该字符串以一个空格分隔。
   >
-  > The keys of the objects are traversed and the keys with value true are merged into a string. If there are duplicate values in the string, only the first value passed in will be kept in the order it was passed.
-
-* example:
+  > 对象的key都会被遍历，并合并value为true的key到一个字符串，如果字符串存在重复的值，将会以传入的顺序仅保留最先传入的值。
+  
+* 例子:
 
   ```js
   import classnames from '@trz/classnames';
@@ -79,10 +79,10 @@ const classnames  = require('@trz/classnames');
 
 #### `(classname1: Array<string | {[key: string]>, classname2: Array<string | {[key: string]>, ...) => string`
 
-* description:
-  > pass an indeterminate number of parameters, the format of the parameters for the array, the type of the array elements can be any of the types specified above in the document, or a combination of both. Also in the case of duplication, again, only the first occurrence of classname is retained.
-
-* example:
+* 描述:
+  > 传入不定个数的参数，参数格式为数组，数组元素的类型可以是文档以上内容规定的任一类型，或两者的组合。同时在出现重复时，同样是仅保留首次出现的classname。
+  
+* 例子:
 
   ```js
   import classnames from '@trz/classnames';
@@ -95,11 +95,10 @@ const classnames  = require('@trz/classnames');
 
 #### `(classname1: string, classname2: {[key: string]: boolean}, ...) => string`
 
-* description:
-  > Pass in an indeterminate number of arguments, which can be of any of the types specified in the above document, or a combination of both. Also, in case of duplication, only the first occurrence of classname is retained.
-
-
-* example:
+* 描述:
+  > 传入不定个数的参数，参数可以是以上文档规定的任一类型，或两者的组合。同时在出现重复时，同样是仅保留首次出现的classname。
+  
+* 例子:
 
   ```js
   import classnames from '@trz/classnames';
