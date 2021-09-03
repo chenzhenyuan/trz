@@ -1,7 +1,7 @@
 {
   "name": "@trz/classnames",
   "version": "0.1.0",
-  "description": "A simple utility for conditionally joining classNames together",
+  "description": "A tool for conditionally linking classNames together.",
   "author": "ZHENYUAN <jayne@chenzhenyuan.com>",
   "homepage": "https://github.com/chenzhenyuan/hitz/tree/development/packages/classnames",
   "license": "MIT",
