@@ -11,12 +11,19 @@
     "lib": "lib",
     "test": "__tests__"
   },
-  "files": ["lib", "README_CN.md", "README.md"],
+  "files": [
+    "lib",
+    "README_CN.md",
+    "README.md"
+  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "test": "jest",
     "publish": "npm publish --access=public --registry=https://registry.npmjs.org"
+  },
+  "dependencies": {
+    "jest": "^27.1.0"
   }
 }
