@@ -1,5 +1,5 @@
 {
-  "name": "@hitz/classnames",
+  "name": "@trz/classnames",
   "version": "0.1.3",
   "description": "A simple utility for conditionally joining classNames together",
   "author": "ZHENYUAN <jayne@chenzhenyuan.com>",
@@ -11,10 +11,7 @@
     "lib": "lib",
     "test": "__tests__"
   },
-  "path": {},
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
