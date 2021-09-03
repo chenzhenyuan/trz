@@ -16,6 +16,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "publish": "npm publish --access=public --registry=https://registry.npmjs.org"
   }
 }
