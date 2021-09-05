@@ -1,0 +1,16 @@
+{
+  "files.associations": {
+    "*.lang": "yaml",
+    "*.md": "markdown",
+    "*.ngx": "NGINX",
+    "*.svg": "xml",
+    "*.tpl": "html",
+    "*.ts": "typescript",
+    ".eslintrc": "yaml",
+    ".huskyrc": "jsonc",
+    ".prettierrc": "yaml",
+    ".roxrc": "yaml",
+    ".babelrc": "jsonc",
+    "LICENSE": "plaintext"
+  },
+}
