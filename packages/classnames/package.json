@@ -23,7 +23,7 @@
     "test": "jest",
     "publish": "npm publish --access=public --registry=https://registry.npmjs.org"
   },
-  "dependencies": {
+  "devDependencies": {
     "jest": "^27.1.0"
   }
 }
