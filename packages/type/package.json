@@ -1,12 +1,9 @@
 {
-  "name": "@trz/type",
-  "version": "0.1.0",
-  "description": "一个简单的真实类型检测工具",
-  "keywords": [ "type", "类型检验", "isType" ],
   "author": "振源 <JAYNE@CHENZHENYUAN.COM>",
-  "homepage": "https://github.com/chenzhenyuan/trz#readme",
-  "license": "MIT",
-  "main": "lib/type.js",
+  "bugs": {
+    "url": "https://github.com/chenzhenyuan/trz/issues"
+  },
+  "description": "一个简单的真实类型检测工具",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -14,6 +11,15 @@
   "files": [
     "lib"
   ],
+  "homepage": "https://github.com/chenzhenyuan/trz#readme",
+  "keywords": [
+    "type",
+    "类型检验",
+    "isType"
+  ],
+  "license": "MIT",
+  "main": "lib/type.js",
+  "name": "@trz/type",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
@@ -22,9 +28,8 @@
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
   "scripts": {
+    "build": "lerna exec tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
-  "bugs": {
-    "url": "https://github.com/chenzhenyuan/trz/issues"
-  }
+  "version": "0.1.0"
 }
