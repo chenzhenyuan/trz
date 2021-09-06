@@ -1,4 +1,4 @@
-type ArgumentsItem = string | {[k: string]: boolean};
+type ArgumentsItem = string | { [ k: string ]: boolean; };
 type Arguments = Array<ArgumentsItem | ArgumentsItem[]>;
 
 interface ClassNamesInterface {
@@ -6,7 +6,7 @@ interface ClassNamesInterface {
 }
 /* ************************************************************************* */
 
-const is = (source: any, targetTypeName?: string): string | boolean => {
+const is = (source: unknown, targetTypeName?: string): string | boolean => {
   const sourceTypeName = Object.prototype.toString.call(source).slice(8, -1).toLowerCase();
   return targetTypeName ? sourceTypeName === targetTypeName : sourceTypeName;
 };
@@ -23,7 +23,7 @@ const classnames: ClassNamesInterface = (...args) => {
       pushClasses(`${classname}`);
     }
     else if (is(classname, "object")) {
-      for (const [c, b] of Object.entries(classname)) {
+      for (const [ c, b ] of Object.entries(classname)) {
         if (b === true) pushClasses(c);
       }
     }
@@ -32,7 +32,8 @@ const classnames: ClassNamesInterface = (...args) => {
     }
   });
 
-  return Array.from(new Set(classes)).join(" ").replace(/\s+/g, " ");
+  return Array.from(new Set(classes)).join(" ")
+    .replace(/\s+/g, " ");
 };
 
 export { classnames as default, classnames };

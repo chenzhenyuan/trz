@@ -53,7 +53,7 @@ rules:
 
   newline-per-chained-call:
     - error
-    - ignoreChainWithDepth: 2
+    - ignoreChainWithDepth: 3
 
   no-new-func: error
   no-spaced-func: error
@@ -85,29 +85,33 @@ rules:
     - error
     - after: true
 
-  object-curly-newline:
-    - error
-    - ImportDeclaration: never
-      # ExportDeclaration: { "multiline": true, "minProperties": 3 }
-      ExportDeclaration: always
-      ObjectExpression:
-        consistent: true
-        multiline: true
-        minProperties: 2
-      ObjectPattern:
-        consistent: true
-        # multiline: true
-        # minProperties: 2
-
   object-curly-spacing:
-    - error
+    - off
     - always
     - arraysInObjects: false
       objectsInObjects: false
 
-# -------------------------------------------------------------------------------------------------
-overrides:
-  - files: ["src/**/*.ts", "src/**/*.tsx"]
+  object-curly-newline:
+    - error
+    # -
+    #   ImportDeclaration: never
+    #   ExportDeclaration:
+    #     multiline: true
+    #     minProperties: 3
+    #     consistent: true
+    #   ObjectExpression:
+    #     multiline: true
+    #     minProperties: 3
+    #     consistent: true
+    #   ObjectPattern:
+    #     multiline: true
+    #     minProperties: 2
+    #     consistent: true
+    - consistent: true
+
+  # -------------------------------------------------------------------------------------------------
+  overrides:
+  - files: ["**/src/**/*.ts", "**/src/**/*.tsx"]
     parser: "@typescript-eslint/parser"
     plugins:
       - "@typescript-eslint"
@@ -119,21 +123,21 @@ overrides:
       "@typescript-eslint/no-explicit-any": warn
 
       # $remark：https://eslint.org/docs/rules/indent#options
-      indent: off
+      "@typescript-eslint/no-unused-vars": off
+      "@typescript-eslint/no-useless-constructor": ["error"]
+      "@typescript-eslint/no-empty-function":
+        - warn
+        - allow: [private-constructors]
       "@typescript-eslint/indent":
         - error
         - 2
         - SwitchCase: 1
           MemberExpression: 1
           VariableDeclarator: first
-
+      indent:
+        - error
+        - 2
       no-unused-vars: off
-      "@typescript-eslint/no-unused-vars": off
-
       no-useless-constructor: off
-      "@typescript-eslint/no-useless-constructor": ["error"]
-
       no-empty-function: off
-      "@typescript-eslint/no-empty-function":
-        - warn
-        - allow: [private-constructors]
+
