@@ -1,19 +1,15 @@
-import '../global';
 
-
-const typing = (any: unknown): string => {
-  // eslint-disable-next-line newline-per-chained-call
-  const str = Object.prototype.toString.call(any).slice(8, -1).toLowerCase();
-
-  // String.prototype.is = function(assert: string): boolean {
-  //   return this.normalize() === String.prototype.toLowerCase.call(assert);
-  // };
-
-  // String.prototype.peer = function(assert: unknown): boolean {
-  //   return this.normalize() === type(assert);
-  // };
-
-  return str;
+const types = (any: unknown): string => {
+  const ty: string = Object.prototype.toString.call(any).slice(8, -1);
+  return ty.toLowerCase();
 };
 
-export default typing;
+export const is = (source: unknown, assert: string | unknown): boolean => {
+  if (types(assert) !== 'string') return false;
+
+  return types(source) === String.prototype.toLowerCase.call(assert);
+};
+
+export const of = types;
+
+export default { of, is };

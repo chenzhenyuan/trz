@@ -1,4 +1,9 @@
 {
+  "eslint.packageManager": "yarn",
+  "eslint.workingDirectories": [
+    "packages/type",
+  ],
+
   "files.associations": {
     "*.lang": "yaml",
     "*.md": "markdown",
@@ -10,7 +15,6 @@
     ".huskyrc": "jsonc",
     ".prettierrc": "yaml",
     ".roxrc": "yaml",
-    ".babelrc": "jsonc",
     "LICENSE": "plaintext"
   },
 }

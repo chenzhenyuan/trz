@@ -2,7 +2,9 @@
   "name": "trz",
   "private": true,
   "author": "JAYNE <JAYNE@CHENZHENYUAN.COM>",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "start": "npm run develop",
     "build": "lerna exec tsc",
@@ -30,7 +32,6 @@
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "@typescript-eslint/parser": "^4.30.0",
     "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.25.1",
