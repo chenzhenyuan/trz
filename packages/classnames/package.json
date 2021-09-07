@@ -29,5 +29,6 @@
   },
   "dependencies": {
     "@trz/type": "^0.2.1"
-  }
+  },
+  "gitHead": "176e63f2e3b2b98ffc646644ce145b592b080c11"
 }
