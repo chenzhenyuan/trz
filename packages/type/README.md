@@ -6,9 +6,4 @@
 
 ```ts
 import type from '@trz/type';
-
-
-
-type([]) // array
-type([]).is('array')
 ```
