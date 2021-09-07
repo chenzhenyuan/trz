@@ -1,9 +1,23 @@
 {
+  "name": "@trz/type",
+  "version": "0.1.0",
   "author": "振源 <JAYNE@CHENZHENYUAN.COM>",
+  "license": "MIT",
+  "main": "lib/type.js",
+  "description": "一个简单的真实类型检测工具",
+  "homepage": "https://github.com/chenzhenyuan/trz#readme",
+  "keywords": [
+    "type",
+    "类型检验",
+    "isType"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenzhenyuan/trz.git"
+  },
   "bugs": {
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
-  "description": "一个简单的真实类型检测工具",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -11,25 +25,12 @@
   "files": [
     "lib"
   ],
-  "homepage": "https://github.com/chenzhenyuan/trz#readme",
-  "keywords": [
-    "type",
-    "类型检验",
-    "isType"
-  ],
-  "license": "MIT",
-  "main": "lib/type.js",
-  "name": "@trz/type",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chenzhenyuan/trz.git"
-  },
   "scripts": {
+    "publish": "npm run test && && npm publish --access=public --registry=https://registry.npmjs.org",
     "build": "lerna exec tsc",
-    "test": "jest"
-  },
-  "version": "0.1.0"
+    "test": "npm run build && jest"
+  }
 }
