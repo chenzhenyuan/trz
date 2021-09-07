@@ -17,7 +17,7 @@ yarn add @trz/classnames
 ### Import
 
 ```js
-// ES5
+// ES6
 import classnames from '@trz/classnames';
 
 // nodejs or broswerES5
@@ -97,7 +97,6 @@ const classnames  = require('@trz/classnames');
 
 * description:
   > Pass in an indeterminate number of arguments, which can be of any of the types specified in the above document, or a combination of both. Also, in case of duplication, only the first occurrence of classname is retained.
-
 
 * example:
 
