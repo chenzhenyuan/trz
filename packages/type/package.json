@@ -31,7 +31,7 @@
   "scripts": {
     "build": "tsc",
     "test": "npm run build && jest",
-    "publish": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org"
+    "release": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "devDependencies": {
     "jest": "^27.1.0"
