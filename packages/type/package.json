@@ -1,6 +1,6 @@
 {
   "name": "@trz/type",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "CHEN·ZHENYUA <JAYNE@CHENZHENYUAN.COM>",
   "license": "MIT",
   "main": "lib/type.js",
