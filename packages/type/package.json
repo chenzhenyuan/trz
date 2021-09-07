@@ -4,7 +4,7 @@
   "author": "振源 <JAYNE@CHENZHENYUAN.COM>",
   "license": "MIT",
   "main": "lib/type.js",
-  "description": "一个简单的真实类型检测工具",
+  "description": "A tool for real type validate.",
   "homepage": "https://github.com/chenzhenyuan/trz#readme",
   "keywords": [
     "type",
@@ -29,7 +29,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "publish": "npm run test && && npm publish --access=public --registry=https://registry.npmjs.org",
+    "publish": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org",
     "build": "lerna exec tsc",
     "test": "npm run build && jest"
   }
