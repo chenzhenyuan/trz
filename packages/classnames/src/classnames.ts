@@ -1,3 +1,5 @@
+import type from '@trz/type';
+
 type ArgumentsItem = string | { [ k: string ]: boolean; };
 type Arguments = Array<ArgumentsItem | ArgumentsItem[]>;
 
@@ -5,11 +7,6 @@ interface ClassNamesInterface {
   (...args: Arguments): string;
 }
 /* ************************************************************************* */
-
-const is = (source: unknown, targetTypeName?: string): string | boolean => {
-  const sourceTypeName = Object.prototype.toString.call(source).slice(8, -1).toLowerCase();
-  return targetTypeName ? sourceTypeName === targetTypeName : sourceTypeName;
-};
 
 const classnames: ClassNamesInterface = (...args) => {
   let classes: string[] = [];
@@ -19,15 +16,15 @@ const classnames: ClassNamesInterface = (...args) => {
   }
 
   Array.from(args).forEach((classname: any) => {
-    if (is(classname, "string")) {
+    if (type.is(classname, "string")) {
       pushClasses(`${classname}`);
     }
-    else if (is(classname, "object")) {
+    else if (type.is(classname, "object")) {
       for (const [ c, b ] of Object.entries(classname)) {
         if (b === true) pushClasses(c);
       }
     }
-    else if (is(classname, "array")) {
+    else if (type.is(classname, "array")) {
       pushClasses(classnames(...classname));
     }
   });
