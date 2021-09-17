@@ -22,8 +22,8 @@
     "publish": {
       "access": "public",
       "allowBranch": [
-        "development",
         "release",
+        "release/*",
         "feature/*"
       ],
       "conventionalCommits": true,
