@@ -2,6 +2,8 @@
 
 > A tool for conditionally linking classNames together.
 
+[中文版](./README_CN.md)
+
 ## Install
 
 ```zsh

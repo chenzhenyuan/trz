@@ -2,6 +2,8 @@
 
 > 用于有条件地将classNames连接在一起的工具。
 
+[English](./README.md)
+
 ## 安装
 
 ```zsh
