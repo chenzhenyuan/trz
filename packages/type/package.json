@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "lib/type.js",
   "description": "A tool for real type validate.",
-  "homepage": "https://github.com/chenzhenyuan/trz#readme",
+  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/type#readme",
   "keywords": [
     "type",
     "类型检验",
