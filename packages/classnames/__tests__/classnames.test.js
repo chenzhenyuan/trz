@@ -10,7 +10,7 @@ describe('@trz/classnames', () => {
         expect(classnames('class1 class2')).toBe('class1 class2');
         expect(classnames('class1 class2 class2')).toBe('class1 class2');
         expect(classnames('class1 class2 class3')).toBe('class1 class2 class3');
-        expect(classnames('class1   class2    class3   ')).toBe('class1 class2 class3');
+        expect(classnames('   class1   class2    class3   ')).toBe('class1 class2 class3');
     });
 
     test('api: classnames(classname: object): string', () => {
