@@ -1,6 +1,7 @@
 'use strict';
 
-const type = require('..').default;
+const path = require('path');
+const type = require(path.resolve(__dirname, '..')).default;
 
 
 

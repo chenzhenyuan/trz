@@ -1,25 +1,37 @@
 'use strict';
+const path = require('path');
 
-const classnames = require('..').default;
+const classnames = require(path.resolve(__dirname, '..')).default;
 
 describe('@trz/classnames', () => {
-    test('Function: classnames', () => {
-        expect(classnames('cls1')).toBe('cls1');
 
-        expect(classnames('cls1', 'cls2')).toBe('cls1 cls2');
+    test('api: classnames(classname: string): string', () => {
+        expect(classnames('class1')).toBe('class1');
+        expect(classnames('class1 class2')).toBe('class1 class2');
+        expect(classnames('class1 class2 class2')).toBe('class1 class2');
+        expect(classnames('class1 class2 class3')).toBe('class1 class2 class3');
+        expect(classnames('class1   class2    class3   ')).toBe('class1 class2 class3');
+    });
 
-        expect(classnames('cls1', {"cls2": true})).toBe('cls1 cls2');
+    test('api: classnames(classname: object): string', () => {
+        expect(classnames({"cls1": true})).toBe('cls1');
+        expect(classnames({"cls1": false})).toBe('');
 
-        expect(classnames('cls1', {"cls2": false, "cls3": true})).toBe('cls1 cls3');
+        const DYNAMIC_KEY = String(Date.now());
+        expect(classnames({[DYNAMIC_KEY]: true})).toBe(DYNAMIC_KEY);
+    });
 
-        expect(classnames('cls1', ["cls2", "cls3"])).toBe('cls1 cls2 cls3');
+    test('api: classnames(classname: array): string', () => {
+        expect(classnames(['class1', 'class2'])).toBe('class1 class2');
+        expect(classnames(['class1', {"class2": true, "class1": false}])).toBe('class1 class2');
+        expect(classnames(['class1', ['class1', 'class2', 'class3']])).toBe('class1 class2 class3');
+    });
 
-        expect(classnames('cls1', ["cls2", "cls3"], {"cls4": true})).toBe('cls1 cls2 cls3 cls4');
-
-        expect(classnames('cls1', ["cls2", {"cls3": true}], {"cls4": true})).toBe('cls1 cls2 cls3 cls4');
-
-        expect(classnames('cls1', ["cls2", {"cls3": true}], {"cls4": true})).toBe('cls1 cls2 cls3 cls4');
-
-        expect(classnames('cls1', ["cls2", {"cls3": true, "cls2": true}, "cls1"], {"cls4": true, "cls3": true})).toBe('cls1 cls2 cls3 cls4');
+    test('api: classnames(classname: sring | object | array, [classname2: object | sring | array, [classname3: array | object | sring, [...]]]): string', () => {
+        expect(classnames("class1", {"class2": true}, ['class3'])).toBe('class1 class2 class3');
+        expect(classnames({"class2": true}, "class1", ['class3'])).toBe('class2 class1 class3');
+        expect(classnames({"class2": true}, ['class3'], "class1")).toBe('class2 class3 class1');
+        expect(classnames(['class3'], {"class2": true}, "class1")).toBe('class3 class2 class1');
+        expect(classnames('class1', ["class2", {"class3": true, "class2": true}, "class1"], {"cls4": true, "class3": true})).toBe('class1 class2 class3 cls4');
     });
 });
