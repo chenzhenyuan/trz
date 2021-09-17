@@ -1,6 +1,6 @@
 {
   "name": "@trz/classnames",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A tool for conditionally linking classNames together.",
   "author": "CHEN·ZHENYUAN <jayne@chenzhenyuan.com>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/classnames#readme",

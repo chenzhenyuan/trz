@@ -29,8 +29,7 @@ const classnames: ClassNamesInterface = (...args) => {
     }
   });
 
-  return Array.from(new Set(classes)).join(" ")
-    .replace(/\s+/g, " ");
+  return Array.from(new Set(classes)).join(" ").replace(/(^\s|\s$)/g, "").replace(/\s+/g, " ");
 };
 
 export { classnames as default, classnames };
