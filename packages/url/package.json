@@ -4,7 +4,7 @@
   "description": "> TODO: description",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/url#readme",
-  "license": "ISC",
+  "license": "MIT",
   "main": "lib/url.js",
   "directories": {
     "lib": "lib",
