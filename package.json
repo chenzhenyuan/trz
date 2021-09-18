@@ -27,6 +27,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.6.0",
     "@babel/runtime-corejs3": "^7.6.0",
+    "@types/async": "^3.2.7",
     "@types/enzyme": "^3.10.9",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^27.0.1",
@@ -49,6 +50,5 @@
     "webpack": "^5.51.1"
   },
   "dependencies": {
-    "@types/async": "^3.2.7"
   }
 }
