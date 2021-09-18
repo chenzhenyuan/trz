@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "> TODO: description",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
-  "homepage": "https://github.com/chenzhenyuan/trz#readme",
+  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/url#readme",
   "license": "ISC",
   "main": "lib/url.js",
   "directories": {
