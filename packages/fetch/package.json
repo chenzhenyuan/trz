@@ -21,7 +21,8 @@
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "tsc",
+    "test": "jest"
   },
   "bugs": {
     "url": "https://github.com/chenzhenyuan/trz/issues"
