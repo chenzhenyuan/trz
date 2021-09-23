@@ -1,8 +1,8 @@
 {
   "targets": "> 0.25%, not dead",
   "presets": [
-    ["@babel/typescript"],
     ["@babel/env"],
+    ["@babel/typescript"],
     ["minify"]
   ],
   "plugins": [

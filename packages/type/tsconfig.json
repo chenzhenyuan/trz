@@ -1,8 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./lib",
+    "skipLibCheck": true,
+    "baseUrl": "./",
     "rootDir": "./src",
+    "outDir": "./lib",
+    "declarationDir": "./lib",
   },
 
   "include": ["src", "global.d.ts"],
