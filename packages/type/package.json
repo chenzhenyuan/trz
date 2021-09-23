@@ -1,12 +1,18 @@
 {
   "name": "@trz/type",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "author": "CHEN·ZHENYUA <JAYNE@CHENZHENYUAN.COM>",
   "license": "MIT",
   "main": "lib/type.js",
   "description": "A tool for real type validate.",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/type#readme",
-  "keywords": [ "type", "isType", "typeof", "类型", "类型检验" ],
+  "keywords": [
+    "type",
+    "isType",
+    "typeof",
+    "类型",
+    "类型检验"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chenzhenyuan/trz.git"
@@ -25,12 +31,11 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "clean"  : "rimraf lib",
-    "build"  : "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc ",
-    "test"   : "npm run build && jest",
+    "clean": "rimraf lib",
+    "build": "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc ",
+    "test": "npm run build && jest",
     "release": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org",
-
-    "obsolete::build"  : "npm run clean && babel src --out-dir=lib --source-maps --extensions=.ts,.tsx"
+    "obsolete::build": "npm run clean && babel src --out-dir=lib --source-maps --extensions=.ts,.tsx"
   },
   "devDependencies": {
     "jest": "^27.1.0"
