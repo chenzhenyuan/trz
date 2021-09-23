@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import 'core-js/features/url';
 import 'core-js/features/url-search-params';
-import core from './core';
+import core from './core'
 
 
 

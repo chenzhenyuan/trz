@@ -26,5 +26,9 @@
   },
   "bugs": {
     "url": "https://github.com/chenzhenyuan/trz/issues"
+  },
+  "dependencies": {
+    "core-js": "^3.18.0",
+    "@trz/type": ">=0.2.6"
   }
 }

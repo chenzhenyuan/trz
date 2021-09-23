@@ -24,16 +24,30 @@ http.[REQUSET_METHOD]('URL', REQUSET_CONFIGS);
 /** GET 方法 */
 http.GET('//example.com/biz.alias/version.code/interface_name?filterKey=filterValue&extraKey=extraValue');
 
+
 http.GET('//example.com/biz.alias/version.code/interface_name', {
-  headers: {
-    "x-custom-header": "custom value"
-  },
-  
-  params: {
-    filterKey: "filterValue",
-    extraKey: "extraValue"
-  }
+  filterKey: "filterValue",
+  extraKey: "extraValue"
 });
+
+http.GET('//example.com/biz.alias/version.code/interface_name', null, {params: {
+  filterKey: "filterValue",
+  extraKey: "extraValue"
+}});
+
+/** POST 方法 */
+http.POST('//example.com/biz.alias/version.code/interface_name?filterKey=filterValue&extraKey=extraValue');
+
+http.POST('//example.com/biz.alias/version.code/interface_name', {
+  filterKey: "filterValue",
+  extraKey: "extraValue"
+});
+
+http.POST('//example.com/biz.alias/version.code/interface_name', null, { params: {
+  filterKey: "filterValue",
+  extraKey: "extraValue"
+}});
+
 ```
 
 ## 使用定制的请求实例
