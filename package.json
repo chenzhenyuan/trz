@@ -2,9 +2,7 @@
   "name": "trz",
   "private": true,
   "author": "JAYNE <JAYNE@CHENZHENYUAN.COM>",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "start": "echo no command run; exit 127;",
     "build": "npm run clean && lerna exec tsc",
