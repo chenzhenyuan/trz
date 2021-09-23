@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import 'core-js/features/url';
 import 'core-js/features/url-search-params';
 import core from './core';
-
+import { FetchConfigs } from "./core";
 
 
 
@@ -77,8 +77,7 @@ export class Fetch {
   }
 
   // url: string, requestParams?: any, options?: FetchConfigs
-  GET(url: string, ...options: any[]): Promise<any> {
-    return core('GET', url, this.requestConfigs, ...options);
+  GET(url: string, ...options: any[]) {
   }
 
   POST(url: string, ...options: any[]) {}

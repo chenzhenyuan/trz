@@ -77,15 +77,19 @@ export interface FetchConfigs extends RequestInit {
 const gloRequestConfigs = {
 };
 
-function core(url: string, reqConfigs: FetchConfigs): Promise<any> {
+function core(url: string, reqConfigs?: FetchConfigs): Promise<any> {
   console.log('reqConfigs::', reqConfigs);
 
   if (type.is(url, 'string')) {
     console.log('url::', url);
   }
 
-  return new Promise(async (success, faild) => {
-    const response = await fetch(url, reqConfigs);
+  return new Promise((resolve, reject) => {
+    fetch(url, reqConfigs).then((response) => {
+      resolve(response)
+    }).catch((err) => {
+      reject(err)
+    })
   });
 };
 
