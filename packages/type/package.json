@@ -29,8 +29,9 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "npm run build && jest",
+    "clean"  : "rimraf lib",
+    "build"  : "npm run clean && babel src --out-dir=lib --extensions=.ts,.tsx",
+    "test"   : "npm run build && jest",
     "release": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "devDependencies": {
