@@ -1,92 +1,65 @@
 import 'whatwg-fetch';
 import 'core-js/features/url';
 import 'core-js/features/url-search-params';
+
 import core from './core';
-import { FetchConfigs } from "./core";
+import { of, isString } from '@trz/type';
+
+enum RequestMethodEnum {
+  GET = 'GET',
+  PUT = 'PUT',
+  POST = 'POST',
+  DELETE = 'DELETE',
+  UPDATE = 'UPDATE'
+}
+type TFetchMethodArgument = string | Record<string, any>;
 
 
-
-/** 根据传入模板，生成唯一请求ID  */
-type TRequestId = (template?: string) => string;
-const requestId: TRequestId = (template = 'xxxxx-xxxxx-8xxxx-xxxxx-xxxxx') => {
-  return template.replace(/[xy]/g, (c) => ((Math.random() * 16) | 0).toString(16));
-};
-
-/** 请求的核心函数 */
-// interface FetchCoreInterface {
-//   (method: string, url: string, ...options: any[]): Promise<any>;
-// }
-// const core: FetchCoreInterface = (method = 'GET', url = '', ...reqOptions: any[]): Promise<any> => {
-//   const [config, params, option] = reqOptions;
-
-//   let reqConfigs = {};
-
-//   // ----------
-//   // const { domain = '', prefix = '', params = {} } = reqConfigs || {};
-//   // const basicUrl = `${domain || window.location.origin}${prefix}`;
-//   // const requestUrl = new URL('?ss=11#rr=22', basicUrl);
-//   // const basicParams = new URLSearchParams(params); // basicParams.toString()
-//   // console.log('basicParams::');
-//   // return fetch(requestUrl.href, { method });
-
-//   console.log('core', method, url, reqOptions);
-
-//   reqConfigs = { ...config, ...{ params: params ?? {} } };
-
-//   console.log('reqConfigs>>', url, reqConfigs);
-//   return window.fetch(url, { ...reqConfigs, method });
-// };
-
-export class Fetch {
-  static setConfig = (...args: any[]) => {};
-
-  domain = '';
-
-  prefix = '';
-
-  credentials = 'omit';
-
-  mode = 'cors';
-
-  redirect = 'follow';
-
-  referrerPolicy = 'same-origin';
-
+class Dex {
   headers = {
-    'x-client-name': '@trz/fetch'
+    'content-type': 'sssss'
   };
 
-  params?: { [kay: string]: any } | null = null;
+  constructor() {}
 
-  body?: { [kay: string]: any } | null = null;
-
-  get requestConfigs(): Record<string, any> {
-    console.log('get requestConfigs():', this);
-
-    return {
-      domain: this.domain,
-      prefix: this.prefix,
-      credentials: this.credentials,
-      mode: this.mode,
-      redirect: this.redirect
-    };
+  agent(cfgs: any) {
+    console.log('this.agent::', cfgs);
+    return core({ ...this, ...cfgs });
   }
 
-  constructor(basicConfigs?: FetchConfigs) {
-    console.log('basicConfigs::', basicConfigs || {});
+  GET(url: TFetchMethodArgument, queryParams?: any): Promise<any> {
+    const method = 'GET';
+
+    return this.agent({
+      ...(isString(url) ? { url, params: queryParams } : { ...(<Record<string, any>>url) }),
+      method
+    });
   }
 
-  // url: string, requestParams?: any, options?: FetchConfigs
-  GET(url: string, ...options: any[]) {
+  POST(url: TFetchMethodArgument, requestBody?: any): Promise<any> {
+    const method = 'POST';
+
+    return this.agent({
+      ...(isString(url) ? { url, body: requestBody } : { ...(<Record<string, any>>url) }),
+      method
+    });
   }
-
-  POST(url: string, ...options: any[]) {}
-
-  PUT(url: string, ...options: any[]) {}
-
-  UPDATE() {}
-
-  DELETE() {}
 }
 
-export default new Fetch();
+export default new Dex();
+
+const api = new Dex()
+const url = 'https://api.test.shantaijk.cn/api/auth-gateway/wechatgateway/wxservice/getTicket';
+
+api.GET(url, { x: 1, y: 2 });
+api.GET(`${url}?x=1&y=2`);
+api.GET({
+  url: url,
+  params: { x: 1, y: 2 },
+  headers: {
+    sfas: "asdf'",
+    'content-type': 'sssss'
+  }
+});
+
+api.POST(url);
