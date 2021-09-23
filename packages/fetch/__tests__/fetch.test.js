@@ -1,11 +1,11 @@
 'use strict';
 
-const fetch = require('..');
+import core from '..'
 
 describe('@trz/fetch', () => {
     // it('needs tests');
     // fetch.GET('//example.com/bizAlias/versionCode/interfaceName', {params: {}})
     test("Test:", () => {
-        console.log('fetch::',fetch);
+        console.log('core::', core("aaa"));
     })
 });

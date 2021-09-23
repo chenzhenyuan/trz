@@ -1,6 +1,8 @@
-import type from '@trz/type';
+import 'whatwg-fetch';
+import 'core-js/features/url';
+import 'core-js/features/url-search-params';
 
-
+import { is } from '@trz/type';
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'UPDATE' | 'DELETE' | 'HEADER' | 'OPTIONS';
 
@@ -73,25 +75,56 @@ export interface FetchConfigs extends RequestInit {
   headers?: HeadersInit;
 }
 
+const gloRequestHeaders = {
+  /** 参考：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Accept */
+  accept: 'text/json,text/*,*/*',
+
+  /** 参考：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control */
+  'cache-control': 'no-cache',
+
+  /** 参考：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Pragma */
+  pragma: 'no-cache'
+};
 
 const gloRequestConfigs = {
+  domain: '',
+  prefix: '',
+  credentials: 'same-origin'
 };
 
-function core(url: string, reqConfigs?: FetchConfigs): Promise<any> {
-  console.log('reqConfigs::', reqConfigs);
+function core(reqConfigs: any): Promise<any> {
+  console.log(reqConfigs);
+  const { url } = reqConfigs;
 
-  if (type.is(url, 'string')) {
-    console.log('url::', url);
+  if (is(url, 'string')) {
+    console.log(new URL(url));
   }
 
-  return new Promise((resolve, reject) => {
-    fetch(url, reqConfigs).then((response) => {
-      resolve(response)
-    }).catch((err) => {
-      reject(err)
-    })
-  });
-};
+  // const y = await fetch(url, reqConfigs);
+  return new Promise(async (resolve, reject) => {
+    const { headers } = await fetch(url, {
+      headers: gloRequestHeaders
+    });
 
+    console.log(headers.get('Content-Type'));
+  });
+}
 
 export default core;
+
+/** 设置请求头 */
+interface HeadersLike extends Record<string, string> {}
+export const setHeaders = (headers: HeadersLike): void => {};
+export const setHeader = (name: string, value: any): void => {
+  setHeaders({ [name]: value });
+};
+
+/** 设置请求的默认参数 */
+export const setConfigs = (configs: { [name: string]: any }): void => {
+  Object.keys(gloRequestConfigs).forEach((cfgKey) => {
+    console.log('cfgKey::', cfgKey);
+  });
+};
+export const setConfig = (name: string, value: any): void => {
+  setConfigs({ [name]: value });
+};

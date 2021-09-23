@@ -3,7 +3,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "isolatedModules": true,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
 
     /* 指定ECMAScript目标版本：'ES3'（默认）、'ES5'、'ES2015'、'ES2016'、'ES2017'、'ES2018'、'ES2019'、'ES2020'、或'ESNEXT' */
     "target": "ES5",
@@ -16,7 +16,7 @@
     /* 生成相应的'.d.ts'文件 */
     "declaration": true,
     /* 为每个相应的'.d.ts'文件生成一个源代码图 */
-    "declarationMap": true,
+    "declarationMap": false,
     /* 生成相应的'.map'文件 */
     "sourceMap": false,
     /* 在针对'ES5'或'ES3'时，在'for-of'、spread 和 destructuring 中提供对 iterables 的完全支持 */
