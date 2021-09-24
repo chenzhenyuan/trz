@@ -1,4 +1,5 @@
 
+
 const types = (any: unknown): string => {
   const ty: string = Object.prototype.toString.call(any).slice(8, -1);
   return ty.toLowerCase();
