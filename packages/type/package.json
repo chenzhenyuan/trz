@@ -1,6 +1,6 @@
 {
   "name": "@trz/type",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "author": "CHEN·ZHENYUA <JAYNE@CHENZHENYUAN.COM>",
   "license": "MIT",
   "main": "lib/type.js",
@@ -31,12 +31,11 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "clean"  : "rimraf lib",
-    "build"  : "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc ",
-    "test"   : "npm run build && jest",
+    "clean": "rimraf lib",
+    "build": "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc ",
+    "test": "npm run build && jest",
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
-
-    "obsolete::build"  : "npm run clean && babel src --out-dir=lib --source-maps --extensions=.ts,.tsx"
+    "obsolete::build": "npm run clean && babel src --out-dir=lib --source-maps --extensions=.ts,.tsx"
   },
   "devDependencies": {
     "jest": "^27.1.0"
