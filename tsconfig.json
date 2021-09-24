@@ -10,14 +10,16 @@
     "lib": ["dom", "es6", "es2015", "es2016", "es2017", "es2018", "es2019", "esnext"],
     /* 指定JSX代码生成：'preserve'、'react-native'、'react'、'react-jsx'或'react-jsxdev' */
     "jsx": "react",
+
     "emitDeclarationOnly": true,
+
     "isolatedModules": true,
     /* 生成相应的'.d.ts'文件 */
     "declaration": true,
     /* 为每个相应的'.d.ts'文件生成一个源代码图 */
     "declarationMap": true,
     /* 生成相应的'.map'文件 */
-    "sourceMap": true,
+    "sourceMap": false,
     /* 在针对'ES5'或'ES3'时，在'for-of'、spread 和 destructuring 中提供对 iterables 的完全支持 */
     "downlevelIteration": true,
     /* 启用所有严格的类型检查选项 */

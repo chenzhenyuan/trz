@@ -44,4 +44,9 @@ describe('@trz/type', () => {
         expect(type.isString([])).toBe(false);
         expect(type.isString('is a string')).toBe(true);
     });
+
+    test('Function: type.isArray', () => {
+        expect(type.isArray('is a string')).toBe(false);
+        expect(type.isArray([])).toBe(true);
+    });
 });
