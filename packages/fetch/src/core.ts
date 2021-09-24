@@ -1,8 +1,7 @@
 import 'whatwg-fetch';
 import 'core-js/features/url';
 import 'core-js/features/url-search-params';
-
-import { is } from '@trz/type';
+import { isString } from '@trz/type';
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'UPDATE' | 'DELETE' | 'HEADER' | 'OPTIONS';
 
@@ -16,6 +15,7 @@ enum RequestMethodEnum {
 
 export interface FetchConfigs extends RequestInit {
   domain?: '' | string;
+
   prefix?: '' | string;
 
   params?: any;
@@ -92,21 +92,23 @@ const gloRequestConfigs = {
   credentials: 'same-origin'
 };
 
-function core(reqConfigs: any): Promise<any> {
-  console.log(reqConfigs);
-  const { url } = reqConfigs;
+interface ICore extends FetchConfigs {
+  url: string;
+}
 
-  if (is(url, 'string')) {
-    console.log(new URL(url));
+function core(reqConfigs: ICore): Promise<any> {
+  const { url, params } = reqConfigs;
+  // console.log('reqConfigs::', reqConfigs);
+
+  if (isString(url)) {
+    // console.log(new URL(url));
   }
 
   // const y = await fetch(url, reqConfigs);
   return new Promise(async (resolve, reject) => {
-    const { headers } = await fetch(url, {
-      headers: gloRequestHeaders
-    });
+    const { headers } = await fetch(url, { headers: gloRequestHeaders });
 
-    console.log(headers.get('Content-Type'));
+    console.log("headers.get('Content-Type')", headers.get('Content-Type'));
   });
 }
 

@@ -1,7 +1,3 @@
-import 'whatwg-fetch';
-import 'core-js/features/url';
-import 'core-js/features/url-search-params';
-
 import core from './core';
 import { of, isString } from '@trz/type';
 
@@ -14,8 +10,7 @@ enum RequestMethodEnum {
 }
 type TFetchMethodArgument = string | Record<string, any>;
 
-
-class Dex {
+class Fetch {
   headers = {
     'content-type': 'sssss'
   };
@@ -31,7 +26,7 @@ class Dex {
     const method = 'GET';
 
     return this.agent({
-      ...(isString(url) ? { url, params: queryParams } : { ...(<Record<string, any>>url) }),
+      ...(isString(url) ? { url, params: queryParams ?? {} } : { ...(<Record<string, any>>url) }),
       method
     });
   }
@@ -40,15 +35,15 @@ class Dex {
     const method = 'POST';
 
     return this.agent({
-      ...(isString(url) ? { url, body: requestBody } : { ...(<Record<string, any>>url) }),
+      ...(isString(url) ? { url, body: requestBody ?? null } : { ...(<Record<string, any>>url) }),
       method
     });
   }
 }
 
-export default new Dex();
+export default new Fetch();
 
-const api = new Dex()
+const api = new Fetch();
 const url = 'https://api.test.shantaijk.cn/api/auth-gateway/wechatgateway/wxservice/getTicket';
 
 api.GET(url, { x: 1, y: 2 });
