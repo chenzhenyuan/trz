@@ -28,7 +28,7 @@
     "clean"  : "rimraf lib",
     "build"  : "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc ",
     "test"   : "npm run build && jest",
-    "release": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org",
+    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
 
     "obsolete::build"  : "npm run clean && babel src --out-dir=lib --source-maps --extensions=.ts,.tsx"
   },
