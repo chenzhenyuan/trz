@@ -14,7 +14,10 @@ type TFetchMethodArgument = string | Record<string, any>;
 class Fetch {
   headers = {};
 
-  constructor() {}
+  constructor() {
+    // do something
+    this;
+  }
 
   agent(cfgs: any) {
     console.log('this.agent::', cfgs);
