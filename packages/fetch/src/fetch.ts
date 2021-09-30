@@ -1,5 +1,5 @@
 import core from './core';
-import { of, isString } from '@trz/type';
+import { isString } from '@trz/type';
 
 enum RequestMethodEnum {
   GET = 'GET',
@@ -8,12 +8,11 @@ enum RequestMethodEnum {
   DELETE = 'DELETE',
   UPDATE = 'UPDATE'
 }
+
 type TFetchMethodArgument = string | Record<string, any>;
 
 class Fetch {
-  headers = {
-    'content-type': 'sssss'
-  };
+  headers = {};
 
   constructor() {}
 
@@ -45,6 +44,7 @@ export default new Fetch();
 
 const api = new Fetch();
 const url = 'https://api.test.shantaijk.cn/api/auth-gateway/wechatgateway/wxservice/getTicket';
+
 
 api.GET(url, { x: 1, y: 2 });
 api.GET(`${url}?x=1&y=2`);
