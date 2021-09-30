@@ -1,4 +1,4 @@
-import api from "./packages/fetch/src/main";
+import api from "./packages/fetch/src/fetch";
 
 console.log(api);
 
