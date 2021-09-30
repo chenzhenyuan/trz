@@ -1,13 +1,9 @@
 import core from './core';
 import { isString } from '@trz/type';
 
-enum RequestMethodEnum {
-  GET = 'GET',
-  PUT = 'PUT',
-  POST = 'POST',
-  DELETE = 'DELETE',
-  UPDATE = 'UPDATE'
-}
+enum RequestMethodEnum { GET='GET', PUT='PUT', POST='POST', DELETE='DELETE', UPDATE='UPDATE' }
+
+console.log(RequestMethodEnum);
 
 type TFetchMethodArgument = string | Record<string, any>;
 
