@@ -2,9 +2,8 @@
   "name": "trz",
   "private": true,
   "author": "JAYNE <JAYNE@CHENZHENYUAN.COM>",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
+
   "scripts": {
     "start": "echo no command run; exit 127;",
     "build": "npm run clean && lerna exec tsc",
@@ -12,9 +11,11 @@
     "clean": "rimraf packages/*/lib",
     "test": "npm run build && lerna exec jest"
   },
+
   "publishConfig": {
     "access": "public"
   },
+
   "devDependencies": {
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",

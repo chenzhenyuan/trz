@@ -35,7 +35,7 @@ export default {
               [ '@babel/typescript' ]
             ],
 
-            'ignore': [
+            ignore: [
               'node_modules'
             ],
 
