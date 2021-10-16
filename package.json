@@ -8,7 +8,7 @@
   "scripts": {
     "start": "echo no command run; exit 127;",
     "build": "npm run clean && lerna exec tsc",
-    "develop": "webpack",
+    "develop": "webpack server",
     "clean": "rimraf packages/*/lib",
     "test": "npm run build && lerna exec jest"
   },
