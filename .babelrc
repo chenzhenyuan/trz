@@ -1,19 +1,37 @@
 {
   "targets": "> 0.25%, not dead",
+
   "presets": [
-    ["@babel/env"],
-    ["@babel/typescript"],
-    ["minify"]
+    [ "@babel/env", {"useBuiltIns": "usage", "corejs": 3}],
+    // "@babel/env",
+    "@babel/typescript",
+    "@babel/react"/* , "minify" */
   ],
+
   "plugins": [
-    [ "@babel/plugin-transform-runtime" ],
-    [ "@babel/plugin-syntax-dynamic-import" ],
-    [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
-    [ "@babel/plugin-proposal-class-static-block" ],
-    [ "@babel/plugin-proposal-class-properties", { "loose": true } ],
-    [ "@babel/plugin-proposal-private-methods", { "loose": true } ],
-    [ "@babel/plugin-transform-typescript" ],
+    ["@babel/plugin-transform-typescript"],
+    ["@babel/plugin-transform-runtime"],
+    ["@babel/plugin-syntax-dynamic-import"],
+    ["@babel/plugin-proposal-decorators",{ "legacy": true }],
+    ["@babel/plugin-proposal-class-static-block"],
+    ["@babel/plugin-proposal-class-properties",{ "loose": true }],
+    ["@babel/plugin-proposal-private-methods",{ "loose": true }],
     /* [ "@babel/plugin-transform-react-display-name" ], */
-    [ "@babel/plugin-proposal-private-property-in-object", { "loose": true } ]
-  ]
+    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
+  ],
+
+  "ignore": [ "node_modules" ],
+
+  "env": {
+    "build": {
+      "ignore": [
+        "**/*.test.tsx",
+        "**/*.test.ts",
+        "**/*.story.tsx",
+        "__snapshots__",
+        "__tests__",
+        "__stories__"
+      ]
+    }
+  }
 }

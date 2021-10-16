@@ -2,8 +2,13 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compileOnSave": false,
   "compilerOptions": {
+    "isolatedModules": true,
+
+    "emitDeclarationOnly": true,
+    // "noEmit": true,
+
     /* 指定ECMAScript目标版本：'ES3'（默认）、'ES5'、'ES2015'、'ES2016'、'ES2017'、'ES2018'、'ES2019'、'ES2020'、或'ESNEXT' */
-    "target": "ES5",
+    "target": "es2015",
     /* 指定模块代码生成：'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', 或 'ESNext' */
     "module": "commonjs",
     /* 指定编译中要包含的库文件 */
@@ -13,17 +18,17 @@
     /* 生成相应的'.d.ts'文件 */
     "declaration": true,
     /* 为每个相应的'.d.ts'文件生成一个源代码图 */
-    "declarationMap": true,
+    "declarationMap": false,
     /* 生成相应的'.map'文件 */
     "sourceMap": false,
     /* 在针对'ES5'或'ES3'时，在'for-of'、spread 和 destructuring 中提供对 iterables 的完全支持 */
     "downlevelIteration": true,
     /* 启用所有严格的类型检查选项 */
-    "strict": false,
+    "strict": true,
     /* 指定模块解析策略：'node'（Node.js）或'classic'（TypeScript 1.6之前）*/
     "moduleResolution": "node",
     /* 用于解析非绝对化模块名称的基础目录 */
-    "baseUrl": "./",
+    "baseUrl": ".",
     /* 允许从没有默认输出的模块中默认导入。这并不影响代码排放，只是类型检查 */
     "allowSyntheticDefaultImports": true,
     /* 通过为所有导入的模块创建命名空间对象，使CommonJS和ES模块之间的emit具有互操作性。暗示'allowSyntheticDefaultImports' */
@@ -39,7 +44,15 @@
     /* 一系列的条目，这些条目将进口重新映射到相对于 "baseUrl "的查找位置 */
     /* "paths": {} */
     "typeRoots": [ "./node_modules/@types" ],
-    "types": [ "node", "react" ]
+    "types": [ "node", "react" ],
+
+    // "noEmit": true,
+    "removeComments": true
+  },
+
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "babelCore": "@babel/core"
   },
 
   "include": [

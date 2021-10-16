@@ -1,6 +1,6 @@
 {
   "name": "@trz/classnames",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "A tool for conditionally linking classNames together.",
   "author": "CHEN·ZHENYUAN <jayne@chenzhenyuan.com>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/classnames#readme",
@@ -20,15 +20,16 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "build": "tsc",
+    "clean": "rimraf lib",
+    "build": "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc ",
     "test": "npm run build && jest",
-    "release": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org"
+    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "devDependencies": {
     "jest": "^27.1.0"
   },
   "dependencies": {
-    "@trz/type": "^0.2.6"
+    "@trz/type": "^0.2.8"
   },
   "gitHead": "176e63f2e3b2b98ffc646644ce145b592b080c11"
 }

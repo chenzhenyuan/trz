@@ -3,13 +3,9 @@
 
   "npmClient": "npm",
 
-  "packages": [
-    "packages/*"
-  ],
+  "packages": [ "packages/*" ],
 
-  "ignoreChanges": [
-    "**/*.md"
-  ],
+  "ignoreChanges": [ "**/*.md" ],
 
   "command": {
     "bootstrap": {

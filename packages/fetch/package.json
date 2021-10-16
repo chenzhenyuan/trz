@@ -1,0 +1,37 @@
+{
+  "name": "@trz/fetch",
+  "version": "0.1.0",
+  "description": "> TODO: description",
+  "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
+  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/fetch#readme",
+  "license": "ISC",
+  "main": "lib/main.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib/*"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenzhenyuan/trz.git"
+  },
+  "scripts": {
+    "build": "npm run clean && babel src --out-dir=lib --extensions=.ts,.tsx",
+    "test": "npm run build && jest",
+    "clean": "rimraf lib",
+    "release": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org"
+  },
+  "bugs": {
+    "url": "https://github.com/chenzhenyuan/trz/issues"
+  },
+  "dependencies": {
+    "whatwg-fetch": "^3.6.2",
+    "core-js": "^3.18.0",
+    "@trz/type": ">=0.2.8"
+  }
+}
