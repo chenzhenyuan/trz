@@ -9,6 +9,8 @@ import 'webpack-dev-server';
 export default {
   mode: 'development',
 
+  devtool: 'source-map',
+
   target: 'web',
 
   entry: './development.ts',
@@ -45,7 +47,7 @@ export default {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       title: '开发模式',
