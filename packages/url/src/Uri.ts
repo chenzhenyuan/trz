@@ -57,7 +57,4 @@ export class Uri {
   }
 }
 
-
-
-
 export default Uri;
