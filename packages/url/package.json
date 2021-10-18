@@ -27,5 +27,8 @@
   },
   "bugs": {
     "url": "https://github.com/chenzhenyuan/trz/issues"
+  },
+  "dependencies": {
+    "path-browserify": "^1.0.1"
   }
 }
