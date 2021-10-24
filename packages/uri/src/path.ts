@@ -1,4 +1,6 @@
-
+/**
+ * 静态方法：Uri.path
+ */
 
 
 interface PathObjectInterface {
@@ -9,9 +11,8 @@ interface PathObjectInterface {
   ext? : string;
 }
 
-
-if (!(window instanceof Window && window.document instanceof Document)) {
-  throw new TypeError("****");
+if (!(window instanceof Window) || !(window?.document instanceof window?.Document)) {
+  throw new TypeError('The running environment must be a browser.');
 }
 
 
@@ -23,10 +24,18 @@ function pathAsserter(pathname: any): never | void {
 }
 
 
-
 export const sep = "/";
 
-export const basename = (...args: any[]): string => '';
+
+export const basename = (pathLike: string, ext?: string): string | null => {
+  pathAsserter(pathLike);
+
+  if (pathLike.length === 0) return null;
+
+  parse(pathLike);
+
+  return '';
+};
 
 export const format = (pathObject: PathObjectInterface): string => '';
 
@@ -66,13 +75,27 @@ export const relative = (from: string, to: string): string => '';
 /**
  * @description 返回一个对象，其属性表示 path 的重要元素
  *
- * @param   {string} path
+ * @param   {string} pathLike
  * @returns {object}
  */
-export const parse = (path: string): PathObjectInterface => {
-  pathAsserter(path);
+export const parse = (pathLike: string): PathObjectInterface => {
+  const pathObject = { root: "", dir: "", base: "", /* name: "", ext: "" */ };
 
-  return {};
+  pathAsserter(pathLike);
+
+  if (pathLike.length === 0) return pathObject;
+
+  const pathname = normalize(pathLike).split('/');
+  const base = pathname.splice(-1, 1).join('');
+
+  if (pathname[0] === '') {
+    pathObject.root = pathname.splice(0, 1).join('/') + '/';
+  }
+
+  pathObject.base = base;
+  pathObject.dir = pathname.join('/');
+
+  return pathObject;
 };
 
 
@@ -131,12 +154,8 @@ export const normalize = (pathname: string): string | never => {
     iCurrent += 1;
   }
 
-  return `${isAbsolute ? '/' : './'}${fragment.reverse().join(sep)}`;
+  return `${isAbsolute ? '' : './'}${fragment.reverse().join(sep)}`;
 };
 
 
-export default {
-  sep,
-  normalize,
-  isAbsolute,
-};
+export default { sep, normalize, isAbsolute, basename, parse, };
