@@ -26,16 +26,19 @@ function pathAsserter(pathname: any): never | void {
 
 export const sep = "/";
 
+/**
+ * @description path.isAbsolute() 方法确定 path 是否为绝对路径。
+ *
+ * @param     {PathLike} pathname    将要被检测的地址
+ * @returns   {boolean}
+ */
+export const isAbsolute = (pathname: string): boolean | never => {
+  pathAsserter(pathname);
 
-export const basename = (pathLike: string, ext?: string): string | null => {
-  pathAsserter(pathLike);
-
-  if (pathLike.length === 0) return null;
-
-  parse(pathLike);
-
-  return '';
+  return pathname.length > 0 && pathname.charCodeAt(0) === 47;
 };
+
+
 
 export const format = (pathObject: PathObjectInterface): string => '';
 
@@ -43,6 +46,15 @@ export const extname = (): string => '';
 
 export const dirname = (): string => '';
 
+
+export const basename = (pathLike: string, ext?: string): string | void | never => {
+  pathAsserter(pathLike);
+  const { base } = parse(pathLike);
+
+  if (typeof ext !== 'string' || !ext.length) return base;
+
+  return base?.replace((new RegExp(ext+'$')), '');
+};
 
 /**
  * @description 使用特定于平台的分隔符作为定界符将所有给定的 path 片段连接在一起，然后规范化生成的路径
@@ -73,13 +85,15 @@ export const relative = (from: string, to: string): string => '';
 
 
 /**
+ * @name  parse
+ * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
  * @description 返回一个对象，其属性表示 path 的重要元素
  *
  * @param   {string} pathLike
  * @returns {object}
  */
 export const parse = (pathLike: string): PathObjectInterface => {
-  const pathObject = { root: "", dir: "", base: "", /* name: "", ext: "" */ };
+  const pathObject = { root: "", dir: "", base: "", name: "", ext: ""};
 
   pathAsserter(pathLike);
 
@@ -92,29 +106,22 @@ export const parse = (pathLike: string): PathObjectInterface => {
     pathObject.root = pathname.splice(0, 1).join('/') + '/';
   }
 
-  pathObject.base = base;
   pathObject.dir = pathname.join('/');
+
+  pathObject.base = base;
+
+  const lastDotIndex = base.lastIndexOf('.');
+
+  pathObject.name = base.substring(0, lastDotIndex);
+
+  pathObject.ext = base.substr(lastDotIndex);
 
   return pathObject;
 };
 
-
 /**
- * @description path.isAbsolute() 方法确定 path 是否为绝对路径。
- *
- * @param     {PathLike} pathname    将要被检测的地址
- * @returns   {boolean}
- */
-export const isAbsolute = (pathname: string): boolean | never => {
-  pathAsserter(pathname);
-
-  return pathname.length > 0 && pathname.charCodeAt(0) === 47;
-};
-
-
-/**
- * @name path.normalize
- * @author  ZHENYUAN·CHEN<JAYNE#CHENZHENYUAN.COM>
+ * @name normalize
+ * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
  * @description 标准化路径字符串。
  *
  * @param     {string}  pathname
@@ -136,9 +143,7 @@ export const normalize = (pathname: string): string | never => {
     if (fragItem === '..' || fragItem === '.') {
       rmCount = rmCount + fragItem.length;
       rmStartIndex = rmStartIndex == -1 ? iCurrent : rmStartIndex;
-
       iCurrent += 1;
-
       if (rmStartIndex + 1 != fragment.length) {
         continue;
       }
