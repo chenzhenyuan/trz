@@ -7,6 +7,8 @@ export const stringify = (str?: typeof Uri): string | undefined => str?.toString
 
 export default { parse, stringify };
 
+export { default as pathname } from './path';
+
 export { SearchParams, HashParams } from './Uri';
 
 
