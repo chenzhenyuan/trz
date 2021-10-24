@@ -31,7 +31,7 @@ rules:
   array-bracket-spacing:
     - error
     - always
-    - singleValue: false
+    - singleValue: true
       objectsInArrays: false
       arraysInArrays: false
 
@@ -109,8 +109,8 @@ rules:
     #     consistent: true
     - consistent: true
 
-  # -------------------------------------------------------------------------------------------------
-  overrides:
+# -------------------------------------------------------------------------------------------------
+overrides:
   - files: ["**/src/**/*.ts", "**/src/**/*.tsx"]
     parser: "@typescript-eslint/parser"
     plugins:
@@ -119,25 +119,15 @@ rules:
       sourceType: "module"
       project: ./tsconfig.json
     rules:
-      "@typescript-eslint/await-thenable": warn
-      "@typescript-eslint/no-explicit-any": warn
-
+      "@typescript-eslint/await-thenable": [1]
+      "@typescript-eslint/indent": [2, 2, {"SwitchCase": 1, "MemberExpression": 1, "VariableDeclarator": first}]
+      "@typescript-eslint/no-explicit-any": [0]
       # $remark：https://eslint.org/docs/rules/indent#options
-      "@typescript-eslint/no-unused-vars": off
-      "@typescript-eslint/no-useless-constructor": ["error"]
-      "@typescript-eslint/no-empty-function":
-        - warn
-        - allow: [private-constructors]
-      "@typescript-eslint/indent":
-        - error
-        - 2
-        - SwitchCase: 1
-          MemberExpression: 1
-          VariableDeclarator: first
-      indent:
-        - error
-        - 2
+      "@typescript-eslint/no-unused-vars": [0]
+      "@typescript-eslint/no-useless-constructor": [2]
+      "@typescript-eslint/no-empty-function": [1, {"allow": ["private-constructors"]}]
+
+      indent: [2, 2]
       no-unused-vars: off
       no-useless-constructor: off
-      no-empty-function: off
-
+      no-empty-function: [1]

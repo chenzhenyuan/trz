@@ -2,8 +2,9 @@
   "name": "trz",
   "private": true,
   "author": "JAYNE <JAYNE@CHENZHENYUAN.COM>",
-  "workspaces": ["packages/*"],
-
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "start": "echo no command run; exit 127;",
     "build": "npm run clean && lerna exec tsc",
@@ -11,17 +12,16 @@
     "clean": "rimraf packages/*/lib",
     "test": "npm run build && lerna exec jest"
   },
-
   "publishConfig": {
     "access": "public"
   },
-
   "devDependencies": {
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
-    "@babel/eslint-parser": "^7.14.3",
+    "@babel/eslint-parser": "^7.15.7",
     "@babel/eslint-plugin": "^7.14.5",
     "@babel/plugin-proposal-decorators": "^7.15.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.15.6",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.6.0",
@@ -36,17 +36,19 @@
     "@types/react": "^17.0.19",
     "@types/webpack": "^5.28.0",
     "@types/webpack-dev-server": "^4.1.0",
-    "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "@typescript-eslint/parser": "^4.30.0",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-preset-minify": "^0.5.1",
     "eslint": "^7.32.0",
+    "eslint-plugin": "^1.0.1",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.25.1",
+    "eslint-plugin-react": "^7.26.1",
     "html-webpack-plugin": "^5.3.2",
     "jest": "^27.1.0",
+    "json5": "^2.2.0",
     "lerna": "^4.0.0",
     "lint-staged": "^11.1.2",
     "rimraf": "^3.0.2",

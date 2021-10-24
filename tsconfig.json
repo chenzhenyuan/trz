@@ -5,9 +5,10 @@
     "isolatedModules": true,
 
     "emitDeclarationOnly": true,
+    // "noEmit": true,
 
     /* 指定ECMAScript目标版本：'ES3'（默认）、'ES5'、'ES2015'、'ES2016'、'ES2017'、'ES2018'、'ES2019'、'ES2020'、或'ESNEXT' */
-    "target": "es5",
+    "target": "es2015",
     /* 指定模块代码生成：'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', 或 'ESNext' */
     "module": "commonjs",
     /* 指定编译中要包含的库文件 */
@@ -54,9 +55,7 @@
     "babelCore": "@babel/core"
   },
 
-  "include": [
-    "packages/**/src"
-  ],
+  "include": [ "packages/**/src" ],
 
   "exclude": [
     "node_modules",
