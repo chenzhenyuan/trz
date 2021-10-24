@@ -28,7 +28,7 @@
     "release": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "dependencies": {
-    "@trz/type":">=0.2.6"
+    "@trz/type":">=0.2.8"
   },
   "devDependencies": {
     "jest": "^27.1.0"
