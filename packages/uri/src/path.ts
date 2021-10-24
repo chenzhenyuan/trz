@@ -16,8 +16,8 @@ if (!(window instanceof Window) || !(window?.document instanceof window?.Documen
 }
 
 
-function pathAsserter(pathname: any): never | void {
-  if (typeof pathname !== 'string') {
+function pathAsserter(pathLike: any): never | void {
+  if (typeof pathLike !== 'string') {
     // throw new TypeError('The "pathname" argument must be of type string. Received an instance of Object.');
     throw new TypeError('The "pathname" argument must be of type string.');
   }
@@ -41,20 +41,6 @@ export const isAbsolute = (pathname: string): boolean | never => {
 
 
 export const format = (pathObject: PathObjectInterface): string => '';
-
-export const extname = (): string => '';
-
-export const dirname = (): string => '';
-
-
-export const basename = (pathLike: string, ext?: string): string | void | never => {
-  pathAsserter(pathLike);
-  const { base } = parse(pathLike);
-
-  if (typeof ext !== 'string' || !ext.length) return base;
-
-  return base?.replace((new RegExp(ext+'$')), '');
-};
 
 /**
  * @description 使用特定于平台的分隔符作为定界符将所有给定的 path 片段连接在一起，然后规范化生成的路径
@@ -82,6 +68,32 @@ export const resolve = (...paths: string[]): string => '';
  * @returns     {string}
  */
 export const relative = (from: string, to: string): string => '';
+
+
+export const extname = (): string => '';
+
+
+
+export const dirname = (pathLike: string): never | string | void => {
+  pathAsserter(pathLike);
+  return parse(pathLike).dir;
+};
+
+
+/**
+ * @description 返回 path 的最后一部分。这里的实现与 NodeJS 中 path模块中个的方法略有差异。
+ * @param     {string} pathLike -
+ * @param     {string} ext      -
+ * @returns   {string}
+ */
+export const basename = (pathLike: string, ext?: string): string | void | never => {
+  pathAsserter(pathLike);
+  const { base } = parse(pathLike);
+  if (base?.charCodeAt(0) === 46 || typeof ext !== 'string' || !ext.length) {
+    return base;
+  }
+  return base?.replace((new RegExp(ext+'$')), '');
+};
 
 
 /**
