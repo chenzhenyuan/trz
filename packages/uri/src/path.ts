@@ -24,31 +24,8 @@ function pathAsserter(pathLike: any): never | void {
 }
 
 
-export const sep = "/";
-
-/**
- * @description path.isAbsolute() 方法确定 path 是否为绝对路径。
- *
- * @param     {PathLike} pathname    将要被检测的地址
- * @returns   {boolean}
- */
-export const isAbsolute = (pathname: string): boolean | never => {
-  pathAsserter(pathname);
-
-  return pathname.length > 0 && pathname.charCodeAt(0) === 47;
-};
-
-
 
 export const format = (pathObject: PathObjectInterface): string => '';
-
-/**
- * @description 使用特定于平台的分隔符作为定界符将所有给定的 path 片段连接在一起，然后规范化生成的路径
- *
- * @params  {Array<string>} ...paths  路径或路径片段的序列
- * @returns {string}
- */
-export const join = (...paths: string[]): string => '';
 
 
 /**
@@ -74,9 +51,73 @@ export const extname = (): string => '';
 
 
 
-export const dirname = (pathLike: string): never | string | void => {
+
+
+
+
+
+
+
+
+
+
+export const sep = "/";
+
+
+/**
+ * @name normalize
+ * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
+ * @description 标准化路径字符串。
+ *
+ * @param     {string}  pathname
+ * @returns   {string}  返回经过格式化后的路径字符串
+ */
+export const normalize = (pathLike: string): string | never => {
   pathAsserter(pathLike);
-  return parse(pathLike).dir;
+
+  if (pathLike.length === 0) return '.';
+
+  pathLike = pathLike.replace(/\/+/g, '/');
+
+  const isAbsolute = pathLike.charCodeAt(0) === sep.charCodeAt(0);
+  const segment = pathLike.split(sep).reverse();
+
+  let subIndex = 0, rmStartIndex = -1, rmCount = 0;
+
+  while (segment.length && subIndex < segment.length) {
+    const element = segment[subIndex];
+
+    if ((element === '..' || element === '.') && subIndex + 1 !== segment.length) {
+      rmCount = rmCount + element.length;
+      rmStartIndex = rmStartIndex == -1 ? subIndex : rmStartIndex;
+      subIndex += 1;
+      continue;
+    }
+
+    if (rmStartIndex > -1) {
+      segment.splice(rmStartIndex, rmCount);
+      subIndex = rmStartIndex;
+      rmStartIndex = -1, rmCount = 0;
+      continue;
+    }
+
+    subIndex += 1;
+  }
+
+  return segment.reverse().join(sep);
+};
+
+
+/**
+ * @description path.isAbsolute() 方法确定 path 是否为绝对路径。
+ *
+ * @param     {PathLike} pathname    将要被检测的地址
+ * @returns   {boolean}
+ */
+export const isAbsolute = (pathname: string): boolean | never => {
+  pathAsserter(pathname);
+
+  return pathname.length > 0 && pathname.charCodeAt(0) === 47;
 };
 
 
@@ -131,48 +172,34 @@ export const parse = (pathLike: string): PathObjectInterface => {
   return pathObject;
 };
 
+
 /**
- * @name normalize
- * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
- * @description 标准化路径字符串。
+ * @description 使用特定于平台的分隔符作为定界符将所有给定的 path 片段连接在一起，然后规范化生成的路径
  *
- * @param     {string}  pathname
- * @returns   {string}  返回经过格式化后的路径字符串
+ * @params  {Array<string>} ...paths  路径或路径片段的序列
+ * @returns {string}
  */
-export const normalize = (pathname: string): string | never => {
-  pathAsserter(pathname);
+export const join = (...paths: string[]): never | string => {
+  let pathLike: string[] = [];
 
-  if (pathname.length === 0) return '.';
-
-  const isAbsolute = pathname.charCodeAt(0) === 47;
-  const fragment = pathname.split(sep).reverse();
-
-  let iCurrent = 0, rmStartIndex = -1, rmCount = 0;
-
-  while (fragment.length && iCurrent < fragment.length) {
-    const fragItem = fragment[iCurrent];
-
-    if (fragItem === '..' || fragItem === '.') {
-      rmCount = rmCount + fragItem.length;
-      rmStartIndex = rmStartIndex == -1 ? iCurrent : rmStartIndex;
-      iCurrent += 1;
-      if (rmStartIndex + 1 != fragment.length) {
-        continue;
-      }
-    }
-
-    if (rmStartIndex > -1) {
-      fragment.splice(rmStartIndex, rmCount);
-      iCurrent = rmStartIndex;
-      rmStartIndex = -1, rmCount = 0;
-      continue;
-    }
-
-    iCurrent += 1;
+  for (const i of paths) {
+    pathAsserter(i);
+    pathLike = pathLike.concat(i.split(sep));
   }
 
-  return `${isAbsolute ? '' : './'}${fragment.reverse().join(sep)}`;
+  return normalize(pathLike.join(sep));
 };
 
 
-export default { sep, normalize, isAbsolute, basename, parse, };
+/**
+ * @description 返回 path 的目录名
+ * @param   {string} pathLike -
+ * @returns
+ */
+export const dirname = (pathLike: string): never | string | void => {
+  pathAsserter(pathLike);
+  return parse(pathLike).dir;
+};
+
+
+export default { sep, normalize, isAbsolute, basename, parse, join, dirname};
