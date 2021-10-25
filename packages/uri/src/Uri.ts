@@ -38,14 +38,12 @@ export class Uri {
     const property = urlParse(url);
 
     property.origin = '';
-    property.href = '';
-
+    property.href   = '';
 
     if (property.host) {
       property.origin = `${property.protocol || ''}//${property.host}`;
       property.href = url;
     }
-
 
     for (const key in property) {
       const fmt: any = _NormalizeRule[key] || null;
@@ -60,16 +58,15 @@ export class Uri {
     }
 
     this.searchParams = new SearchParams(this.search);
-
     this.hashParams = new HashParams(this.hash);
   }
 
   toString(): string {
-    return '';
+    return this.stringify();
   }
 
   stringify(): string {
-    return this.toString();
+    return this.href;
   }
 }
 
