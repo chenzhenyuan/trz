@@ -238,7 +238,9 @@ export const resolve = (...paths: string[]): string => {
  * @param   {string}  to    -
  * @returns {string}
  */
-export const relative = (from: string, to: string): string => '';
+const relative = (from: string, to: string): string | never => {
+  throw new TypeError('Nothing to achieve');
+};
 
 /** 导出默认模块 */
 export default { sep, normalize, isAbsolute, basename, parse, join, dirname, extname, format, resolve };
