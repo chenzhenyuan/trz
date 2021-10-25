@@ -68,7 +68,7 @@ export const normalize = (pathLike: string): string | never => {
 
   if (pathLike.length === 0) return '.';
 
-  pathLike = pathLike.replace(/\/+/g, '/');
+  pathLike = pathLike.replace((new RegExp(sep + '{2,}', 'g')), sep);
 
   const isAbsolute = pathLike.charCodeAt(0) === sep.charCodeAt(0);
   const segment = pathLike.split(sep).reverse();
@@ -146,14 +146,14 @@ export const parse = (pathLike: string): PathObjectInterface => {
 
   if (pathLike.length === 0) return pathObject;
 
-  const pathname = normalize(pathLike).split('/');
+  const pathname = normalize(pathLike).split(sep);
   const base = pathname.splice(-1, 1).join('');
 
   if (pathname[0] === '') {
-    pathObject.root = pathname.splice(0, 1).join('/') + '/';
+    pathObject.root = pathname.splice(0, 1).join(sep) + sep;
   }
 
-  pathObject.dir = pathname.join('/');
+  pathObject.dir = pathname.join(sep);
 
   pathObject.base = base;
 
