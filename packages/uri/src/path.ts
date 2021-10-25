@@ -52,15 +52,6 @@ export const extname = (): string => '';
 
 
 
-
-
-
-
-
-
-
-
-
 export const sep = "/";
 
 
@@ -110,6 +101,7 @@ export const normalize = (pathLike: string): string | never => {
 
 /**
  * @description path.isAbsolute() 方法确定 path 是否为绝对路径。
+ * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
  *
  * @param     {PathLike} pathname    将要被检测的地址
  * @returns   {boolean}
@@ -123,6 +115,8 @@ export const isAbsolute = (pathname: string): boolean | never => {
 
 /**
  * @description 返回 path 的最后一部分。这里的实现与 NodeJS 中 path模块中个的方法略有差异。
+ * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
+ *
  * @param     {string} pathLike -
  * @param     {string} ext      -
  * @returns   {string}
@@ -175,6 +169,7 @@ export const parse = (pathLike: string): PathObjectInterface => {
 
 /**
  * @description 使用特定于平台的分隔符作为定界符将所有给定的 path 片段连接在一起，然后规范化生成的路径
+ * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
  *
  * @params  {Array<string>} ...paths  路径或路径片段的序列
  * @returns {string}
@@ -193,6 +188,8 @@ export const join = (...paths: string[]): never | string => {
 
 /**
  * @description 返回 path 的目录名
+ * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
+ *
  * @param   {string} pathLike -
  * @returns
  */
