@@ -5,13 +5,9 @@ import path from 'path-browserify';
 import { urlParse, Serialize } from './core';
 
 
-
-// const parse = (url: string): Record<string, any> => reg.exec(url)?.groups ?? {};
-
 const _NormalizeRule: any = {
   pathname: (v: string): string => path.normalize(v)
 };
-
 
 export class HashParams extends Serialize {
   constructor(src: string) {
@@ -24,7 +20,6 @@ export class SearchParams extends Serialize {
     super((typeof src === 'string' ? src : '').replace(/^\?/i, ''));
   }
 }
-
 
 /**
  * 将传入的字符串 实例化 Uri
