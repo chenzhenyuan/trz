@@ -1,8 +1,8 @@
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
-import path from "path-browserify";
-import { urlParse, Serialize } from "./core";
+import path from 'path-browserify';
+import { urlParse, Serialize } from './core';
 
 
 
@@ -25,18 +25,34 @@ export class SearchParams extends Serialize {
   }
 }
 
+
+/**
+ * 将传入的字符串 实例化 Uri
+ * @class
+ * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
+ */
 export class Uri {
   [ k: string ]: any;
 
-  constructor(url?: string) {
-    const $Property = urlParse(url || "");
+  constructor(url: string) {
+    const property = urlParse(url);
 
-    for (const [ key, value ] of Object.entries($Property)) {
+    property.origin = '';
+    property.href = '';
+
+
+    if (property.host) {
+      property.origin = `${property.protocol || ''}//${property.host}`;
+      property.href = url;
+    }
+
+
+    for (const key in property) {
       const fmt: any = _NormalizeRule[key] || null;
-      const val = value ?? '';
+      const value = property[key] ?? '';
 
       Object.defineProperty(this, key, {
-        value: fmt ? fmt(val) : val,
+        value: fmt ? fmt(value) : value,
         writable: false,
         configurable: false,
         enumerable: true,
