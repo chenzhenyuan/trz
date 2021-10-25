@@ -22,7 +22,7 @@ function pathAsserter(pathLike: any): never | void {
 }
 
 /** 提供特定于平台的路径片段分隔符，本工具暂时只提供浏览器环境的路径分隔符 */
-export const sep = "/";
+export const sep = '/';
 
 /**
  * 标准化路径字符串。
@@ -84,7 +84,7 @@ export const isAbsolute = (pathname: string): boolean | never => {
 };
 
 /**
- * 返回 path 的最后一部分。这里的实现与 NodeJS 中 path模块中的方法略有差异。
+ * 返回 pathLike 的最后一部分。这里的实现与 NodeJS 中 path模块中的方法略有差异。
  * @function
  * @name    basename
  * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
@@ -96,6 +96,7 @@ export const isAbsolute = (pathname: string): boolean | never => {
 export const basename = (pathLike: string, ext?: string): string | void | never => {
   pathAsserter(pathLike);
   const { base } = parse(pathLike);
+  // const { base } = parse(pathLike.replace(/\/+$/, ''));
   if (base?.charCodeAt(0) === 46 || typeof ext !== 'string' || !ext.length) {
     return base;
   }
@@ -112,7 +113,7 @@ export const basename = (pathLike: string, ext?: string): string | void | never 
  * @returns {object}
  */
 export const parse = (pathLike: string): PathObjectInterface => {
-  const pathObject = { root: "", dir: "", base: "", name: "", ext: ""};
+  const pathObject = { root: '', dir: '', base: '', name: '', ext: ''};
 
   pathAsserter(pathLike);
 
@@ -205,7 +206,7 @@ export const format = (pathObject: PathObjectInterface | Record<string, string>)
 };
 
 /**
- * 将路径或路径片段的序列解析为绝对路径
+ * 将路径或路径片段的序列解析为绝对路径。
  * @function
  * @name    resolve
  * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
@@ -213,7 +214,19 @@ export const format = (pathObject: PathObjectInterface | Record<string, string>)
  * @params  {Array<string>} ...paths  路径或路径片段的序列
  * @returns {string}
  */
-export const resolve = (...paths: string[]): string => '';
+export const resolve = (...paths: string[]): string => {
+  let rsPath: string[] = [ window.location.pathname ];
+
+  for (const pathLike of paths) {
+    if (isAbsolute(pathLike)) {
+      rsPath = [ pathLike ];
+      continue;
+    }
+    rsPath.push(pathLike);
+  }
+
+  return normalize(rsPath.join(sep));
+};
 
 /**
  * 根据当前工作目录返回从 from 到 to 的相对路径
