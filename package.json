@@ -6,8 +6,8 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "echo no command run; exit 127;",
-    "build": "npm run clean && lerna exec tsc",
+    "start": "npx webpack server",
+    "build": "npm run clean && lerna run --ignore @trz/fetch build",
     "develop": "webpack server",
     "clean": "rimraf packages/*/lib",
     "test": "npm run build && lerna exec jest"

@@ -1,7 +1,7 @@
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
-import path from 'path-browserify';
+import path from '@trz/util/lib/pathname';
 import { urlParse, Serialize } from './core';
 
 
