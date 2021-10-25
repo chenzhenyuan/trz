@@ -6,7 +6,9 @@ interface GuidInterface {
 }
 
 export const guid: GuidInterface = (template = 'xxxxx-xxxxx-8xxxx-xxxxx-xxxxx') => {
-  return template.replace(/[xy]/g, (c) => ((Math.random() * 16) | 0).toString(16));
+  const r = /[xy]/g;
+
+  return template.replace(r, (c) => ((Math.random() * 16) | 0).toString(16));
 };
 
 export default guid;

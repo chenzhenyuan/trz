@@ -1,7 +1,7 @@
 {
   "name": "@trz/util",
-  "version": "0.1.0",
-  "description": "> TODO: description",
+  "version": "0.3.0",
+  "description": "> 常用工具库",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/util#readme",
   "license": "MIT",
