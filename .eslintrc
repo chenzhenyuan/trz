@@ -59,6 +59,9 @@ rules:
   no-spaced-func: error
   no-sparse-arrays: warn
   no-var: error
+  quotes:
+    - warn
+    - single
   semi: error
   semi-spacing:
     - error
@@ -108,6 +111,8 @@ rules:
     #     minProperties: 2
     #     consistent: true
     - consistent: true
+
+
 
 # -------------------------------------------------------------------------------------------------
 overrides:
