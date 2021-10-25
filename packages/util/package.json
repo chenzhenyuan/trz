@@ -23,9 +23,10 @@
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "npm run build && jest",
-    "release": "npm run test && npm publish --access=public --registry=https://registry.npmjs.org"
+    "clean"  : "rimraf lib",
+    "build"  : "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc",
+    "test"   : "npm run build && jest",
+    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "dependencies": {
     "@trz/type":">=0.2.8"
