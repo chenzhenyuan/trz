@@ -29,6 +29,7 @@ export default {
   },
 
   module: {
+    // noParse: /jquery|bootstrap/,
     rules: [
       {
         test: /\.(ts)$/,
