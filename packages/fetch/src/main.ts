@@ -1,4 +1,3 @@
-import core from './core';
 
 
-export default core;
+export { default as default, Fetch } from './fetch';

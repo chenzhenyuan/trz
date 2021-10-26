@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 import 'core-js/features/url';
 import 'core-js/features/url-search-params';
+
 import { isString } from '@trz/type';
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'UPDATE' | 'DELETE' | 'HEADER' | 'OPTIONS';
@@ -57,15 +58,15 @@ export interface FetchConfigs extends RequestInit {
    * 取值: "" | "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "same-origin" | "strict-origin" | "strict-origin-when-cross-origin" | "unsafe-url"
    */
   referrerPolicy?:
-    | ''
-    | 'no-referrer'
-    | 'no-referrer-when-downgrade'
-    | 'origin'
-    | 'origin-when-cross-origin'
-    | 'same-origin'
-    | 'strict-origin'
-    | 'strict-origin-when-cross-origin'
-    | 'unsafe-url';
+  | ''
+  | 'no-referrer'
+  | 'no-referrer-when-downgrade'
+  | 'origin'
+  | 'origin-when-cross-origin'
+  | 'same-origin'
+  | 'strict-origin'
+  | 'strict-origin-when-cross-origin'
+  | 'unsafe-url';
 
   /**
    * 一个字符串，用于设置请求的方法。
@@ -77,7 +78,7 @@ export interface FetchConfigs extends RequestInit {
 
 const gloRequestHeaders = {
   /** 参考：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Accept */
-  accept: 'text/json,text/*,*/*',
+  accept: 'text/json, text/*, */*',
 
   /** 参考：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control */
   'cache-control': 'no-cache',
@@ -96,6 +97,8 @@ interface ICore extends FetchConfigs {
   url: string;
 }
 
+
+/** 核心方法 */
 function core(reqConfigs: ICore): Promise<any> {
   const { url, params } = reqConfigs;
   // console.log('reqConfigs::', reqConfigs);
@@ -105,17 +108,13 @@ function core(reqConfigs: ICore): Promise<any> {
   }
 
   // const y = await fetch(url, reqConfigs);
-  return new Promise(async (resolve, reject) => {
-    const { headers } = await fetch(url, { headers: gloRequestHeaders });
-
-    console.log("headers.get('Content-Type')", headers.get('Content-Type'));
-  });
+  return new Promise((resolve, reject) => {});
 }
 
 export default core;
 
 /** 设置请求头 */
-interface HeadersLike extends Record<string, string> {}
+type HeadersLike = Record<string, string>
 export const setHeaders = (headers: HeadersLike): void => {};
 export const setHeader = (name: string, value: any): void => {
   setHeaders({ [name]: value });
@@ -127,6 +126,7 @@ export const setConfigs = (configs: { [name: string]: any }): void => {
     console.log('cfgKey::', cfgKey);
   });
 };
+
 export const setConfig = (name: string, value: any): void => {
   setConfigs({ [name]: value });
 };

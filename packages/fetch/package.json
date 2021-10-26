@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "whatwg-fetch": "^3.6.2",
-    "core-js": "^3.18.0",
-    "@trz/type": ">=0.2.8"
+    "@trz/type": ">=0.2.8",
+    "@trz/util": ">=0.3.0",
+    "@trz/uri": ">=0.1.0"
   }
 }
