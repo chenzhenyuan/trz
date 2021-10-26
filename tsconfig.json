@@ -17,6 +17,8 @@
     "jsx": "react",
     /* 生成相应的'.d.ts'文件 */
     "declaration": true,
+    /* 类型声明文件的输出目录 */
+    // "declarationDir": "./types",
     /* 为每个相应的'.d.ts'文件生成一个源代码图 */
     "declarationMap": false,
     /* 生成相应的'.map'文件 */
@@ -43,7 +45,10 @@
     "forceConsistentCasingInFileNames": true,
     /* 一系列的条目，这些条目将进口重新映射到相对于 "baseUrl "的查找位置 */
     /* "paths": {} */
-    "typeRoots": [ "./node_modules/@types" ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "."
+    ],
     "types": [ "node", "react" ],
 
     // "noEmit": true,
