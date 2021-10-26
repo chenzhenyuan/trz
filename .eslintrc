@@ -125,6 +125,7 @@ overrides:
       project: ./tsconfig.json
     rules:
       "@typescript-eslint/await-thenable": [1]
+      "@typescript-eslint/ban-ts-comment": [0]
       "@typescript-eslint/indent": [2, 2, {"SwitchCase": 1, "MemberExpression": 1, "VariableDeclarator": first}]
       "@typescript-eslint/no-explicit-any": [0]
       # $remark：https://eslint.org/docs/rules/indent#options
