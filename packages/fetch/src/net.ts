@@ -1,5 +1,5 @@
 import { fetchCore } from './core';
-import T from '@trz/type'
+import t from '@trz/type'
 
 import { Network as NetConstructor, SearchParamsInterface } from '../index.d';
 
@@ -18,26 +18,29 @@ const ResponseAgent = function (...args: any[]) {
 }
 
 
-/**
- * @decorator
- */
-const RequestBefore = function (reqConfigs = {}) {
-  return function (ins: any, name: string, descriptor: any) {
-    const _RquestMethod = descriptor.value;
 
-    const req = new Request('aaaa', { "method": name });
-
-    descriptor.value = function (url: string, params?: SearchParamsInterface): typeof _RquestMethod {
-      return _RquestMethod.call(this, req.url, req);
-    }
-  }
-}
 
 // @ts-ignore
 export const Network: NetConstructor = function(instanceConfigs) {
   let properties: any;
 
-  class Network {
+
+/**
+ * @decorator
+ */
+  const RequestBefore = function (ins: any, name: string, descriptor: any) {
+    const _RquestMethod = descriptor.value;
+
+    descriptor.value = function (url: string, params?: SearchParamsInterface): typeof _RquestMethod {
+
+      console.log(properties);
+
+      const req = new Request(properties.pathname, { "method": name });
+      return _RquestMethod.call(this, url, req);
+    };
+  }
+
+  class Networks {
     [ k: string ]: any;
 
     get response() {
@@ -49,32 +52,30 @@ export const Network: NetConstructor = function(instanceConfigs) {
 
       properties = {};
 
-      if (T.is(pathname, 'string')) {
+      if (t.is(pathname, 'string')) {
         properties.pathname = pathname;
-        Object.defineProperty(this, 'pathname', { value: pathname, enumerable: true, writable: false, configurable: false });
+        Object.defineProperty(this, 'pathname', { value: properties.pathname, writable: false, enumerable: true, configurable: false });
       }
     }
 
     // @ResponseAgent
-    @RequestBefore(properties)
+    @RequestBefore
     GET(url: string, opts?: any): PromiseLike<any> {
       console.log('GET:url', url, opts);
       return fetchCore(url, opts);
     }
 
-    @RequestBefore(properties)
+    @RequestBefore
     POST(url: string | unknown, opts?: unknown) {
       console.log('POST:url', url, opts);
     }
-
 
     setResponse(respHandler: () => PromiseLike<any>) {
       properties.respHandler = respHandler;
     }
   }
 
-
-  return new Network(instanceConfigs);
+  return new Networks(instanceConfigs);
 };
 
 
