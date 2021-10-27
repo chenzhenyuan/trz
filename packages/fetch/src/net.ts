@@ -1,16 +1,16 @@
 
-interface FetchInterface {
+interface NetInterface {
   GET(url: string): PromiseLike<any>;
 
   GET(url: string, searchParamse: string): PromiseLike<any>;
 }
 
-interface FetchConstructor {
-  new(instanceConfigs?: any): FetchInterface;
+interface NetConstructor {
+  new(instanceConfigs?: any): NetInterface;
 }
 
 
-const fetchCore = ({ url }: any = {}) => {
+const netCore = ({ url }: any = {}) => {
   console.log(url);
 
   return new Promise((resolve, reject) => {
@@ -20,28 +20,32 @@ const fetchCore = ({ url }: any = {}) => {
 
 
 // @ts-ignore
-export const Fetch: FetchConstructor = function(...args) {
+export const Net: NetConstructor = function(instanceConfigs): NetInterface {
   const property: any = {};
 
-  const fetchAgent = () => fetchCore({});
+  const reqAgent = () => netCore({});
 
-  class Fetch {
+  class Request {
     [ k: string ]: any;
 
-    constructor() {
-      property.n = 'aaa';
+    get n() {
+      return property.n;
+    }
+
+    constructor(n) {
+      property.n = n;
     }
 
     GET(url: string) {
-      return fetchAgent();
+      console.log(property);
+      return reqAgent();
     }
   }
 
-
-  return new Fetch();
+  return new Request(instanceConfigs);
 };
 
-export default new Fetch();
+export default new Net('aaaaa');
 
 
 
