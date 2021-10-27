@@ -8,7 +8,8 @@ interface PathObjectInterface {
   ext : string;
 }
 
-if (!(window instanceof Window) || !(window?.document instanceof window?.Document)) {
+
+if (!(window instanceof Window) || !(window?.document instanceof Document)) {
   throw new TypeError('The runtime must be a browser.');
 }
 
