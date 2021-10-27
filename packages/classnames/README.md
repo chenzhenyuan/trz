@@ -2,7 +2,7 @@
 
 > A tool for conditionally linking classNames together.
 
-[中文版](./README_CN.md)
+[中文版](https://github.com/chenzhenyuan/trz/blob/release/packages/classnames/README_CN.md)
 
 ## Install
 
