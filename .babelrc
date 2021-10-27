@@ -20,7 +20,7 @@
     ["@babel/plugin-syntax-dynamic-import"]
   ],
 
-  "ignore": [ "node_modules" ],
+  "ignore": [ "node_modules", "**/*.d.ts" ],
 
   "env": {
     "build": {
