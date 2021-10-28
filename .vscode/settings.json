@@ -17,4 +17,10 @@
     ".roxrc": "yaml",
     "LICENSE": "plaintext"
   },
+  "workbench.colorTheme": "One Dark Pro Darker",
+  "workbench.preferredDarkColorTheme": "One Dark Pro Flat",
+  "editor.fontFamily": "'Fira Code', Menlo, Monaco, 'Courier New', monospace",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.productIconTheme": "fluent-icons",
+  "workbench.activityBar.iconClickBehavior": "focus",
 }

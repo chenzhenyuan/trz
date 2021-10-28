@@ -24,8 +24,19 @@ export default {
     historyApiFallback: true,
     port: 8905,
     hot: true,
-    static: false,
+    static: {
+      serveIndex: true,
+      publicPath: "/static",
+      directory: path.join(__dirname, 'static'),
+    },
     compress: true,
+    headers: () => {
+      return {
+        'Access-Control-Allow-Origin': "*",
+        'Access-Control-Allow-Methods': "GET, POST, OPTIONS",
+        'Access-Control-Allow-Headers': "DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization",
+      };
+    },
   },
 
   module: {
