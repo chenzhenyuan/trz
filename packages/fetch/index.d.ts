@@ -8,8 +8,15 @@ export interface SearchParamsInterface {
 }
 
 
-export interface NetInterface {
+export interface RequestConfigsInterface {
+  domain?: string;
+  pathname?: string;
+}
+
+export interface NetInterface<T = RequestConfigsInterface | string> {
   get response(): any
+
+  new(instanceConfigs?: T): NetInterface
 
   GET(url: string): PromiseLike<any>;
   GET(url: string, searchParamse: SearchParamsInterface | string): PromiseLike<any>;
@@ -18,19 +25,18 @@ export interface NetInterface {
   POST(url: string, form: FormData): void;
   POST(url: string, data: TRequestBody): void;
 
-  setResponse(handler: (responseBody: any) => PromiseLike<any>): void
+  setResponse(handler: null | ((responseBody: any) => PromiseLike<any>)): void;
 }
 
+// export interface NetConstructor {
+//   // prototype: NetInterface;
+//   new<T>(instanceConfigs?: string | RequestConfigsInterface): NetInterface;
+// }
 
-export interface NetConstructor {
-  // prototype: NetInterface;
-  new(instanceConfigs?: any): NetInterface;
-}
+export type NetConstructor = new<T>(T?: RequestConfigsInterface | string) => NetInterface<T>
 
+export declare const Network: NetInterface;
 
-
-export declare const Network: NetConstructor;
-
-declare const net: NetInterface
+declare const net: NetInterface;
 
 export default net;

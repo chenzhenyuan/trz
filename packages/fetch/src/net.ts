@@ -1,85 +1,110 @@
 import { fetchCore } from './core';
-import t from '@trz/type'
-
-import { Network as NetConstructor, SearchParamsInterface } from '../index.d';
-
-
-// const fetchCore = ({ url }: any = {}): PromiseLike<ResponseInterface> => {
-//   return new Promise((resolve, reject) => {
-//     fetch(url, {});
-//   });
-// };
+import t from '@trz/type';
+import uri from '@trz/uri';
+import { pathname as path} from '@trz/util';
+import { NetConstructor, RequestConfigsInterface, SearchParamsInterface } from '../index.d';
 
 
-/**
- * @decorator
- */
-const ResponseAgent = function (...args: any[]) {
+function defineProperty(o: any, propertyKey: string, attributes: PropertyDescriptor & ThisType<any>): void {
+  Object.defineProperty(o, propertyKey, {
+    value: attributes, writable: false, enumerable: true, configurable: false
+  });
 }
 
 
-
-
-// @ts-ignore
-export const Network: NetConstructor = function(instanceConfigs) {
+// @ts-ignores
+export const Network: NetConstructor = function(instanceConfigs?: RequestConfigsInterface | string) {
   let properties: any;
 
-
-/**
- * @decorator
- */
-  const RequestBefore = function (ins: any, name: string, descriptor: any) {
+  /**
+   * @decorator
+   */
+  const fetchRequest = function (ins: any, name: string, descriptor: any) {
     const _RquestMethod = descriptor.value;
 
-    descriptor.value = function (url: string, params?: SearchParamsInterface): typeof _RquestMethod {
+    descriptor.value = function (url: string, opts?: SearchParamsInterface): typeof _RquestMethod {
+      const targetUrl = properties?.domain + path.join(properties?.pathname ?? '.', url);
+      const req = new Request(targetUrl, { "method": name, referrer: "." });
 
-      console.log(properties);
-
-      const req = new Request(properties.pathname, { "method": name });
-      return _RquestMethod.call(this, url, req);
+      return _RquestMethod.call(this, uri.parse(req.url).pathname, req);
     };
   }
 
-  class Networks {
+  /**
+   * @decorator
+   */
+  const fetchResponse = function (ins: any, name: string, descriptor: any) {
+    const _RquestMethod = descriptor.value;
+
+    descriptor.value = async function (url: string, opts?: any) {
+      return (
+        _RquestMethod.call(this, url, opts).then((rsp: any) => {
+          if (+rsp.status < 400) {
+            const headers = rsp.headers;
+            console.log(headers.get('Content-type'));
+            return rsp;
+          };
+
+          return Promise.reject({ ...rsp });
+        }).then(() => {
+
+        })
+      );
+    }
+  }
+
+  class Networker {
     [ k: string ]: any;
 
     get response() {
       return properties.response;
     }
 
-    constructor(basicConfigs?: any) {
-      const { pathname } = <any>basicConfigs;
-
+    constructor(basicConfigs?: string | RequestConfigsInterface) {
       properties = {};
 
+      if (t.is(basicConfigs, 'string')) {
+        const { origin: domain, pathname } = uri.parse(<string>basicConfigs);
+        basicConfigs = { domain, pathname };
+      }
+
+      const { domain, pathname } = <any>basicConfigs ?? {};
+
+      if (t.is(domain, 'string') && domain) {
+        defineProperty(this, 'domain', properties.domain = domain);
+      }
+
       if (t.is(pathname, 'string')) {
-        properties.pathname = pathname;
-        Object.defineProperty(this, 'pathname', { value: properties.pathname, writable: false, enumerable: true, configurable: false });
+        defineProperty(this, 'pathname', properties.pathname = pathname);
       }
     }
 
-    // @ResponseAgent
-    @RequestBefore
+    @fetchRequest
+    @fetchResponse
     GET(url: string, opts?: any): PromiseLike<any> {
-      console.log('GET:url', url, opts);
       return fetchCore(url, opts);
     }
 
-    @RequestBefore
-    POST(url: string | unknown, opts?: unknown) {
-      console.log('POST:url', url, opts);
+
+    // @fetchRequest
+    POST(url: string, opts?: any) {
+      return fetchCore(url, opts);
     }
 
-    setResponse(respHandler: () => PromiseLike<any>) {
-      properties.respHandler = respHandler;
+    setResponse(responseHandler: () => PromiseLike<any>) {
+      if (t.is(responseHandler, 'function') === false && responseHandler !== null ) {
+        throw new TypeError(`The 'responseHandler' param must be a funciton.`);
+      }
+
+      properties.respHandler = responseHandler;
     }
   }
 
-  return new Networks(instanceConfigs);
+  return new Networker(instanceConfigs);
 };
 
 
-export default new Network('aaaaa');
+export default new Network();
 
 
 

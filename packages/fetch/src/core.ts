@@ -2,8 +2,6 @@
 
 interface ResponseInterface {}
 
-export const fetchCore = ({ url }: any = {}, ...args: any[]): PromiseLike<ResponseInterface> => {
-  return new Promise((resolve, reject) => {
-    fetch(url, {});
-  });
+export const fetchCore = (url: string, opts: any): PromiseLike<ResponseInterface> => {
+  return fetch(opts);
 };
