@@ -11,6 +11,7 @@ export interface SearchParamsInterface {
 export interface RequestConfigsInterface {
   domain?: string;
   pathname?: string;
+  timeout?: 30;
 }
 
 export interface NetInterface<T = RequestConfigsInterface | string> {
@@ -27,11 +28,6 @@ export interface NetInterface<T = RequestConfigsInterface | string> {
 
   setResponse(handler: null | ((responseBody: any) => PromiseLike<any>)): void;
 }
-
-// export interface NetConstructor {
-//   // prototype: NetInterface;
-//   new<T>(instanceConfigs?: string | RequestConfigsInterface): NetInterface;
-// }
 
 export type NetConstructor = new<T>(T?: RequestConfigsInterface | string) => NetInterface<T>
 

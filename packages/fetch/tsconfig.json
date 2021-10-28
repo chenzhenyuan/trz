@@ -3,7 +3,7 @@
   "compilerOptions": {
     "skipLibCheck": false,
     "baseUrl": "./",
-    "outDir": "./lib",
+    "outDir": "./dist",
     "rootDir": "./src",
 
     "declaration": false,
