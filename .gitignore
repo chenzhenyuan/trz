@@ -108,6 +108,3 @@ packages/**/lib
 bkp
 bkp/
 *.bkp
-
-
-development.ts
