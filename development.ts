@@ -19,23 +19,47 @@
 
 import net, { Network } from '@trz/fetch';
 
-// api.GET("/api/v1/biz/user/<int:userId>/children", { userId: 123, token: "*******************" })
 // net.GET('/api', "a=1&b=2");
+// net.GET('https://aaaa', { skey: 1 });
+// console.log(net);
+
+// net.get('/static/mock.json', {
+//   queryString: 'a=1&b=2',
+//   host: '//example.com/ssss',
+//   headers: {
+//     headers: { 'x-request-id': 'sssssss' }
+//   }
+// });
+
+
 
 const api = new Network({
-  domain: 'http://0.0.0.0:8905',
-  pathname: '/static',
+  host: '//1.0.0.0:8905/',
+  pathname: '/static/',
+  withUserAuth: true,
+  timeout: 5.005,
+  retry: 3,
+  retryDelay: 300,
+  headers: {
+    'Ac': 'ssss',
+    'x-request-id': '111111'
+  }
 });
 
-// console.log('api::', api);
-// net.GET('https://aaaa', { skey: 1 });
-api.GET('/mock.json', { aaa: 111 }).then((res) => {
-  console.log('biz', res);
+console.log(api);
+
+api.post('///mock.json', {
+  queryString: 'a=1&b=2',
+  // host: '//chenzhenyuan.localhost:8905/',
+  headers: {
+    'x-request-ids': [ '222222', '333333' ]
+  }
+}).then((res) => {
+  console.log('example', res);
+}).catch((err) => {
+  console.error(err);
 });
 
-api.GET('/lerna.jsonc', { headers: {}}).then((res) => {
-  console.log('lerna.json', res);
-});
-
-
-
+// api.get('/lerna.error', { timeout: 15,  headers: {}}).then((res) => {
+//   console.log('lerna.json', res);
+// });

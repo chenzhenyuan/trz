@@ -23,7 +23,7 @@
   },
   "scripts": {
     "clean"  : "npx rimraf dist",
-    "build"  : "npm run clean && npx tsc && npx babel src --out-dir dist --extensions .ts,.tsx --no-comments --config-file='../../.babelrc' -w --source-type=module",
+    "build"  : "npm run clean && npx tsc && npx babel src --out-dir dist --extensions .ts,.tsx --no-comments --config-file='../../.babelrc' --source-type=module -w",
     "test"   : "npm run build && jest",
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
   },

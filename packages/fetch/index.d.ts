@@ -1,5 +1,4 @@
 
-
 export type TRequestBody = string | number | FormData | Record<string, any>;
 
 
@@ -9,24 +8,31 @@ export interface SearchParamsInterface {
 
 
 export interface RequestConfigsInterface {
-  domain?: string;
+  host?: string;
   pathname?: string;
-  timeout?: 30;
+  timeout?: number;
+  withUserAuth?: boolean | string;
+  headers?: HeadersInit;
+  retry?: number;
+  retryDelay?: number;
 }
 
-export interface NetInterface<T = RequestConfigsInterface | string> {
-  get response(): any
+export interface NetInterface<T = RequestConfigsInterface | string> extends RequestConfigsInterface{
+  // get response(): any
+
+  headers: Headers
 
   new(instanceConfigs?: T): NetInterface
 
-  GET(url: string): PromiseLike<any>;
-  GET(url: string, searchParamse: SearchParamsInterface | string): PromiseLike<any>;
+  setHeaders(headers: HeadersInit): void;
 
-  POST(url: string): void;
-  POST(url: string, form: FormData): void;
-  POST(url: string, data: TRequestBody): void;
+  get(url: string): PromiseLike<any>;
+  get(url: string, searchParamse: SearchParamsInterface | string): Promise<any>;
+  get(requestOptions: RequestConfigsInterface): PromiseLike<any>;
 
-  setResponse(handler: null | ((responseBody: any) => PromiseLike<any>)): void;
+  post(url: string): Promise<any>;
+  post(url: string, data: TRequestBody): Promise<any>;
+  post(url: string, form: FormData): Promise<any>;
 }
 
 export type NetConstructor = new<T>(T?: RequestConfigsInterface | string) => NetInterface<T>

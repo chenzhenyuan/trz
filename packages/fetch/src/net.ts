@@ -1,104 +1,102 @@
-import { fetchCore } from './core';
+import { requestCore } from './core';
 import ty from '@trz/type';
 import uri from '@trz/uri';
 import { pathname as path} from '@trz/util';
 import { NetConstructor, RequestConfigsInterface, SearchParamsInterface } from '../index.d';
-import { relative } from 'path/posix';
 
 
-function defineProperty(o: any, propertyKey: string, attributes: PropertyDescriptor & ThisType<any>): void {
-  Object.defineProperty(o, propertyKey, {
-    value: attributes, writable: false, enumerable: true, configurable: false
-  });
-}
 
 
 // @ts-ignores
-export const Network: NetConstructor = function(instanceConfigs?: RequestConfigsInterface | string) {
-  let properties: any;
+export const Network: NetConstructor = function(this, instanceConfigs?: RequestConfigsInterface | string) {
+
+  if (!(this instanceof Network)) {
+    throw new TypeError('++++');
+  }
 
 
-  // const fetchRequest = function (ins: any, name: string, descriptor: any) {
-  //   const _RquestMethod = descriptor.value;
-  //   descriptor.value = function (url: string, opts?: SearchParamsInterface): typeof _RquestMethod {
-  //     const targetUrl = properties?.domain + path.join(properties?.pathname ?? '.', url);
-  //     const req = new Request(targetUrl, { "method": name, referrer: "." });
-  //     return _RquestMethod.call(this, uri.parse(req.url).pathname, req);
-  //   };
-  // }
-  //
-  //
-  // const fetchResponse = function (ins: any, name: string, descriptor: any) {
-  //   const _RquestMethod = descriptor.value;
-  //   descriptor.value = async function (url: string, opts?: any) {
-  //     const handler = (rsp: any) => {
-  //       return /\/json/ig.test(rsp.headers.get('Content-type')) ? rsp.json() : rsp.text();
-  //     }
-  //     return (
-  //       _RquestMethod.call(this, url, opts).then(handler)
-  //     );
-  //   }
-  // }
+  const properties: RequestConfigsInterface & { [ p: string ]: any; } = {};
 
 
+  // util
+  function defineProperty(o: any, propertyKey: string, attributes: any): void {
 
-  class Networker {
+    if (attributes === undefined) return;
+
+    properties[propertyKey] = attributes;
+
+    Object.defineProperty(o, propertyKey, {
+      value: attributes, writable: false, enumerable: true, configurable: false
+    });
+  }
+
+  /** 修饰器 */
+  const RequestMethodAgent = (o: unknown, propertyName: string, descriptor: any) => {
+    const fnOriginCaller = descriptor.value;
+
+    descriptor.value = function(url: string, opts?: any): typeof fnOriginCaller {
+      return fnOriginCaller.call(this, url, {
+        ...properties, ...opts,
+
+        method: propertyName.toUpperCase(),
+
+        headers: {
+          ...properties.headers,
+          ...opts.headers,
+        },
+
+        // body: {}
+      });
+    };
+  };
+
+
+  class Fetcher {
     [ k: string ]: any;
 
-    get response() {
-      return properties.response;
-    }
+    constructor(cfgs: RequestConfigsInterface | string = {}) {
+      let basicConfigs: RequestConfigsInterface = <RequestConfigsInterface>cfgs;
 
-    constructor(basicConfigs?: RequestConfigsInterface | string) {
-      properties = {};
 
-      if (ty.is(basicConfigs, 'string')) {
-        const {
-          origin: domain,
-          pathname
-        } = uri.parse(<string>basicConfigs);
-
-        basicConfigs = { domain, pathname };
+      if (ty.is(cfgs, 'string')) {
+        const { origin: host, pathname } = uri.parse(<string>cfgs);
+        basicConfigs = { host, pathname };
       }
 
-      const { domain, pathname } = <any>basicConfigs ?? {};
+      const { host, timeout, pathname } = basicConfigs;
 
-      if (ty.is(domain, 'string') && domain) {
-        defineProperty(this, 'domain', properties.domain = domain);
+      defineProperty(this, 'headers', basicConfigs.headers);
+
+      if (ty.is(host, 'string') && host) {
+        defineProperty(this, 'host', host);
       }
 
-      if (ty.is(pathname, 'string')) {
-        defineProperty(this, 'pathname', properties.pathname = pathname);
-      }
-    }
-
-
-    GET(url: string, opts?: any): PromiseLike<any> {
-      return fetchCore(url, opts);
-    }
-
-
-    // @fetchRequest
-    POST(url: string, opts?: any) {
-      return fetchCore(url, opts);
-    }
-
-
-    setResponse(responseHandler: () => PromiseLike<any>) {
-      if (ty.is(responseHandler, 'function') === false && responseHandler !== null ) {
-        throw new TypeError(`The 'responseHandler' param must be a funciton.`);
+      if (ty.is(pathname, 'string') && pathname) {
+        defineProperty(this, 'pathname', pathname);
       }
 
-      properties.respHandler = responseHandler;
+      if (ty.isNumber(+(<number | string>timeout)) && +(<number | string>timeout)) {
+        defineProperty(this, 'timeout', +(<number | string>timeout));
+      }
+
+      // defineProperty(this, 'withUserAuth', withUserAuth);
+      // defineProperty(this, 'timeout', +timeout ? +timeout : 40);
+    }
+
+    @RequestMethodAgent
+    get(url: string, opts?: any): PromiseLike<any> {
+      return requestCore({...opts, url});
+    }
+
+    @RequestMethodAgent
+    post(url: string, opts?: any) {
+      return requestCore({...opts, url});
     }
   }
 
 
-  return new Networker(instanceConfigs);
+  return new Fetcher(instanceConfigs);
 };
 
 
 export default new Network();
-
-
-

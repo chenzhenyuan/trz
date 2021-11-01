@@ -6,7 +6,9 @@ import { urlParse, Serialize } from './core';
 
 
 const _NormalizeRule: any = {
-  pathname: (v: string): string => path.normalize(v)
+  pathname: (v: string): string => {
+    return path.normalize(v);
+  }
 };
 
 export class HashParams extends Serialize {
