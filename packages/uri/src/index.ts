@@ -1,9 +1,13 @@
 
 import Uri from './Uri';
 
-const parse = (url?: string): any => new Uri(url ?? window.location.href);
+const parse = (url?: string): any => {
+  return new Uri(url ?? window.location.href);
+};
 
-const stringify = (str?: typeof Uri): string | undefined => str?.toString();
+const stringify = (str?: typeof Uri): string | undefined => {
+  return str?.toString();
+};
 
 export default { parse, stringify };
 

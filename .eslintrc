@@ -130,11 +130,13 @@ overrides:
     rules:
       "@typescript-eslint/await-thenable": warn
       "@typescript-eslint/ban-ts-comment": off
+
+      # $remark: https://eslint.org/docs/rules/indent#options
       "@typescript-eslint/indent":
         - error
         - 2
-        - SwitchCase:
-          MemberExpression:
+        - SwitchCase: 2
+          MemberExpression: 0
           VariableDeclarator: "first"
       "@typescript-eslint/no-empty-function":
         - off
