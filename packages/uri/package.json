@@ -5,7 +5,7 @@
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/url#readme",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "src/index.ts",
   "module": "src/index.ts",
   "directories": {
     "lib": "lib",

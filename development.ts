@@ -12,13 +12,16 @@
 // console.groupEnd();
 
 
-// import Uri from './packages/uri/src/index';
+import uri from './packages/uri';
+console.log(uri);
+console.log(uri.parse('//example.com'));
 // const targetUri1 = '//www.google.com/search?q=%40babel%2Fpolyfill&oq=%40babel%2Fpolyfill&aqs=chrome..69i57j69i58j69i61.1641j0j4&sourceid=chrome&ie=UTF-8';
 // console.log('Uri::', Uri.parse(targetUri1).toString());
 
 
-import net, { Network } from '@trz/fetch';
 
+
+// import net, { Network } from '@trz/fetch';
 // net.GET('/api', "a=1&b=2");
 // net.GET('https://aaaa', { skey: 1 });
 // console.log(net);
@@ -33,32 +36,32 @@ import net, { Network } from '@trz/fetch';
 
 
 
-const api = new Network({
-  host: '//1.0.0.0:8905/',
-  pathname: '/static/',
-  withUserAuth: true,
-  timeout: 5.005,
-  retry: 3,
-  retryDelay: 300,
-  headers: {
-    'Ac': 'ssss',
-    'x-request-id': '111111'
-  }
-});
+// const api = new Network({
+//   host: '//1.0.0.0:8905/',
+//   pathname: '/static/',
+//   withUserAuth: true,
+//   timeout: 5.005,
+//   retry: 3,
+//   retryDelay: 300,
+//   headers: {
+//     'Ac': 'ssss',
+//     'x-request-id': '111111'
+//   }
+// });
 
-console.log(api);
+// console.log(api);
 
-api.post('///mock.json', {
-  queryString: 'a=1&b=2',
-  // host: '//chenzhenyuan.localhost:8905/',
-  headers: {
-    'x-request-ids': [ '222222', '333333' ]
-  }
-}).then((res) => {
-  console.log('example', res);
-}).catch((err) => {
-  console.error(err);
-});
+// api.post('///mock.json', {
+//   queryString: 'a=1&b=2',
+//   // host: '//chenzhenyuan.localhost:8905/',
+//   headers: {
+//     'x-request-ids': [ '222222', '333333' ]
+//   }
+// }).then((res) => {
+//   console.log('example', res);
+// }).catch((err) => {
+//   console.error(err);
+// });
 
 // api.get('/lerna.error', { timeout: 15,  headers: {}}).then((res) => {
 //   console.log('lerna.json', res);
