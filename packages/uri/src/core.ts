@@ -1,20 +1,20 @@
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
-
-
-const rProtocol = '(^(?<protocol>[^/]+\\:(?=//))?(//)?)';
-const rUserInfo = '((?<username>[^:]+(?=(\\:|@)))(\\:(?<password>.+(?=@)))?@)?';
-const rHostName = '(?<hostname>((?:\\.?[a-z0-9-]+)+))?';
+const rProtocol = '(?<protocol>(^[^/]+:)(?=//))?(//)?';
+const rUserInfo = '((?<username>[^:]+(?=(:|@)))(:(?<password>.+(?=@)))?@)?';
+const rHostName = '(?<hostname>(^//)?([a-z0-9-]+(\\.[a-z0-9-]+)+))?';
 const rPort     = '(:(?<port>\\d{1,5}))?';
-const rHost     = `(?<host>${rHostName}${rPort}(?=/))?`;
+const rHost     = `(?<host>${rHostName}${rPort})?`;
 const rPath     = '(?<pathname>((\\.{1,2})?(/{0,})?[^/?#]*)+)?';
-const rSearch   = '(?<search>\\?[^#]+)?';
-const rHash     = '(?<hash>#.+)?';
+const rSearch   = '(?<search>\\?[^#]*)?';
+const rHash     = '(?<hash>#.*$)?';
 
-const reg = new RegExp(`${rProtocol}${rUserInfo}${rHost}${rPath}${rSearch}${rHash}`, 'i');
+// const reg = new RegExp(`${rProtocol}${rUserInfo}${rHost}${rPath}${rSearch}${rHash}`, 'i');
+// console.log(reg);
 
-// const reg = /^(?<protocol>[^/]+:(?=\/\/))?(\/\/)?((?<username>[^:]+(?=(:|@)))(:(?<password>.+(?=@)))?@)?(?<host>(?<hostname>(?:\.?[a-z0-9-]+)+)?(:(?<port>\d{1,5}))?(?=\/))?(?<pathname>((\.{1,2})?(\/{0,})?[^/?#]*)+)?(?<search>\?[^#]+)?(?<hash>#.+)?/i;
+const reg = /(?<protocol>(^[^/]+:)(?=\/\/))?(\/\/)?((?<username>[^:]+(?=(:|@)))(:(?<password>.+(?=@)))?@)?(?<host>(?<hostname>(^\/\/)?([a-z0-9-]+(\.[a-z0-9-]+)+))?(:(?<port>\d{1,5}))?)?(?<pathname>((\.{1,2})?(\/{0,})?[^/?#]*)+)?(?<search>\?[^#]*)?(?<hash>#.*$)?/i;
+
 
 export const urlParse = (url: string): Record<string, any> => {
   if (typeof url !== 'string') {

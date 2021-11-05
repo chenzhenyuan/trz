@@ -40,9 +40,9 @@ rules:
     - always
 
   arrow-body-style:
-    - error
+    - off
     - as-needed
-    - requireReturnForObjectLiteral: true
+    - requireReturnForObjectLiteral: false
 
   computed-property-spacing:
     - error

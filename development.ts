@@ -12,20 +12,19 @@
 // console.groupEnd();
 
 
-import uri from './packages/uri';
+import Uri from './packages/uri';
+const uri = new Uri();
+
 console.log(uri);
-console.log(uri.parse('//example.com'));
+console.log(uri.stringify());
+
 // const targetUri1 = '//www.google.com/search?q=%40babel%2Fpolyfill&oq=%40babel%2Fpolyfill&aqs=chrome..69i57j69i58j69i61.1641j0j4&sourceid=chrome&ie=UTF-8';
 // console.log('Uri::', Uri.parse(targetUri1).toString());
-
-
-
 
 // import net, { Network } from '@trz/fetch';
 // net.GET('/api', "a=1&b=2");
 // net.GET('https://aaaa', { skey: 1 });
 // console.log(net);
-
 // net.get('/static/mock.json', {
 //   queryString: 'a=1&b=2',
 //   host: '//example.com/ssss',
