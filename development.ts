@@ -12,18 +12,34 @@
 // console.groupEnd();
 
 
-import Uri from './packages/uri';
-const uri = new Uri();
-
-console.log(uri);
-console.log(uri.stringify());
+// import Uri from './packages/uri';
+// const uri = new Uri();
+// console.log(uri);
+// console.log(uri.stringify());
 
 // const targetUri1 = '//www.google.com/search?q=%40babel%2Fpolyfill&oq=%40babel%2Fpolyfill&aqs=chrome..69i57j69i58j69i61.1641j0j4&sourceid=chrome&ie=UTF-8';
 // console.log('Uri::', Uri.parse(targetUri1).toString());
 
-// import net, { Network } from '@trz/fetch';
-// net.GET('/api', "a=1&b=2");
-// net.GET('https://aaaa', { skey: 1 });
+import net, { Requests } from './packages/requests';
+console.log('net::', net);
+
+const api = new Requests({
+  host: '//api.cn',
+  pathname: '///server_name/v1/1',
+  retry: '.3.1',
+  headers: {
+    'x-request-id': 'xxxx-xxxxx-xxxx-xxxxx'
+  }
+});
+
+
+console.log('api::', api);
+api.get('url');
+
+// console.log(new Network({ headers: {}, host: './aaa' }));
+// net.post('/api', {});
+// net.get('https://aaaa.sss.ss', { skey: 1 });
+
 // console.log(net);
 // net.get('/static/mock.json', {
 //   queryString: 'a=1&b=2',
@@ -33,14 +49,12 @@ console.log(uri.stringify());
 //   }
 // });
 
-
-
 // const api = new Network({
 //   host: '//1.0.0.0:8905/',
 //   pathname: '/static/',
-//   withUserAuth: true,
 //   timeout: 5.005,
 //   retry: 3,
+//   withUserAuth: true,
 //   retryDelay: 300,
 //   headers: {
 //     'Ac': 'ssss',

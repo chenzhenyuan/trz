@@ -2,12 +2,10 @@
   "name": "trz",
   "private": true,
   "author": "JAYNE <JAYNE@CHENZHENYUAN.COM>",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": [ "packages/*" ],
   "scripts": {
     "start": "npx webpack server",
-    "build": "npm run clean && lerna run --ignore @trz/fetch build",
+    "build": "npm run clean && lerna run --ignore @trz/requests build",
     "develop": "webpack server",
     "clean": "rimraf packages/*/lib",
     "test": "npm run build && lerna exec jest"

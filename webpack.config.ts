@@ -26,15 +26,15 @@ export default {
     hot: true,
     static: {
       serveIndex: true,
-      publicPath: "/static",
+      publicPath: '/static',
       directory: path.join(__dirname, 'static'),
     },
     compress: true,
     headers: () => {
       return {
-        'Access-Control-Allow-Origin': "*",
-        'Access-Control-Allow-Methods': "GET, POST, OPTIONS",
-        'Access-Control-Allow-Headers': "DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization",
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization',
       };
     },
   },
@@ -54,7 +54,7 @@ export default {
   },
 
   resolve: {
-    extensions: [ '.js', '.jsx', '.ts', '.tsx', '.scss' ],
+    extensions: [ '.ts', '.tsx', '.js', '.jsx', '.scss' ],
     alias: {}
   },
 

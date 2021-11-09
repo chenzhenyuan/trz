@@ -5,10 +5,13 @@ interface GuidInterface {
   (template?: string): string
 }
 
-export const guid: GuidInterface = (template = 'xxxxx-xxxxx-8xxxx-xxxxx-xxxxx') => {
-  const r = /[xy]/g;
+export const guid: GuidInterface = (template = 'xxxxx-xxxxx-yxxxx-xxxxx-xxxxx') => {
+  const r = /[xy*]/g;
 
-  return template.replace(r, (c) => ((Math.random() * 16) | 0).toString(16));
+  return template.replace(r, (c) => {
+    const b = c === 'x' ? 16 : c === 'y' ? 10 : c === '*' ? 32 : 1;
+    return ((Math.random() * b) | 0).toString(b);
+  });
 };
 
 export default guid;

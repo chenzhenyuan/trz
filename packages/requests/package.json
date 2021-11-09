@@ -1,11 +1,11 @@
 {
-  "name": "@trz/fetch",
+  "name": "@trz/requests",
   "version": "0.1.0",
-  "description": "> TODO: description",
+  "description": "> 一个见到的网络请求库",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
-  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/fetch#readme",
+  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/requests#readme",
   "license": "MIT",
-  "main": "dist/net.js",
+  "main": "src/requests.ts",
   "types": "index.d.ts",
   "directories": {
     "lib": "lib",

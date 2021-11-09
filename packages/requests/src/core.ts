@@ -2,14 +2,8 @@
 
 // interface ResponseInterface { }
 import path from '@trz/util/lib/pathname';
-import uri from '@trz/uri/src/index';
-
-
-
-
-const $GetUid = () => {
-  return (Math.ceil((Math.asin(Math.random()) * Math.random()) * 10E15 + ((new Date()).getTime()))).toString(36);
-};
+import Uri from '@trz/uri/src/index';
+import { guid } from '@trz/util';
 
 // RequestInit
 interface RequestOptionInterface extends RequestInit {
@@ -24,7 +18,7 @@ interface RequestCoreInterface {
 
 
 // 默认请求超时时间
-const DEFAULT_VALUE_TIMEOUT = 5;
+export const DEFAULT_VALUE_TIMEOUT = 5;
 const ERR_REQUSST_TIMEOUT = 100504;
 
 
@@ -46,7 +40,7 @@ const gloRequest = new Request('./', {
   signal: null,
 });
 
-class NetworkError extends Error {
+class RequestError extends Error {
   name = 'NetworkError';
 
   code: number | string = 10000;
@@ -63,7 +57,10 @@ class NetworkError extends Error {
 
 
 const createHeaders = (h: HeadersInit) => {
-  return new Headers();
+  console.log(h);
+  return new Headers({
+    'X-Request-Id': guid('****-6*****-llll')
+  });
 };
 
 
@@ -73,15 +70,20 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   const { signal } = abortController;
 
   let timeoutId: number | NodeJS.Timeout;
-  let { headers, host, url, ...reqOpts } = requestOptions || {};
+  const { host, pathname: prefix, url, ...reqOpts } = requestOptions || {};
+
+  console.log('reqOpts::', reqOpts);
+
+  const domain = (new Uri(host)).origin;
+  const pathname = path.resolve(window.location.pathname, path.join(prefix ?? '', url));
 
   const reqTimeout = () => {
     return (
       new Promise((resolve, reject) => {
         timeoutId = setTimeout(() => {
           const err = new NetworkError(ERR_REQUSST_TIMEOUT, 'The request timeout.');
-          console.groupCollapsed('%c[请求超时] %o', 'color:red; background:#faebd7', requestOptions);
-          console.log('%c[超时时间]：%c%fs', 'color: #770077', 'color: #777700', reqOpts.timeout);
+          // console.groupCollapsed('%c[请求超时] %o', 'color:red; background:#faebd7', requestOptions);
+          // console.log('%c[超时时间]：%c%fs', 'color: #770077', 'color: #777700', reqOpts.timeout);
           console.groupEnd();
           abortController.abort();
           reject(err);
@@ -90,21 +92,20 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
     );
   };
 
-
-  console.log(requestOptions);
-
   const reqFetch = (...args: any[]): Promise<any> => {
     // fetch(input: RequestInfo, init?: RequestInit)
     // console.log(`${$GetUid()}${$GetUid()}${$GetUid()}`);
-    const targetUrl = host + url;
+
+    const targetUrl = domain + pathname;
     const request = new Request(targetUrl, new Request(gloRequest, {
       signal,
       /* "default" | "force-cache" | "no-cache" | "no-store" | "only-if-cached" | "reload" */
       cache: reqOpts.cache ?? 'no-cache',
       method: reqOpts.method,
-      headers: createHeaders(<HeadersInit>headers),
+      headers: createHeaders(<HeadersInit>reqOpts.headers),
     }));
 
+    // console.log(requestOptions);
     console.log('%c[请求开始]', 'color: #0000ff', request);
 
     return (
@@ -116,18 +117,17 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
     );
   };
 
-  url = path.resolve(window.location.pathname, path.join(requestOptions?.pathname ?? '', url));
-  host = uri.parse(host)?.origin;
 
-  console.groupCollapsed('RequestOptions ↓', reqOpts);
-  console.log('headers::', $headers, headers);
-  console.log('       url::', url);
-  console.log('    method::', reqOpts.method);
-  console.groupEnd();
+
+  // console.groupCollapsed('RequestOptions ↓', reqOpts);
+  // console.log('headers::', $headers, reqOpts.headers);
+  // console.log('       url::', url);
+  // console.log('    method::', reqOpts.method);
+  // console.groupEnd();
 
   return (
     Promise.race([ reqTimeout(), reqFetch() ]).finally(() => {
-      console.log('%c[请求结束]', 'color: #00ff00');
+      // console.log('%c[请求结束]', 'color: #00ff00');
       clearTimeout(<number>timeoutId);
     })
   );
