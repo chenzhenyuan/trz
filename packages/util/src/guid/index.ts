@@ -9,7 +9,7 @@ export const guid: GuidInterface = (template = 'xxxxx-xxxxx-yxxxx-xxxxx-xxxxx') 
   const r = /[xy*]/g;
 
   return template.replace(r, (c) => {
-    const b = c === 'x' ? 16 : c === 'y' ? 10 : c === '*' ? 32 : 1;
+    const b = c === 'x' ? 16 : (c === 'y' ? 10 : (c === '*' ? 32 : 1));
     return ((Math.random() * b) | 0).toString(b);
   });
 };
