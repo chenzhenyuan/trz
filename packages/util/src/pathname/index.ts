@@ -1,11 +1,11 @@
 /**  pathname libs */
 
-interface PathObjectInterface {
-  dir : string;
+export interface PathObjectInterface {
+  dir: string;
   root: string;
   base: string;
   name: string;
-  ext : string;
+  ext: string;
 }
 
 
@@ -101,7 +101,7 @@ export const basename = (pathLike: string, ext?: string): string | void | never 
   if (base?.charCodeAt(0) === 46 || typeof ext !== 'string' || !ext.length) {
     return base;
   }
-  return base?.replace((new RegExp(ext+'$')), '');
+  return base?.replace((new RegExp(ext + '$')), '');
 };
 
 /**
@@ -114,7 +114,7 @@ export const basename = (pathLike: string, ext?: string): string | void | never 
  * @returns {object}
  */
 export const parse = (pathLike: string): PathObjectInterface => {
-  const pathObject = { root: '', dir: '', base: '', name: '', ext: ''};
+  const pathObject = { root: '', dir: '', base: '', name: '', ext: '' };
 
   pathAsserter(pathLike);
 
@@ -202,7 +202,7 @@ export const extname = (pathLike: string): string => {
  * @returns   {string}              - 路径字符串
  */
 export const format = (pathObject: PathObjectInterface | Record<string, string>): string => {
-  const { root = '', dir = '', base = '', name = '', ext = ''} = pathObject || {};
+  const { root = '', dir = '', base = '', name = '', ext = '' } = pathObject || {};
   return normalize([ (dir ? dir : root), (base ? base : (name + ext)) ].join(sep));
 };
 
@@ -244,4 +244,4 @@ const relative = (from: string, to: string): string | never => {
 };
 
 /** 导出默认模块 */
-export default { sep, normalize, isAbsolute, basename, parse, join, dirname, extname, format, resolve };
+export default { sep, normalize, isAbsolute, basename, parse, join, dirname, extname, format, resolve, relative };
