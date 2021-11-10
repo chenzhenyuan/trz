@@ -1,8 +1,8 @@
 /** 根据传入模板，生成唯一请求ID  */
 // type GuidInterface = (template?: string) => string;
 
-interface GuidInterface {
-  (template?: string): string
+export interface GuidInterface {
+  (template?: string): string;
 }
 
 export const guid: GuidInterface = (template = 'xxxxx-xxxxx-yxxxx-xxxxx-xxxxx') => {
