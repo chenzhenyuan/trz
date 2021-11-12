@@ -1,6 +1,6 @@
 export type Dictionary = Record<string, any>;
 
-export type RequestData = string | number | FormData | Dictionary;
+export type RequestData = string | number | FormData;
 
 
 export interface SearchParamsInterface {
@@ -8,14 +8,14 @@ export interface SearchParamsInterface {
 }
 
 
-export interface RequestConfigsInterface {
+export interface RequestConfigsInterface extends Dictionary {
   host?: string;
   retry?: number | string;
   timeout?: number | string;
-  headers?: HeadersInit | Dictionary;
+  headers?: HeadersInit;
   pathname?: string;
   retryDelay?: number | string;
-  withUserAuth?: boolean | string;
+  withUserAuth?: boolean | "include" | "omit" | "same-origin";
 }
 
 export interface RequestsInterface<T = string | RequestConfigsInterface> extends RequestConfigsInterface {
@@ -28,15 +28,20 @@ export interface RequestsInterface<T = string | RequestConfigsInterface> extends
   setHeaders(headers: HeadersInit): void;
 
   get(url: string): Promise<any>;
-  get(url: string, requestSearch: SearchParamsInterface | string): Promise<any>;
+  get(url: string, requestSearch: string | SearchParamsInterface): Promise<any>;
+  get(url: string, options: RequestConfigsInterface): Promise<any>;
 
   post(url: string): Promise<any>;
   post(url: string, data: RequestData): Promise<any>;
-  post(url: string, options: Dictionary, data: RequestData): Promise<any>
+  post(url: string, options: RequestConfigsInterface): Promise<any>
 }
 
+export interface RequestsConstructor {
+  new <T = {}>(T?: string | RequestConfigsInterface): RequestsInterface<T>
+  getRequestId(tpl?: string): string
+}
 
-export type RequestsConstructor = new <T = {}>(T?: string | RequestConfigsInterface) => RequestsInterface<T>
+// export type RequestsConstructor = new <T = {}>(T?: string | RequestConfigsInterface) => RequestsInterface<T>
 
 export const Requests: RequestsConstructor;
 
