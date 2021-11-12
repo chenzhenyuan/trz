@@ -42,7 +42,7 @@ rules:
   arrow-body-style:
     - off
     - as-needed
-    - requireReturnForObjectLiteral: false
+    - requireReturnForObjectLiteral: true
 
   computed-property-spacing:
     - error
@@ -53,8 +53,8 @@ rules:
     - property
 
   newline-per-chained-call:
-    - error
-    - ignoreChainWithDepth: 3
+    - warn
+    - ignoreChainWithDepth: 5
 
   no-empty-function: off
   no-new-func: error
@@ -145,9 +145,6 @@ overrides:
       # $remark：https://eslint.org/docs/rules/indent#options
       "@typescript-eslint/no-unused-vars": off
       "@typescript-eslint/no-useless-constructor": error
-      arrow-body-style:
-        - error
-        - always
       indent: [2, 2]
       no-unused-vars: off
       no-useless-constructor: off

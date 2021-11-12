@@ -1,134 +1,149 @@
+/** --- */
+import util, { guid, ty } from '@trz/util';
+import Uri from '@trz/uri';
 
-
-// interface ResponseInterface { }
-import path from '@trz/util/lib/pathname';
-import Uri from '@trz/uri/src/index';
-import { guid } from '@trz/util';
-
-// RequestInit
 interface RequestOptionInterface extends RequestInit {
+  url: string;
+  host?: string;
   timeout?: number;
   pathname?: string;
-  host?: string;
-  url: string;
+  withUserAuth?: boolean | RequestCredentials,
 }
 interface RequestCoreInterface {
-  (P: RequestOptionInterface): PromiseLike<any>
+  (P: RequestOptionInterface): PromiseLike<any>;
 }
 
 
-// 默认请求超时时间
-export const DEFAULT_VALUE_TIMEOUT = 5;
+const gloHeaders = {
+  'accept': '*/*',
+  'x-request-id': '-********'.repeat(4).slice(1),
+  'x-request-client': 'TrzRequests/1.0.0',
+};
+
+
+export const mergeHeaders = (...args: HeadersInit[]): Headers => {
+  const singularKey = [ 'x-request-id', 'authorization' ];
+  const headers = new Headers();
+
+  const headerSetter = (v: string, k: string): void => {
+    if (singularKey.includes(k.toLowerCase())) {
+      headers.set(k, v);
+    }
+    else {
+      headers.append(k, v);
+    }
+  };
+
+  for (let head of args) {
+    if (head instanceof Headers) {
+      head.forEach(headerSetter);
+      continue;
+    }
+    else if (ty.isObject(head)) {
+      head = Object.entries(head);
+    }
+
+    if (ty.isArray(head)) {
+      (<string[][]>head).forEach(([ k, v ]) => headerSetter(v, k));
+    }
+  }
+
+  return headers;
+};
+
+
 const ERR_REQUSST_TIMEOUT = 100504;
-
-
-const $headers = new Headers({
-  'Accept': 'application/json',
-  'Content-Type': 'application/json',
-  'X-Request-Id': '****-6*****-**********',
-});
-
-const gloRequest = new Request('./', {
-  // body?: BodyInit | null;
-  cache: 'default',
-  method: 'GET',
-  mode: 'cors',
-  referrer: '',
-  credentials: 'include',
-  headers: $headers,
-  keepalive: false,
-  signal: null,
-});
-
 class RequestError extends Error {
-  name = 'NetworkError';
-
   code: number | string = 10000;
 
   message = '';
 
+  get name() {
+    return 'RequestError';
+  }
+
   constructor(stateCode: number | string, message?: string) {
     super(message);
     this.code = stateCode;
-
     this.message = <string>message;
   }
 }
 
 
-const createHeaders = (h: HeadersInit) => {
-  console.log(h);
-  return new Headers({
-    'X-Request-Id': guid('****-6*****-llll')
-  });
-};
-
-
+// 默认请求超时时间
+export const DEFAULT_TIMEOUT     = 5;
 // --------------------------------------------------------------------------------------------------------------------
 export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionInterface) => {
+  let reqTimeoutId: number;
+
+  console.log('-----------------------------------');
+  console.log('requestOptions::', requestOptions);
+  console.log('-----------------------------------');
+
+  const { host, pathname: prefix, url, method, withUserAuth } = requestOptions || {};
+
   const abortController = new AbortController();
   const { signal } = abortController;
 
-  let timeoutId: number | NodeJS.Timeout;
-  const { host, pathname: prefix, url, ...reqOpts } = requestOptions || {};
-
-  console.log('reqOpts::', reqOpts);
-
   const domain = (new Uri(host)).origin;
-  const pathname = path.resolve(window.location.pathname, path.join(prefix ?? '', url));
+  const pathname = util.pathname.resolve(window.location.pathname, util.pathname.join(prefix ?? '', url));
+  const search = '';
+  const timeout = (requestOptions?.timeout || DEFAULT_TIMEOUT) * 1000;
+
+  const cache: RequestCache = requestOptions.cache ?? 'no-cache';
+  const credentials: RequestCredentials  = (<RequestCredentials>([ 'omit', 'include' ][+(<boolean>withUserAuth)]) || <RequestCredentials>withUserAuth) ?? 'same-origin';
+  const headers: Headers = mergeHeaders(gloHeaders, (requestOptions?.headers ?? {}));
+  const mode: RequestMode = 'cors';
+  const redirect: RequestRedirect = 'follow';
+  const referrer = '';
+  const referrerPolicy: ReferrerPolicy = 'no-referrer';
 
   const reqTimeout = () => {
     return (
       new Promise((resolve, reject) => {
-        timeoutId = setTimeout(() => {
-          const err = new NetworkError(ERR_REQUSST_TIMEOUT, 'The request timeout.');
-          // console.groupCollapsed('%c[请求超时] %o', 'color:red; background:#faebd7', requestOptions);
-          // console.log('%c[超时时间]：%c%fs', 'color: #770077', 'color: #777700', reqOpts.timeout);
-          console.groupEnd();
+        reqTimeoutId = setTimeout(() => {
           abortController.abort();
-          reject(err);
-        }, (reqOpts?.timeout || DEFAULT_VALUE_TIMEOUT) * 1000);
+          reject(new RequestError(ERR_REQUSST_TIMEOUT, 'The request timeout.'));
+        }, timeout);
       })
     );
   };
 
-  const reqFetch = (...args: any[]): Promise<any> => {
-    // fetch(input: RequestInfo, init?: RequestInit)
-    // console.log(`${$GetUid()}${$GetUid()}${$GetUid()}`);
+  const reqFetch = (): Promise<any> => {
+    const $url = domain + pathname + search;
 
-    const targetUrl = domain + pathname;
-    const request = new Request(targetUrl, new Request(gloRequest, {
-      signal,
-      /* "default" | "force-cache" | "no-cache" | "no-store" | "only-if-cached" | "reload" */
-      cache: reqOpts.cache ?? 'no-cache',
-      method: reqOpts.method,
-      headers: createHeaders(<HeadersInit>reqOpts.headers),
-    }));
+    if (headers.has('x-request-id')) {
+      headers.set('x-request-id', util.guid(headers.get('x-request-id') ?? void(0)));
+    }
 
-    // console.log(requestOptions);
-    console.log('%c[请求开始]', 'color: #0000ff', request);
+    const $reqInit = new Request($url, {
+      // body,
+      cache, credentials, headers,
+      // integrity,
+      keepalive: false, method, mode, redirect, referrer, referrerPolicy, signal,
+    });
 
+
+    console.log('%c[请求开始]', 'color: #0000ff', $reqInit);
     return (
-      fetch(request).then((response) => {
+      fetch($reqInit).then((response) => {
         if (response.status >= 400) {
           return Promise.reject(response);
         }
+
+        return response;
       })
     );
   };
 
-
-
-  // console.groupCollapsed('RequestOptions ↓', reqOpts);
-  // console.log('headers::', $headers, reqOpts.headers);
-  // console.log('       url::', url);
-  // console.log('    method::', reqOpts.method);
-  // console.groupEnd();
-
   return (
-    Promise.race([ reqTimeout(), reqFetch() ]).finally(() => {
-      // console.log('%c[请求结束]', 'color: #00ff00');
-      clearTimeout(<number>timeoutId);
+    Promise.race([ reqTimeout(), reqFetch() ]).then((e) => {
+      console.log(e);
+    }).finally(() => {
+      clearTimeout(<number>reqTimeoutId);
+      console.debug('%c[请求结束]', 'color: #559955', headers.get('x-request-id'));
     })
   );
 };
+
+export default requestCore;

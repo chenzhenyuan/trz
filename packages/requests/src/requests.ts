@@ -1,10 +1,11 @@
-import { requestCore, DEFAULT_VALUE_TIMEOUT } from './core';
+import { mergeHeaders, requestCore } from './core';
 import ty, { isString } from '@trz/type';
 import Uri from '@trz/uri';
-import { pathname as path} from '@trz/util';
+import util from '@trz/util';
 import { RequestsConstructor, RequestConfigsInterface, SearchParamsInterface } from '..';
 
 
+const DEFAULT_REQUEST_ID_TEMPLATE = '****-*****-*****-****';
 
 class TypeError extends Error {
   constructor(message?: string) {
@@ -18,11 +19,10 @@ class TypeError extends Error {
   }
 }
 
-
 // @ts-ignores
-const Network: RequestsConstructor = function(this: any, instanceConfigs?: RequestConfigsInterface | string) {
+const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?: RequestConfigsInterface | string) {
 
-  if (!(this instanceof Network)) {
+  if (!(this instanceof ReqConstructor)) {
     throw new TypeError('Cannot call a class as a function.');
   }
 
@@ -49,19 +49,16 @@ const Network: RequestsConstructor = function(this: any, instanceConfigs?: Reque
         opts = { [propertyName.toLowerCase() === 'get' ? 'searchParams' : 'raw']: opts };
       }
 
+      const headers: Headers = mergeHeaders(properties?.headers ?? {}, opts.headers);
+
       return fnOriginCaller.call(this, url, {
-        ...properties, ...opts,
-
+        ...properties,
+        ...opts,
+        headers,
         method: propertyName.toUpperCase(),
-
-        headers: {
-          ...properties.headers,
-          ...opts.headers,
-        },
       });
     };
   };
-
 
   class Requests {
     [ k: string ]: any;
@@ -116,13 +113,46 @@ const Network: RequestsConstructor = function(this: any, instanceConfigs?: Reque
     post(url: string, opts?: any) {
       return requestCore({...opts, url});
     }
-  }
 
+    @RequestMethodAgent
+    put(url: string, opts?: any) {
+      return requestCore({...opts, url});
+    }
+
+    @RequestMethodAgent
+    patch(url: string, opts?: any) {
+      return requestCore({...opts, url});
+    }
+
+    @RequestMethodAgent
+    delete(url: string, opts?: any) {
+      return requestCore({...opts, url});
+    }
+
+    @RequestMethodAgent
+    head(url: string, opts?: any) {
+      throw new Error('nothing to do');
+    }
+
+    @RequestMethodAgent
+    options(url: string, opts?: any) {
+      throw new Error('nothing to do');
+    }
+
+    @RequestMethodAgent
+    connect(url: string, opts?: any) {
+      throw new Error('nothing to do');
+    }
+  }
 
   return new Requests(instanceConfigs);
 };
 
 
-export { Network as Requests  };
+ReqConstructor.getRequestId = (tpl = DEFAULT_REQUEST_ID_TEMPLATE): string => {
+  return util.guid(tpl);
+};
 
-export default new Network();
+export { ReqConstructor as Requests };
+
+export default new ReqConstructor();

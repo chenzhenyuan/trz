@@ -1,11 +1,11 @@
 {
   "name": "@trz/requests",
   "version": "0.1.0",
-  "description": "> 一个见到的网络请求库",
+  "description": "> 一个简单的网络请求库",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/requests#readme",
   "license": "MIT",
-  "main": "src/requests.ts",
+  "main": "dist/requests.js",
   "types": "index.d.ts",
   "directories": {
     "lib": "lib",
@@ -23,7 +23,7 @@
   },
   "scripts": {
     "clean"  : "npx rimraf dist",
-    "build"  : "npm run clean && npx tsc && npx babel src --out-dir dist --extensions .ts,.tsx --no-comments --config-file='../../.babelrc' --source-type=module -w",
+    "build"  : "npm run clean && npx tsc && npx babel src --out-dir dist --extensions .ts,.tsx --no-comments --config-file='../../.babelrc' --source-type=module",
     "test"   : "npm run build && jest",
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
   },
