@@ -1,6 +1,6 @@
 {
   "name": "@trz/uri",
-  "version": "0.1.3",
+  "version": "0.2.1",
   "description": "一个简单的Uri工具库",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/url#readme",
