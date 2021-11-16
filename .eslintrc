@@ -55,9 +55,9 @@ rules:
   newline-per-chained-call:
     - warn
     - ignoreChainWithDepth: 5
-
   no-empty-function: off
   no-new-func: error
+  no-prototype-builtins: off
   no-spaced-func: error
   no-sparse-arrays: warn
   no-var: error

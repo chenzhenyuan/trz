@@ -71,14 +71,14 @@ class RequestError extends Error {
 
 
 // 默认请求超时时间
-export const DEFAULT_TIMEOUT     = 5;
+export const DEFAULT_TIMEOUT = 30;
 // --------------------------------------------------------------------------------------------------------------------
 export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionInterface) => {
   let reqTimeoutId: number;
 
-  console.log('-----------------------------------');
-  console.log('requestOptions::', requestOptions);
-  console.log('-----------------------------------');
+  // console.log('-----------------------------------');
+  // console.log('requestOptions::', requestOptions);
+  // console.log('-----------------------------------');
 
   const { host, pathname: prefix, url, method, withUserAuth } = requestOptions || {};
 
@@ -124,7 +124,7 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
     });
 
 
-    console.log('%c[请求开始]', 'color: #0000ff', $reqInit);
+    // console.debug('%c[请求开始]', 'color: #0000ff', $reqInit);
     return (
       fetch($reqInit).then((response) => {
         if (response.status >= 400) {
@@ -141,7 +141,7 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
       console.log(e);
     }).finally(() => {
       clearTimeout(<number>reqTimeoutId);
-      console.debug('%c[请求结束]', 'color: #559955', headers.get('x-request-id'));
+      // console.debug('%c[请求结束]', 'color: #559955', headers.get('x-request-id'));
     })
   );
 };
