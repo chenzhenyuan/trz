@@ -1,8 +1,9 @@
 import { mergeHeaders, requestCore } from './core';
-import ty, { isString } from '@trz/type';
-import Uri from '@trz/uri';
+import type from '@trz/type';
+import Uri, { isUri, isSearchParams, } from '@trz/uri';
 import util from '@trz/util';
 import { RequestsConstructor, RequestConfigsInterface, SearchParamsInterface } from '..';
+import { Serialize } from '@trz/uri/lib/core';
 
 
 const DEFAULT_REQUEST_ID_TEMPLATE = '****-*****-*****-****';
@@ -44,18 +45,38 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
   const RequestMethodAgent = (o: unknown, propertyName: string, descriptor: any) => {
     const fnOriginCaller = descriptor.value;
 
-    descriptor.value = function(url: string, opts?: any): typeof fnOriginCaller {
-      if (ty.isString('opts')) {
+    descriptor.value = function(url: string, ...args: any[]): typeof fnOriginCaller {
+      let data, opts;
+
+      if (args.length === 2) {
+        [ data, opts ] = args;
+      }
+
+      const { searchParams } = new Uri(url);
+
+      if (type.isString(opts)) {
         opts = { [propertyName.toLowerCase() === 'get' ? 'searchParams' : 'raw']: opts };
       }
 
       const headers: Headers = mergeHeaders(properties?.headers ?? {}, opts.headers);
+      const method = propertyName.toUpperCase();
+
+      if (type.isString(data)) {
+        data = new Serialize(<string>data).toString();
+
+        if (method === 'GET') {
+          opts.searchParams = data;
+        }
+        else {
+          opts.body = data;
+        }
+      }
 
       return fnOriginCaller.call(this, url, {
         ...properties,
         ...opts,
         headers,
-        method: propertyName.toUpperCase(),
+        method,
       });
     };
   };
@@ -66,7 +87,7 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
     constructor(cfgs: RequestConfigsInterface | string = {}) {
       let basicConfigs: RequestConfigsInterface = <RequestConfigsInterface>cfgs;
 
-      if (ty.is(cfgs, 'string')) {
+      if (type.is(cfgs, 'string')) {
         const { origin: host, pathname } = new Uri(<string>cfgs);
         basicConfigs = { host, pathname };
       }
@@ -75,31 +96,31 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
 
       defineProperty(this, 'headers', headers);
 
-      if (ty.isNumber(+(<number | string>timeout)) && +(<number | string>timeout) >= 0) {
+      if (type.isNumber(+(<number | string>timeout)) && +(<number | string>timeout) >= 0) {
         defineProperty(this, 'timeout', +(<number | string>timeout));
       }
 
-      if (ty.is(host, 'string') && host) {
+      if (type.is(host, 'string') && host) {
         defineProperty(this, 'host', (new Uri(host)).host);
       }
 
-      if (ty.is(pathname, 'string') && pathname) {
+      if (type.is(pathname, 'string') && pathname) {
         defineProperty(this, 'pathname', pathname);
       }
 
-      if (ty.isBoolean(withUserAuth)) {
+      if (type.isBoolean(withUserAuth)) {
         defineProperty(this, 'withUserAuth', withUserAuth);
       }
 
-      if (ty.isNumber(timeout) || (ty.isString(timeout) && +(<string>timeout) == timeout)) {
+      if (type.isNumber(timeout) || (type.isString(timeout) && +(<string>timeout) == timeout)) {
         defineProperty(this, 'timeout', +(<string | number>timeout));
       }
 
-      if (ty.isNumber(retryDelay) || (ty.isString(retryDelay) && +(<string>retryDelay) == retryDelay)) {
+      if (type.isNumber(retryDelay) || (type.isString(retryDelay) && +(<string>retryDelay) == retryDelay)) {
         defineProperty(this, 'retryDelay', +(<string | number>retryDelay));
       }
 
-      if (ty.isNumber(retry) || (ty.isString(retry) && parseInt(<string>retry) > 0 )) {
+      if (type.isNumber(retry) || (type.isString(retry) && parseInt(<string>retry) > 0 )) {
         defineProperty(this, 'retry', parseInt(<string>retry));
       }
     }
@@ -131,17 +152,17 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
 
     @RequestMethodAgent
     head(url: string, opts?: any) {
-      throw new Error('nothing to do');
+      throw new Error('Nothing todo');
     }
 
     @RequestMethodAgent
     options(url: string, opts?: any) {
-      throw new Error('nothing to do');
+      throw new Error('Nothing todo');
     }
 
     @RequestMethodAgent
     connect(url: string, opts?: any) {
-      throw new Error('nothing to do');
+      throw new Error('Nothing todo');
     }
   }
 

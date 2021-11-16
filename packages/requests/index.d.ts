@@ -16,6 +16,9 @@ export interface RequestConfigsInterface extends Dictionary {
   pathname?: string;
   retryDelay?: number | string;
   withUserAuth?: boolean | "include" | "omit" | "same-origin";
+  // authorization?: string;
+  body?: any;
+  params?: any;
 }
 
 export interface RequestsInterface<T = string | RequestConfigsInterface> extends RequestConfigsInterface {
@@ -28,12 +31,12 @@ export interface RequestsInterface<T = string | RequestConfigsInterface> extends
   setHeaders(headers: HeadersInit): void;
 
   get(url: string): Promise<any>;
-  get(url: string, requestSearch: string | SearchParamsInterface): Promise<any>;
+  get(url: string, params: string | SearchParamsInterface): Promise<any>;
   get(url: string, options: RequestConfigsInterface): Promise<any>;
 
   post(url: string): Promise<any>;
-  post(url: string, data: RequestData): Promise<any>;
-  post(url: string, options: RequestConfigsInterface): Promise<any>
+  post(url: string, body: RequestData): Promise<any>;
+  post(url: string, body: RequestData, options: RequestConfigsInterface): Promise<any>
 }
 
 export interface RequestsConstructor {
