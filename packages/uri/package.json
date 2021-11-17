@@ -29,6 +29,7 @@
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
   "dependencies": {
+    "@trz/type": ">=0.2.0",
     "@trz/util": ">=0.3.0"
   }
 }

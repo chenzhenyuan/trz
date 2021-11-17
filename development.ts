@@ -21,24 +21,15 @@ import Uri, { HashParams, SearchParams } from '@trz/uri/src/uri';
 
 // console.log(new Uri());
 new Uri('//asdf@120.356.2.44///demo/pathname/filename.ext?searchKey=1&searchString=2#hashKey=1&hashString=2');
-// console.log(new Uri('.'));
-// console.log(new Uri('./pathname'));
+console.log(new Uri('.'));
+console.log(new Uri('./pathname'));
 new Uri('file:///pathname?sss=11');
 new Uri('file:///pathname#sss=11');
-
-const uri = new Uri();
+const uri = new Uri('/ssss');
 const { hashParams } = uri;
-
-hashParams.set('aa', 0);
-hashParams.set('bb', {aa: 111});
-hashParams.set('bb', {aa: 222});
-hashParams.set('cc', [ 1, 2, 3 ]);
-
+uri.hashParams.set('aa', 0);
 hashParams.delete('hashString');
-
 console.log(uri.stringify());
-
-
 const queryParams = new HashParams('#sss=111&sss=2222');
 console.log(queryParams);
 
