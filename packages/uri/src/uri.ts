@@ -173,9 +173,11 @@ export class Uri {
   }
 
   stringify(): string {
-    console.log(this);
-    console.log(this.protocol + '//' + this.host + this.pathname + this.searchParams + this.hashParams);
-    return '';
+    const domain = (this.host !== '' ? (this.protocol + '//' + this.host) : '');
+    const search = this.searchParams.toString() === '?' ? '' : this.searchParams;
+    const hash = this.hashParams.toString() === '#' ? '' : this.hashParams;
+
+    return domain + this.pathname + search + hash;
   }
 }
 
