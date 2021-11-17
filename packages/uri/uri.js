@@ -1,7 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.object.to-string.js");
-
 require("core-js/modules/es.reflect.construct.js");
 
 require("core-js/modules/es.array.from.js");
@@ -68,6 +66,8 @@ require("core-js/modules/es.array.slice.js");
 require("core-js/modules/es.object.entries.js");
 
 require("core-js/modules/es.string.search.js");
+
+require("core-js/modules/es.object.to-string.js");
 
 var _type = _interopRequireDefault(require("@trz/type"));
 
@@ -325,9 +325,10 @@ var Uri = function () {
   }, {
     key: "stringify",
     value: function stringify() {
-      console.log(this);
-      console.log(this.protocol + '//' + this.host + this.pathname + this.searchParams + this.hashParams);
-      return '';
+      var domain = this.host !== '' ? this.protocol + '//' + this.host : '';
+      var search = this.searchParams.toString() === '?' ? '' : this.searchParams;
+      var hash = this.hashParams.toString() === '#' ? '' : this.hashParams;
+      return domain + this.pathname + search + hash;
     }
   }]);
   return Uri;
