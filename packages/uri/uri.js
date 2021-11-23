@@ -21,7 +21,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isUri = exports.default = exports.Uri = exports.SearchParams = exports.HashParams = void 0;
+exports.isUri = exports.default = exports.Uri = exports.Serialize = exports.SearchParams = exports.HashParams = void 0;
 
 var _toArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toArray"));
 
@@ -230,6 +230,8 @@ var Serialize = function () {
   }]);
   return Serialize;
 }();
+
+exports.Serialize = Serialize;
 
 var isUri = function isUri(source) {
   return rOrigin.test(source);

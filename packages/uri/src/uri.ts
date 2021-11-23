@@ -71,7 +71,7 @@ class ParamsError extends Error {
   }
 }
 
-class Serialize {
+export class Serialize {
   [ k: string ]: any;
 
   constructor(source: string) {

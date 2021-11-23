@@ -12,7 +12,7 @@ export interface UriInterface extends Record<string, any> {
     searchParams?: SearchParams;
     username?: string;
 }
-declare class Serialize {
+export declare class Serialize {
     [k: string]: any;
     constructor(source: string);
     toString(): string;

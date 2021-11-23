@@ -43,24 +43,18 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
   const RequestMethodAgent = (o: unknown, propertyName: string, descriptor: any) => {
     const fnOriginCaller = descriptor.value;
 
-    descriptor.value = function(url: string, ...args: any[]): typeof fnOriginCaller {
-      let data, opts;
-
-      if (args.length === 2) {
-        [ data, opts ] = args;
-      }
-
+    descriptor.value = function(url: string, data?: any, opts?: Record<string, any>): typeof fnOriginCaller {
+      const method = propertyName.toUpperCase();
       const { searchParams } = new Uri(url);
 
-      if (type.isString(opts)) {
-        opts = { [propertyName.toLowerCase() === 'get' ? 'searchParams' : 'raw']: opts };
-      }
+      opts = { ...opts, [propertyName.toLowerCase() === 'get' ? 'searchParams' : 'body']: data };
 
       const headers: Headers = mergeHeaders(properties?.headers ?? {}, opts?.headers);
-      const method = propertyName.toUpperCase();
 
+      console.log(searchParams);
       if (type.isString(data)) {
-        data = new SearchParams(<string>data).toString();
+
+        data = new SearchParams(data as string).toString();
 
         if (method === 'GET') {
           opts.searchParams = data;
@@ -70,12 +64,9 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
         }
       }
 
-      return fnOriginCaller.call(this, url, {
-        ...properties,
-        ...opts,
-        headers,
-        method,
-      });
+      const options = { ...properties, ...opts, headers, method };
+      console.log('options::', options);
+      return fnOriginCaller.call(this, url, options);
     };
   };
 
