@@ -133,6 +133,7 @@ export class HashParams extends Serialize {
     if (hash.slice(0, 1) != '#') {
       throw new ParamsError('The params must be a hash string.');
     }
+
     super((typeof hash === 'string' ? hash : '').replace(/\?[^#]*/i, '').replace(/^#/i, ''));
   }
 
