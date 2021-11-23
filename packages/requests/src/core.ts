@@ -17,7 +17,7 @@ interface RequestCoreInterface {
 const gloHeaders = {
   'accept': '*/*',
   'x-request-id': '-********'.repeat(4).slice(1),
-  'x-request-client': 'TrzRequests/1.0.0',
+  'x-request-client': 'TrzRequests/0.1.0',
 };
 
 
@@ -74,7 +74,7 @@ class RequestError extends Error {
 export const DEFAULT_TIMEOUT = 30;
 // --------------------------------------------------------------------------------------------------------------------
 export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionInterface) => {
-  let reqTimeoutId: number;
+  let reqTimeoutId: number | NodeJS.Timeout;
 
   // console.log('-----------------------------------');
   // console.log('requestOptions::', requestOptions);
@@ -137,9 +137,7 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   };
 
   return (
-    Promise.race([ reqTimeout(), reqFetch() ]).then((e) => {
-      console.log(e);
-    }).finally(() => {
+    Promise.race([ reqTimeout(), reqFetch() ]).finally(() => {
       clearTimeout(<number>reqTimeoutId);
       // console.debug('%c[请求结束]', 'color: #559955', headers.get('x-request-id'));
     })
