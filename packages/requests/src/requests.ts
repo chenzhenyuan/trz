@@ -1,7 +1,7 @@
 import { mergeHeaders, requestCore } from './core';
 import type from '@trz/type';
+import Uri, { Serialize } from '@trz/uri';
 import util from '@trz/util/src';
-import Uri, { SearchParams, } from '@trz/uri';
 import { RequestsConstructor, RequestConfigsInterface } from '../index.d';
 
 
@@ -45,26 +45,23 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
 
     descriptor.value = function(url: string, data?: any, opts?: Record<string, any>): typeof fnOriginCaller {
       const method = propertyName.toUpperCase();
-      const { searchParams } = new Uri(url);
+      const uri = new Uri(url as string);
 
+      url = uri.origin + uri.pathname;
+      opts = { ...(opts || {}) };
+
+      if (method === 'GET' && type.is(data, 'string')) {
+        new Serialize(data);
+      }
+
+      console.log(uri.searchParams);
+
+
+      data = { ...(new Uri(url).searchParams), ...data };
       opts = { ...opts, [propertyName.toLowerCase() === 'get' ? 'searchParams' : 'body']: data };
 
       const headers: Headers = mergeHeaders(properties?.headers ?? {}, opts?.headers);
-
-      console.log(searchParams);
-      if (type.isString(data)) {
-
-        data = new SearchParams(data as string).toString();
-
-        if (method === 'GET') {
-          opts.searchParams = data;
-        }
-        else {
-          opts.body = data;
-        }
-      }
-
-      const options = { ...properties, ...opts, headers, method };
+      const options = { url, ...properties, ...opts, headers, method };
       console.log('options::', options);
       return fnOriginCaller.call(this, url, options);
     };

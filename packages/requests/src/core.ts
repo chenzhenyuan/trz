@@ -76,23 +76,22 @@ export const DEFAULT_TIMEOUT = 30;
 export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionInterface) => {
   let reqTimeoutId: number | NodeJS.Timeout;
 
-  // console.log('-----------------------------------');
-  // console.log('requestOptions::', requestOptions);
-  // console.log('-----------------------------------');
-
-  const { host, pathname: prefix, url, method, withUserAuth } = requestOptions || {};
-
   const abortController = new AbortController();
   const { signal } = abortController;
 
-  const domain = (new Uri(host)).origin;
-  const pathname = util.pathname.resolve(window.location.pathname, util.pathname.join(prefix ?? '', url));
-  const search = '';
+
+  const { host, pathname: prefix, url, method, withUserAuth } = requestOptions || {};
+
+  /* 处理请求的超时时间，将传入的秒转换为毫秒，为 0 或不传时，则使用默认值 */
   const timeout = (requestOptions?.timeout || DEFAULT_TIMEOUT) * 1000;
 
-  const cache: RequestCache = requestOptions.cache ?? 'no-cache';
-  const credentials: RequestCredentials  = (<RequestCredentials>([ 'omit', 'include' ][+(<boolean>withUserAuth)]) || <RequestCredentials>withUserAuth) ?? 'same-origin';
+  const domain = (new Uri(host)).origin;
+  const uri = new Uri(requestOptions.url);
+  const pathname = util.pathname.resolve(window.location.pathname, util.pathname.join(prefix ?? '', uri.pathname));
+
   const headers: Headers = mergeHeaders(gloHeaders, (requestOptions?.headers ?? {}));
+  const cache: RequestCache = requestOptions.cache ?? 'no-cache';
+  const credentials: RequestCredentials  = (<RequestCredentials>([ 'omit', 'include' ][+(withUserAuth as boolean)]) || (withUserAuth as RequestCredentials)) ?? 'same-origin';
   const mode: RequestMode = 'cors';
   const redirect: RequestRedirect = 'follow';
   const referrer = '';
@@ -110,7 +109,9 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   };
 
   const reqFetch = (): Promise<any> => {
-    const $url = domain + pathname + search;
+    const $url = domain + pathname + uri.searchParams.stringify();
+
+    console.log($url);
 
     if (headers.has('x-request-id')) {
       headers.set('x-request-id', util.guid(headers.get('x-request-id') ?? void(0)));
@@ -120,20 +121,14 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
       // body,
       cache, credentials, headers,
       // integrity,
-      keepalive: false, method, mode, redirect, referrer, referrerPolicy, signal,
+      keepalive: false,
+      method,
+      mode, redirect, referrer, referrerPolicy, signal,
     });
 
 
     // console.debug('%c[请求开始]', 'color: #0000ff', $reqInit);
-    return (
-      fetch($reqInit).then((response) => {
-        if (response.status >= 400) {
-          return Promise.reject(response);
-        }
-
-        return response;
-      })
-    );
+    return fetch($reqInit).then((response) => (response.status >= 400 ? Promise.reject(response) : response));
   };
 
   return (
