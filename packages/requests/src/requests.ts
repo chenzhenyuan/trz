@@ -1,9 +1,8 @@
 import { mergeHeaders, requestCore } from './core';
 import type from '@trz/type';
-import Uri, { isUri, isSearchParams, } from '@trz/uri';
-import util from '@trz/util';
-import { RequestsConstructor, RequestConfigsInterface, SearchParamsInterface } from '..';
-import { Serialize } from '@trz/uri/lib/core';
+import util from '@trz/util/src';
+import Uri, { SearchParams, } from '@trz/uri';
+import { RequestsConstructor, RequestConfigsInterface } from '../index.d';
 
 
 const DEFAULT_REQUEST_ID_TEMPLATE = '****-*****-*****-****';
@@ -12,13 +11,12 @@ class TypeError extends Error {
   constructor(message?: string) {
     super(message);
     this.name = 'TypeError';
-
     const stack = this.stack?.split('\n');
     stack?.splice(1, 1);
-
     this.stack = stack?.join('\n');
   }
 }
+
 
 // @ts-ignores
 const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?: RequestConfigsInterface | string) {
@@ -58,11 +56,11 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
         opts = { [propertyName.toLowerCase() === 'get' ? 'searchParams' : 'raw']: opts };
       }
 
-      const headers: Headers = mergeHeaders(properties?.headers ?? {}, opts.headers);
+      const headers: Headers = mergeHeaders(properties?.headers ?? {}, opts?.headers);
       const method = propertyName.toUpperCase();
 
       if (type.isString(data)) {
-        data = new Serialize(<string>data).toString();
+        data = new SearchParams(<string>data).toString();
 
         if (method === 'GET') {
           opts.searchParams = data;

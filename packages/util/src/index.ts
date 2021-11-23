@@ -1,5 +1,5 @@
 import ty from '@trz/type';
-import guid, { GuidInterface } from './guid';
+import guid from './guid';
 
 /**
  * @since 0.3.0
@@ -7,8 +7,6 @@ import guid, { GuidInterface } from './guid';
 import pathname from './pathname';
 
 const type = ty;
-
-export { GuidInterface };
 
 export { ty, type, guid, pathname };
 

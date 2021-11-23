@@ -1,14 +1,15 @@
-export type Dictionary = Record<string, any>;
+
+interface SeriesInterface {
+  [ key: string ]: string | number | boolean | SeriesInterface | SeriesInterface[] | void;
+}
+
+
+export type Dictionary = Record<string, string |  number | boolean | SeriesInterface | SeriesInterface[]>;
 
 export type RequestData = string | number | FormData;
 
 
-export interface SearchParamsInterface {
-  [ key: string ]: string | number | boolean | (string | number | boolean | SearchParamsInterface)[] | SearchParamsInterface;
-}
-
-
-export interface RequestConfigsInterface extends Dictionary {
+export interface RequestConfigsInterface {
   host?: string;
   retry?: number | string;
   timeout?: number | string;
@@ -17,8 +18,8 @@ export interface RequestConfigsInterface extends Dictionary {
   retryDelay?: number | string;
   withUserAuth?: boolean | "include" | "omit" | "same-origin";
   // authorization?: string;
-  body?: any;
-  params?: any;
+  params?: string | Dictionary;
+  body?: Dictionary | RequestData;
 }
 
 export interface RequestsInterface<T = string | RequestConfigsInterface> extends RequestConfigsInterface {
@@ -31,8 +32,8 @@ export interface RequestsInterface<T = string | RequestConfigsInterface> extends
   setHeaders(headers: HeadersInit): void;
 
   get(url: string): Promise<any>;
-  get(url: string, params: string | SearchParamsInterface): Promise<any>;
-  get(url: string, options: RequestConfigsInterface): Promise<any>;
+  get(url: string, params: string | Dictionary): Promise<any>;
+  get(url: string, params: string | Dictionary, options: RequestConfigsInterface): Promise<any>;
 
   post(url: string): Promise<any>;
   post(url: string, body: RequestData): Promise<any>;
@@ -40,11 +41,10 @@ export interface RequestsInterface<T = string | RequestConfigsInterface> extends
 }
 
 export interface RequestsConstructor {
-  new <T = {}>(T?: string | RequestConfigsInterface): RequestsInterface<T>
-  getRequestId(tpl?: string): string
-}
+  new <T = {}>(T?: string | RequestConfigsInterface): RequestsInterface<T>;
 
-// export type RequestsConstructor = new <T = {}>(T?: string | RequestConfigsInterface) => RequestsInterface<T>
+  getRequestId(tpl?: string): string;
+}
 
 export const Requests: RequestsConstructor;
 
