@@ -33,7 +33,7 @@ import requests, { Requests } from './packages/requests/src/requests';
 
 console.log('requests::', requests);
 
-requests.get('//cjee.sdf.sss///demo/get_url?sss=111', 'aa=111&bb=111');
+requests.get('//cjee.sdf.sss///demo/get_url?sss=111&aa=222', 'aa=111&bb=111');
 
 const api = new Requests({
   host: '//127.0.0.2:8905',
@@ -46,10 +46,11 @@ const api = new Requests({
     'x-request-client': 'development/api',
     'User-Agent': '--'
   },
-  params: { aa: 111 },
+  params: { aa: 'New_AAA' },
   body: {}
 });
 
 console.log('api::', api);
-api.get('demo/get_url');
-api.post('post_ssss', new FormData(), {});
+// api.get('demo/get_url');
+
+// api.post('post_ssss', new FormData(), {});

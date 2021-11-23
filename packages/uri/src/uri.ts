@@ -121,10 +121,10 @@ export class SearchParams extends Serialize {
   }
 
   stringify(): string {
-    return '?' + Object.entries(this).map((arr) => {
-      arr[1] = encodeURIComponent(arr[1]);
-      return arr.join('=');
+    const str = Object.entries(this).map((arr) => {
+      return arr[1] = encodeURIComponent(arr[1]), arr.join('=');
     }).join('&');
+    return str ? '?' + str : '';
   }
 }
 
@@ -138,10 +138,11 @@ export class HashParams extends Serialize {
   }
 
   stringify(): string {
-    return '#' + Object.entries(this).map((arr) => {
-      arr[1] = encodeURIComponent(arr[1]);
-      return arr.join('=');
+    const str = Object.entries(this).map((arr) => {
+      return arr[1] = encodeURIComponent(arr[1]), arr.join('=');
     }).join('&');
+
+    return str ? '#' + str : '';
   }
 }
 
