@@ -24,12 +24,12 @@ export default {
     historyApiFallback: true,
     port: 8905,
     hot: true,
+    compress: true,
     static: {
       serveIndex: true,
       publicPath: '/static',
       directory: path.join(__dirname, 'static'),
     },
-    compress: true,
     headers: () => {
       return {
         'Access-Control-Allow-Origin': '*',
