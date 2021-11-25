@@ -74,6 +74,15 @@ class ParamsError extends Error {
 export class Serialize {
   [ k: string ]: any;
 
+  static stringify(o: unknown): string | never {
+
+    if (!o || !type.is(o, 'object')) {
+      throw new ParamsError('The input type must be object like.');
+    }
+
+    return Object.entries(<{[s: string]: unknown;} | ArrayLike<unknown>>o).map((arr) => (arr.join('='))).join('&');
+  }
+
   constructor(source: string) {
     const matches = (source.match(/([^=&]+(?:=[^&]+)?)/g) ?? []).map((i) => { return i.split(/=/i); });
 
@@ -87,7 +96,7 @@ export class Serialize {
   }
 
   stringify(): string {
-    return Object.entries(this).map((arr) => (arr.join('='))).join('&');
+    return Serialize.stringify(this);
   }
 
   set(key: string, value: any): void {
@@ -105,6 +114,25 @@ export class Serialize {
       }
     }
   }
+
+  keys() {
+    return Object.keys(this);
+  }
+
+  values() {
+    return Object.values(this);
+  }
+
+  has(s: string) {
+    return type.is(s, 'string') && this.keys().includes(s);
+  }
+
+  sort() { }
+  // forEach() {}
+
+  entries() {
+    return Object.entries(this);
+  }
 }
 
 export const isUri = (source: string): boolean => {
@@ -121,10 +149,7 @@ export class SearchParams extends Serialize {
   }
 
   stringify(): string {
-    const str = Object.entries(this).map((arr) => {
-      return arr[1] = encodeURIComponent(arr[1]), arr.join('=');
-    }).join('&');
-    return str ? '?' + str : '';
+    return '?' + Serialize.stringify(this);
   }
 }
 
@@ -138,11 +163,7 @@ export class HashParams extends Serialize {
   }
 
   stringify(): string {
-    const str = Object.entries(this).map((arr) => {
-      return arr[1] = encodeURIComponent(arr[1]), arr.join('=');
-    }).join('&');
-
-    return str ? '#' + str : '';
+    return '#'  + Serialize.stringify(this);
   }
 }
 
