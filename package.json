@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "npx webpack server",
+    "start": "npx webpack serve",
     "build": "npm run clean && lerna run --ignore @trz/requests build",
     "develop": "webpack server",
     "clean": "rimraf packages/*/lib",
