@@ -2,7 +2,9 @@
   "name": "trz",
   "private": true,
   "author": "JAYNE <JAYNE@CHENZHENYUAN.COM>",
-  "workspaces": [ "packages/*" ],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "start": "npx webpack server",
     "build": "npm run clean && lerna run --ignore @trz/requests build",
@@ -27,6 +29,7 @@
     "@babel/preset-typescript": "^7.15.0",
     "@babel/runtime-corejs3": "^7.15.4",
     "@types/async": "^3.2.7",
+    "@types/core-js": "^2.5.5",
     "@types/enzyme": "^3.10.9",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^27.0.1",
