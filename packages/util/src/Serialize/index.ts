@@ -117,5 +117,3 @@ export class Serialize {
     return properties.get(this);
   }
 }
-
-
