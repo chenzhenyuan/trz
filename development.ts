@@ -91,6 +91,6 @@ aaa.append('3', new WeakMap());
 aaa.append('1', []);
 aaa.append('6', false);
 
-aaa.set('1', 'ssss');
+aaa.set('1', 'asdfasdfasdfadsfads');
 console.log('SDF', aaa.entries());
 
