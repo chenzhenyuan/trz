@@ -1,0 +1,40 @@
+{
+  "name": "@trz/serialize",
+  "version": "0.1.0",
+  "description": "一个简单的字符串序列化操作工具",
+  "keywords": [
+    "serialize",
+    "trz/serialize",
+    "trz",
+    "序列化",
+    "字符串"
+  ],
+  "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
+  "homepage": "https://github.com/chenzhenyuan/trz#readme",
+  "license": "MIT",
+  "main": "./index.js",
+  "types": "index.d.ts",
+  "directories": {},
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenzhenyuan/trz.git"
+  },
+  "scripts": {
+    "clean"  : "rimraf ./index.js ./index.d.ts",
+    "build"  : "npm run clean && babel src --out-dir . --extensions .ts,.tsx --no-comments --source-type=module --config-file='../../.babelrc' && tsc",
+    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
+  },
+  "bugs": {
+    "url": "https://github.com/chenzhenyuan/trz/issues"
+  },
+  "dependencies": {
+    "@trz/type": "^0.2.9"
+  }
+}
