@@ -74,23 +74,42 @@
 
 // api.post('post_ssss', new FormData(), {});
 
-const m = new URLSearchParams('1=[]&1=2&3={}&4=false&6=sdfasdf&y=123zz&4=llll');
-console.log('NNNN', m.set('4', '0000'));
+const m = new URLSearchParams('2=[]&1=2&3={}&4=false&6=sdfasdf&y=123zz&4=llll');
+console.log('URLSearchParams:::', m.entries());
 console.log(decodeURIComponent(m.toString()));
 
-import { Serialize } from '@trz/util/src/Serialize';
-const serialize = new Serialize('a=2221=2&b=222&a1=11');
-const aaa = new Serialize('x=123&y=123zz&v=1234');
-console.log('serialize::', serialize.values());
-console.log('aaa::', aaa.keys());
-aaa.delete('x', 'v');
+import { Serialize } from '@trz/serialize';
+const serialize = new Serialize('a=123&b=456&c=789&d=000');
 
-aaa.append('6', 'sdfasdf');
-aaa.append('1', [ 111,22 ]);
-aaa.append('3', new WeakMap());
-aaa.append('1', []);
-aaa.append('6', false);
+console.log('serialize.keys()  ::', serialize.keys());
+console.log('serialize.values()::', serialize.values());
 
-aaa.set('1', '12312');
-console.log('SDF', aaa.entries());
+serialize.delete('a', 'b');
+console.log('serialize.delete(\'a\', \'b\')::', serialize.toString());
+
+console.log('serialize.has(\'a\')', serialize.has('a'));
+console.log('serialize.has(\'c\')', serialize.has('c'));
+
+serialize.append('j', 'sdfasdf');
+serialize.append('repeat', [ 111,22 ]);
+serialize.append('l', new WeakMap());
+serialize.append('repeat', []);
+serialize.append('m', []);
+serialize.append('m', [ 1 ]);
+serialize.append('1', 'ssss');
+serialize.append('repeat', false);
+console.log('serialize.append()::', serialize.toString());
+
+serialize.set('repeat', null);
+console.log('serialize.set(\'repeat\', \'null\')::', serialize.toString());
+
+serialize.sort();
+console.log('serialize.sort()::', serialize.toString());
+
+console.log('serialize.entries()::', serialize.entries());
+
+serialize.forEach((k, v, p) => {
+  console.log(k, v, p);
+});
+
 
