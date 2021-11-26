@@ -2,25 +2,23 @@ import type from '@trz/type';
 
 type SerializeItemType = [ string, any ];
 
-class TypeError extends Error {
-  name = 'ParamsError';
+// class TypeError extends Error {
+//   name = 'ParamsError';
 
-  constructor(message: string) {
-    super(message);
+//   constructor(message: string) {
+//     super(message);
 
-    this.message = message;
+//     this.message = message;
 
-    const stack = this.stack?.split('\n') || [];
-    stack.splice(1, 2);
-    this.stack = stack.join('\n');
-  }
-}
+//     const stack = this.stack?.split('\n') || [];
+//     stack.splice(1, 2);
+//     this.stack = stack.join('\n');
+//   }
+// }
 
 const properties = new WeakMap();
 
 export class Serialize {
-  [ k: string ]: any;
-
   constructor(source: string) {
     const matches: string[][] = source.split('&').map((item: string) => (item.replace('=', '&').split('&')));
     properties.set(this, matches);
@@ -62,7 +60,8 @@ export class Serialize {
     index = source.findIndex(([ k ]: [ string, any ]) => (name === k));
     source = source.filter(([ k ]: [ string, any ]) => name !== k);
 
-    index = Math.max(Math.min(index, source.length), 0);
+    index = ~index ? Math.min(index, source.length) : source.length;
+
     source.splice(index, 0, [ name, value ]);
 
     properties.set(this, source);
@@ -76,15 +75,17 @@ export class Serialize {
     return properties.get(this).map(([ , value ]: SerializeItemType) => (value)).entries();
   }
 
-  sort(): void {
+  sort(): Serialize {
     const target: [ string, any ][] = properties.get(this);
 
     properties.set(this, target.sort(([ k1 ], [ k2 ]) => {
       return k1 < k2 ? -1 : (k1 > k2 ? 1 : 0);
     }));
+
+    return this;
   }
 
-  entries() {
+  entries(): IterableIterator<[string, any]> {
     return properties.get(this).entries();
   }
 
@@ -113,7 +114,7 @@ export class Serialize {
     );
   }
 
-  forEach(caller: (value: string, key: number, parent: Serialize) => void, thisArg?: any): void {
+  forEach(caller: (name: string, value: number, parent: Serialize) => void, thisArg?: any): void {
     [ ...(properties.get(this)) ].forEach(([ key, value ]: SerializeItemType): void => {
       caller.call(this, key, value, this);
     }, thisArg);

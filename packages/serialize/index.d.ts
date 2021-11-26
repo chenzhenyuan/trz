@@ -1,5 +1,4 @@
 export declare class Serialize {
-    [k: string]: any;
     constructor(source: string);
     append(name: string, value: any): void;
     delete(...names: string[]): void;
@@ -9,10 +8,10 @@ export declare class Serialize {
     set(name: string, value: any): void;
     keys(): string[];
     values(): unknown[];
-    sort(): void;
-    entries(): any;
+    sort(): Serialize;
+    entries(): IterableIterator<[string, any]>;
     toString(): string;
     stringify(): string;
-    forEach(caller: (value: string, key: number, parent: Serialize) => void, thisArg?: any): void;
+    forEach(caller: (name: string, value: number, parent: Serialize) => void, thisArg?: any): void;
 }
 export default Serialize;

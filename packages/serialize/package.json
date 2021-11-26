@@ -10,7 +10,7 @@
     "字符串"
   ],
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
-  "homepage": "https://github.com/chenzhenyuan/trz#readme",
+  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/serialize#readme",
   "license": "MIT",
   "main": "./index.js",
   "types": "index.d.ts",
