@@ -20,7 +20,7 @@ const properties = new WeakMap();
 
 export class Serialize {
   constructor(source: string) {
-    const matches: string[][] = source.split('&').map((item: string) => (item.replace('=', '&').split('&')));
+    const matches: string[][] = source ? source.split('&').map((item: string) => (item.replace('=', '&').split('&'))) : [];
     properties.set(this, matches);
   }
 

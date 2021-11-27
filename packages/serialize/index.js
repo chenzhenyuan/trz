@@ -54,9 +54,9 @@ var properties = new WeakMap();
 var Serialize = function () {
   function Serialize(source) {
     (0, _classCallCheck2.default)(this, Serialize);
-    var matches = source.split('&').map(function (item) {
+    var matches = source ? source.split('&').map(function (item) {
       return item.replace('=', '&').split('&');
-    });
+    }) : [];
     properties.set(this, matches);
   }
 
