@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 import type from '@trz/type';
+import Serialize from '@trz/serialize';
 
 export interface UriInterface extends Record<string, any>{
   hash?        : string;
@@ -19,30 +20,29 @@ export interface UriInterface extends Record<string, any>{
   username?    : string;
 }
 
-const rProtocol = '((?<protocol>(^[^/]+:)(?=//))(//))?';
-const rUserInfo = '((?<username>[^:]+(?=(:|@)))(:(?<password>.+(?=@)))?@)?';
-const rHostName = '(?<hostname>([a-z0-9-]+\\.)+([a-z0-9-]+))?';
-const rPort     = '(:(?<port>\\d{1,5}))?';
-const rHost     = `((^//)?(?<host>${rHostName}${rPort}))?`;
-const rPath     = '(?<pathname>((\\.{1,2})?(/*?)[^/?#]*)+)?';
-const rSearch   = '(?<search>\\?[^#]*)?';
-const rHash     = '(?<hash>#.*$)?';
-
-const reg = new RegExp(`${rProtocol}${rUserInfo}${rHost}${rPath}${rSearch}${rHash}`, 'i');
+// const rProtocol = '((?<protocol>(^[^/]+:)(?=//))(//))?';
+// const rUserInfo = '((?<username>[^:]+(?=(:|@)))(:(?<password>.+(?=@)))?@)?';
+// const rHostName = '(?<hostname>([a-z0-9-]+\\.)+([a-z0-9-]+))?';
+// const rPort     = '(:(?<port>\\d{1,5}))?';
+// const rHost     = `((^//)?(?<host>${rHostName}${rPort}))?`;
+// const rPath     = '(?<pathname>((\\.{1,2})?(/*?)[^/?#]*)+)?';
+// const rSearch   = '(?<search>\\?[^#]*)?';
+// const rHash     = '(?<hash>#.*$)?';
+// const reg = new RegExp(`${rProtocol}${rUserInfo}${rHost}${rPath}${rSearch}${rHash}`, 'i');
 // console.log(reg);
 
 
 const rOrigin = /^((?:[^/]+:)(?=\/\/))?\/\/(?:([^:@]+)(?::([^@]+))?@)?(((?:[a-z0-9-]+\.)+[a-z0-9-]+)(?::(\d{1,5}))?)?/i;
 const rPathname = /([^?#]+)?(\?[^#]*)?(#.*)?$/i;
 
+
 const urlParse = (url?: string | UriInterface): UriInterface | never => {
   if (type.is(url, 'undefined')) {
     url = <string>window.location.href;
   }
 
-  if (type.is(<string>url, 'string') && <string>url !== '') {
-    const href = decodeURIComponent(<string>url);
-
+  if (type.is(url as string, 'string') && url as string !== '') {
+    const href = decodeURIComponent(url as string);
     const [ , protocol = '', username = '', password = '', host = '', hostname = '', port = '', ] = rOrigin.exec(<string>href) ?? [];
     const [ , pathname = '', search = '', hash = '', ] = rPathname.exec(href.replace(rOrigin, '')) ?? [];
 
@@ -71,70 +71,6 @@ class ParamsError extends Error {
   }
 }
 
-export class Serialize {
-  [ k: string ]: any;
-
-  static stringify(o: unknown): string | never {
-
-    if (!o || !type.is(o, 'object')) {
-      throw new ParamsError('The input type must be object like.');
-    }
-
-    return Object.entries(<{[s: string]: unknown;} | ArrayLike<unknown>>o).map((arr) => (arr.join('='))).join('&');
-  }
-
-  constructor(source: string) {
-    const matches = (source.match(/([^=&]+(?:=[^&]+)?)/g) ?? []).map((i) => { return i.split(/=/i); });
-
-    for (const [ key, ...value ] of matches) {
-      this[key] = value.join('=');
-    }
-  }
-
-  toString(): string {
-    return this.stringify();
-  }
-
-  stringify(): string {
-    return Serialize.stringify(this);
-  }
-
-  set(key: string, value: any): void {
-    this[key] = (
-      (!value || type.is(value, 'string') || type.is(value, 'number'))
-        ? String(value || (value === 0 ? value : ''))
-        : JSON.stringify(value)
-    );
-  }
-
-  delete(...keys: string[]): void {
-    for (const key of keys) {
-      if (type.is(key, 'string') && this.hasOwnProperty(<string>key)) {
-        delete this[key];
-      }
-    }
-  }
-
-  keys() {
-    return Object.keys(this);
-  }
-
-  values() {
-    return Object.values(this);
-  }
-
-  has(s: string) {
-    return type.is(s, 'string') && this.keys().includes(s);
-  }
-
-  sort() { }
-  // forEach() {}
-
-  entries() {
-    return Object.entries(this);
-  }
-}
-
 export const isUri = (source: string): boolean => {
   return rOrigin.test(source);
 };
@@ -148,8 +84,9 @@ export class SearchParams extends Serialize {
     super((typeof search === 'string' ? search : '').replace(/#.*$/i, '').replace(/^\?/i, ''));
   }
 
-  stringify(): string {
-    return '?' + Serialize.stringify(this);
+  toString(): string {
+    const str = this.stringify();
+    return str && `?${str}`;
   }
 }
 
@@ -162,8 +99,9 @@ export class HashParams extends Serialize {
     super((typeof hash === 'string' ? hash : '').replace(/\?[^#]*/i, '').replace(/^#/i, ''));
   }
 
-  stringify(): string {
-    return '#'  + Serialize.stringify(this);
+  toString(): string {
+    const str = this.stringify();
+    return str && `#${str}`;
   }
 }
 
@@ -203,6 +141,5 @@ export class Uri {
     return domain + this.pathname + search + hash;
   }
 }
-
 
 export default Uri;
