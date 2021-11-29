@@ -13,40 +13,36 @@
 
 
 
-// import Uri, { HashParams, SearchParams, Serialize } from '@trz/uri/src/uri';
+import Uri, { HashParams, SearchParams } from '@trz/uri/src/uri';
 // // console.log(new Uri());
 // new Uri('//asdf@120.356.2.44///demo/pathname/filename.ext?searchKey=1&searchString=2#hashKey=1&hashString=2');
 
-// console.log(new Uri('?sKey=值'));
+// console.log(new Uri('?sKey=值').searchParams + '');
 // console.log(new Uri('./pathname'));
+// console.log(new Uri('file:///pathname?sss=11'));
+// console.log(new Uri('file:///pathname#sss=11'));
+// console.log(new Uri('file:///pathname?sss=11#hhh=2222'));
 
-// console.log('aa', (new Serialize('sKey=值')).values());
+const querySearch = new SearchParams('?sss=111&sss=2222');
+querySearch.set('aa', 'aaa');
+querySearch.sort();
+console.log(querySearch, querySearch.toString());
 
+const hashString = new HashParams('#sss=111&sss=2222');
+hashString.set('aa', 'aaa');
+hashString.sort();
+console.log(hashString, hashString.toString());
 
-// new Uri('file:///pathname?sss=11');
-// new Uri('file:///pathname#sss=11');
-// const uri = new Uri('/ssss');
-// const { hashParams } = uri;
-// uri.hashParams.set('aa', 0);
-// hashParams.delete('hashString');
-// console.log(uri.stringify());
+const uri = new Uri(location.href);
 
-// const urlSearchParams = new URLSearchParams('aaa=111&ggg=2222');
-// // urlSearchParams.sort();
-// urlSearchParams.append('ggg', 'value');
+uri.hashParams.set('aa', 111);
+uri.hashParams.append('bb', 111);
+uri.hashParams.delete('aa');
+console.log('' + uri.searchParams);
 
-// // urlSearchParams.forEach((value: string, key: string, parent: URLSearchParams) => {
-// //   console.log(value, key);
-// // });
+uri.searchParams.set('aa', { a: 123 });
 
-// console.log(urlSearchParams.getAll('aaa'));
-
-// console.log(urlSearchParams);
-
-// const querySearch = new SearchParams('?sss=111&sss=2222');
-// querySearch.set('aa', 'aaa');
-// console.log(querySearch, querySearch.stringify());
-
+console.log(uri);
 
 // import requests, { Requests } from './packages/requests/src/requests';
 
@@ -73,43 +69,5 @@
 // api.get('demo/get_url');
 
 // api.post('post_ssss', new FormData(), {});
-
-const m = new URLSearchParams('2=[]&1=2&3={}&4=false&6=sdfasdf&y=123zz&4=llll');
-console.log('URLSearchParams:::', m.entries());
-console.log(decodeURIComponent(m.toString()));
-
-import { Serialize } from '@trz/serialize';
-const serialize = new Serialize('a=123&b=456&c=789&d=000');
-
-console.log('serialize.keys()  ::', serialize.keys());
-console.log('serialize.values()::', serialize.values());
-
-serialize.delete('a', 'b');
-console.log('serialize.delete(\'a\', \'b\')::', serialize.toString());
-
-console.log('serialize.has(\'a\')', serialize.has('a'));
-console.log('serialize.has(\'c\')', serialize.has('c'));
-
-serialize.append('j', 'sdfasdf');
-serialize.append('repeat', [ 111,22 ]);
-serialize.append('l', new WeakMap());
-serialize.append('repeat', []);
-serialize.append('m', []);
-serialize.append('m', [ 1 ]);
-serialize.append('1', 'ssss');
-serialize.append('repeat', false);
-console.log('serialize.append()::', serialize.toString());
-
-serialize.set('repeat', null);
-console.log('serialize.set(\'repeat\', \'null\')::', serialize.toString());
-
-serialize.sort();
-console.log('serialize.sort()::', serialize.toString());
-
-console.log('serialize.entries()::', serialize.entries());
-
-serialize.forEach((k, v, p) => {
-  console.log(k, v, p);
-});
 
 
