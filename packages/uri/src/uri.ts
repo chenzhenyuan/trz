@@ -1,61 +1,8 @@
 
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
-
 import type from '@trz/type';
 import Serialize from '@trz/serialize';
-
-export interface UriInterface extends Record<string, any>{
-  hash?        : string;
-  hashParams?  : HashParams;
-  host?        : string;
-  hostname?    : string;
-  origin?      : string;
-  password?    : string;
-  pathname?    : string;
-  port?        : string;
-  protocol?    : string;
-  search?      : string;
-  searchParams?: SearchParams;
-  username?    : string;
-}
-
-// const rProtocol = '((?<protocol>(^[^/]+:)(?=//))(//))?';
-// const rUserInfo = '((?<username>[^:]+(?=(:|@)))(:(?<password>.+(?=@)))?@)?';
-// const rHostName = '(?<hostname>([a-z0-9-]+\\.)+([a-z0-9-]+))?';
-// const rPort     = '(:(?<port>\\d{1,5}))?';
-// const rHost     = `((^//)?(?<host>${rHostName}${rPort}))?`;
-// const rPath     = '(?<pathname>((\\.{1,2})?(/*?)[^/?#]*)+)?';
-// const rSearch   = '(?<search>\\?[^#]*)?';
-// const rHash     = '(?<hash>#.*$)?';
-// const reg = new RegExp(`${rProtocol}${rUserInfo}${rHost}${rPath}${rSearch}${rHash}`, 'i');
-// console.log(reg);
-
-
-const rOrigin = /^((?:[^/]+:)(?=\/\/))?\/\/(?:([^:@]+)(?::([^@]+))?@)?(((?:[a-z0-9-]+\.)+[a-z0-9-]+)(?::(\d{1,5}))?)?/i;
-const rPathname = /([^?#]+)?(\?[^#]*)?(#.*)?$/i;
-
-
-const urlParse = (url?: string | UriInterface): UriInterface | never => {
-  if (type.is(url, 'undefined')) {
-    url = <string>window.location.href;
-  }
-
-  if (type.is(url as string, 'string') && url as string !== '') {
-    const href = decodeURIComponent(url as string);
-    const [ , protocol = '', username = '', password = '', host = '', hostname = '', port = '', ] = rOrigin.exec(<string>href) ?? [];
-    const [ , pathname = '', search = '', hash = '', ] = rPathname.exec(href.replace(rOrigin, '')) ?? [];
-
-    return {
-      hash, host, hostname, href,
-      origin: host ? `${protocol}//${host}` : '',
-      password, pathname, port, protocol, search, username,
-    };
-  }
-
-  throw new TypeError('The parameter must be a legal value.');
-};
-
 
 class ParamsError extends Error {
   name = 'ParamsError';
@@ -70,10 +17,6 @@ class ParamsError extends Error {
     this.stack = stack.join('\n');
   }
 }
-
-export const isUri = (source: string): boolean => {
-  return rOrigin.test(source);
-};
 
 export class SearchParams extends Serialize {
   constructor(search = '') {
@@ -105,41 +48,76 @@ export class HashParams extends Serialize {
   }
 }
 
-/**
- * 将字符串实例化Uri对象
- * @class
- * @author  ZHENYUAN·CHEN<JAYNE@CHENZHENYUAN.COM>
- */
-export class Uri {
-  [ k: string ]: any;
 
-  constructor(url?: string) {
-    const properties: UriInterface = urlParse(url);
+const uriParser = (...args: any): URL | string => {
+  let url = new URL(window.location.toString());
 
-    properties.hashParams = new HashParams(properties.hash || '#');
-    properties.searchParams = new SearchParams(properties.search || '?');
+  args = Array.from(args);
 
-    for (const key in properties) {
-      const value = properties[key] ?? '';
+  for (const element of args) {
+    url = new URL(element, url);
+  }
 
-      Object.defineProperty(this, key, {
-        writable: false, configurable: false, enumerable: true,
-        value: value,
-      });
+  return url;
+};
+
+
+export class Uri extends URL {
+  constructor(...args: any[]) {
+    super(uriParser(...args));
+  }
+
+  setSearch(name: any, value?: any) {
+    let params = [];
+
+    if (type.is(name, 'string')) {
+      params = [[ name, value ]];
     }
+    else if (type.is(name, 'object')) {
+      params = Object.entries(name);
+    }
+    else if (type.is(name, 'array')) {
+      params = <[string, any]>name;
+    }
+    else {
+      throw TypeError('参数类型错误，请使用正确的参数。');
+    }
+
+    params.forEach(([ k, v ]) => {
+      console.log([ k, v ]);
+      this.searchParams.set(k, JSON.stringify(v));
+    });
   }
 
-  toString(): string {
-    return this.stringify();
+  appendSearch(name: any, value?: any) {
+    let params: string[][] = [];
+
+    if (type.is(name, 'string')) {
+      params = [[ name, value ]];
+    }
+    else if (type.is(name, 'object')) {
+      params = Object.entries(name);
+    }
+    else if (type.is(name, 'array')) {
+      params = <[string, any]>name;
+    }
+    else {
+      throw TypeError('参数类型错误，请使用正确的参数。');
+    }
+
+    params.forEach(([ k, v ]) => {
+      console.log([ k, v ]);
+      this.searchParams.append(k, JSON.stringify(v));
+    });
   }
 
-  stringify(): string {
-    const domain = (this.host !== '' ? (this.protocol + '//' + this.host) : '');
-    const search = this.searchParams.toString() === '?' ? '' : this.searchParams;
-    const hash = this.hashParams.toString() === '#' ? '' : this.hashParams;
-
-    return domain + this.pathname + search + hash;
+  removeSearch(...names: string[]) {
   }
 }
+
+Object.defineProperty(
+  Uri.prototype,
+  Symbol.toStringTag, { value: 'Uri' }
+);
 
 export default Uri;

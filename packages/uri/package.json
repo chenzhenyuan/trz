@@ -12,7 +12,10 @@
     "test": "__tests__"
   },
   "files": [
-    "lib", "uri.js", "uri.d.ts", "README_CN.md"
+    "lib",
+    "uri.js",
+    "uri.d.ts",
+    "README_CN.md"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -22,8 +25,8 @@
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
   "scripts": {
-    "clean"  : "rimraf ./uri.js ./uri.d.ts",
-    "build"  : "npm run clean && babel src --out-dir . --extensions .ts,.tsx --no-comments --source-type=module --config-file='../../.babelrc' && tsc",
+    "clean": "rimraf ./uri.js ./uri.d.ts",
+    "build": "npm run clean && babel src --out-dir . --extensions .ts,.tsx --no-comments --source-type=module --config-file='../../.babelrc' && tsc",
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "bugs": {
@@ -31,6 +34,10 @@
   },
   "dependencies": {
     "@trz/serialize": ">=0.1.0",
-    "@trz/type": ">=0.1.0"
+    "@trz/type": ">=0.1.0",
+    "core-js": "^3.19.1"
+  },
+  "devDependencies": {
+    "@types/core-js": "^2.5.5"
   }
 }
