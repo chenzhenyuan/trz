@@ -13,7 +13,7 @@
 
 
 
-import Uri, { HashParams, SearchParams } from '@trz/uri/src/uri';
+import Uri, { SearchParams } from '@trz/uri/src/uri';
 // // console.log(new Uri());
 // new Uri('//asdf@120.356.2.44///demo/pathname/filename.ext?searchKey=1&searchString=2#hashKey=1&hashString=2');
 
@@ -23,51 +23,37 @@ import Uri, { HashParams, SearchParams } from '@trz/uri/src/uri';
 // console.log(new Uri('file:///pathname#sss=11'));
 // console.log(new Uri('file:///pathname?sss=11#hhh=2222'));
 
-const querySearch = new SearchParams('?sss=111&sss=2222');
-querySearch.set('aa', 'aaa');
-querySearch.sort();
-console.log(querySearch, querySearch.toString());
+// const querySearch = new SearchParams('?sss=111&sss=2222');
+// querySearch.set('aa', 'aaa');
+// querySearch.sort();
+// console.log(querySearch, querySearch.toString());
 
-const hashString = new HashParams('#sss=111&sss=2222');
-hashString.set('aa', 'aaa');
-hashString.sort();
-console.log(hashString, hashString.toString());
+// const hashString = new HashParams('#sss=111&sss=2222');
+// hashString.set('aa', 'aaa');
+// hashString.sort();
+// console.log(hashString, hashString.toString());
 
-const uri = new Uri(location.href);
+// const uri = new Uri(location.href);
 
-uri.hashParams.set('aa', 111);
-uri.hashParams.append('bb', 111);
-uri.hashParams.delete('aa');
-console.log('' + uri.searchParams);
+// console.log('before::', uri);
+// console.log('before::', uri.host);
+// uri.host = 123;
+// console.log('after::', uri);
+// console.log('after::', uri.host);
+// uri.host = '789';
+// console.log('after::', uri);
+// console.log('after::', uri.host);
 
-uri.searchParams.set('aa', { a: 123 });
+
+const uri = new Uri('./prefix/user/', '../UserId');
 
 console.log(uri);
+uri.appendSearch('sss', {a: 1});
+uri.appendSearch({ 'mmm': '23412' });
+uri.appendSearch([[ 'a', 2 ], [ 'a', 3 ]]);
 
-// import requests, { Requests } from './packages/requests/src/requests';
+// uri.appendSearch({ aa: 'aa' });
+console.log(decodeURIComponent(uri.searchParams + ''));
 
-// console.log('requests::', requests);
-
-// requests.get('//cjee.sdf.sss///demo/get_url?sss=111&aa=222', 'aa=111&bb=111');
-
-// const api = new Requests({
-//   host: '//127.0.0.2:8905',
-//   pathname: '/server_name/v1/1',
-//   retry: '.3.1',
-//   withUserAuth: 'include',
-//   headers: {
-//     'accept': 'text/fragment+html',
-//     'x-request-id': 'x'.repeat(32),
-//     'x-request-client': 'development/api',
-//     'User-Agent': '--'
-//   },
-//   params: { aa: 'New_AAA' },
-//   body: {}
-// });
-
-// console.log('api::', api);
-// api.get('demo/get_url');
-
-// api.post('post_ssss', new FormData(), {});
 
 

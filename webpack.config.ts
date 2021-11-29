@@ -63,6 +63,7 @@ export default {
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       title: '开发模式',
+      publicPath: '/',
       filename: 'index.html'
     }),
   ],
