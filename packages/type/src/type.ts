@@ -5,7 +5,6 @@ const types = (any: unknown): string => {
   return ty.toLowerCase();
 };
 
-export const of = types;
 
 export const is = (source: unknown, assert: string | unknown): boolean => {
   if (types(assert) !== 'string') return false;
@@ -13,19 +12,35 @@ export const is = (source: unknown, assert: string | unknown): boolean => {
   return types(source) === String.prototype.toLowerCase.call(assert);
 };
 
-export const isString = (s: unknown): boolean => is(s, 'string');
+export const some = (source: unknown, ...typeList: string[]): boolean => {
+  return Array.from(typeList).includes(types(source));
+};
 
-export const isArray = (s: unknown): boolean => is(s, 'array');
+export const isString = (source: unknown): boolean => is(source, 'string');
 
-export const isObject = (s: unknown): boolean => is(s, 'object');
+export const isArray = (source: unknown): boolean => is(source, 'array');
 
-export const isNull = (s: unknown): boolean => is(s, 'null');
+export const isObject = (source: unknown): boolean => is(source, 'object');
 
-export const isBoolean = (s: unknown): boolean => is(s, 'boolean');
+export const isNull = (source: unknown): boolean => is(source, 'null');
 
-export const isNumber = (s: unknown): boolean => is(s, 'number');
+export const isBoolean = (source: unknown): boolean => is(source, 'boolean');
 
-export const isUndefined = (s: unknown): boolean => is(s, 'undefined');
+export const isNumber = (source: unknown): boolean => is(source, 'number');
 
+export const isUndefined = (source: unknown): boolean => is(source, 'undefined');
 
-export default { of, is, isString, isNumber, isArray, isNull, isBoolean, isObject, isUndefined};
+export const of = types;
+
+export default {
+  of,
+  is,
+  some,
+  isString,
+  isNumber,
+  isArray,
+  isNull,
+  isBoolean,
+  isObject,
+  isUndefined
+};
