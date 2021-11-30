@@ -18,48 +18,64 @@ yarn add @trz/type
 
 ```ts
 // ES6
-import type, {of, is}from '@trz/type';
+import ty, {of, is}from '@trz/type';
 
 // nodejs or broswerES5
-const type  = require('@trz/type');
+const ty  = require('@trz/type');
 ```
 
 ### Interface
 
 #### `function of(source: any): string;`
 
-* description:
-  Enter an element of any type and return the real type of the element in JavaScript.
+* Enter an element of any type and return the real type for the element in JavaScript.
 
-* example:
+* Example:
 
   ```js
-  import type from '@trz/type';
+  import ty from '@trz/type';
   
-  type.of(123456789)              //>>> number
+  ty.of(123456789)              //>>> number
   
-  type.of('this is a string')     //>>> string
+  ty.of('this is a string')     //>>> string
   
-  type.of([])                     //>>> array
+  ty.of([])                     //>>> array
   
-  type.of({})                     //>>> object
+  ty.of({})                     //>>> object
   ```
 
-#### `function is(source: any, type_name: string): boolean`
+#### `function is(source: any, assert: string): boolean`
 
-* description:
-  Verify that the incoming element is of the specified type.
+* Compare whether the type is the specified type.
   
-* example:
+* Example:
 
-```js
-import type from '@trz/type';
+  ```js
+  import ty from '@trz/type';
 
-type.is([], 'array')              //>>> true
+  ty.is([], 'array')              //>>> true
 
-type.is({}, 'array')              //>>> false
+  ty.is([], 'object')             //>>> false
 
-type.is('123456789', 'string')    //>>> true
+  ty.is('123456789', 'string')    //>>> true
 
-type.is(null, 'string')           //>>> false
-````
+  ty.is(null, 'string')           //>>> false
+  ````
+
+#### `function some(source: any, ...asserts: string[]): boolean`
+
+* Verify that the specified element contains the specified type.
+  
+* Example:
+
+  ```js
+  import ty from '@trz/type';
+
+  ty.some([1, 2], ['array', 'object'])      //>>> true
+    
+  ty.some([1, 2], ['object', 'string'])     //>>> false
+    
+  ty.some('1239', ['string'])               //>>> true
+    
+  ty.some(null, ['string'])                 //>>> false
+  ````
