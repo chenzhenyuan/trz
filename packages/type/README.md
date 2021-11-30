@@ -62,7 +62,7 @@ const ty  = require('@trz/type');
   ty.is(null, 'string')           //>>> false
   ````
 
-#### `function some(source: any, ...asserts: string[]): boolean`
+#### `function some(source: any, asserts: string[]): boolean`
 
 * Verify that the specified element contains the specified type.
   
