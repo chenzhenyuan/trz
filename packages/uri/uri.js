@@ -2,28 +2,60 @@
 
 require("core-js/modules/es.reflect.construct.js");
 
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
 require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isUri = exports.default = exports.Uri = exports.Serialize = exports.SearchParams = exports.HashParams = void 0;
+exports.default = exports.Uri = exports.SearchParams = exports.HashParams = void 0;
 
-var _toArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toArray"));
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.array.join.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/web.url.js");
+
+require("core-js/modules/web.url-search-params.js");
+
+require("core-js/modules/es.regexp.to-string.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.object.entries.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.symbol.to-string-tag.js");
+
+require("core-js/modules/es.json.to-string-tag.js");
+
+require("core-js/modules/es.math.to-string-tag.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
@@ -37,39 +69,9 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 
 var _wrapNativeSuper2 = _interopRequireDefault(require("@babel/runtime/helpers/wrapNativeSuper"));
 
-var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
-
-require("core-js/modules/es.regexp.constructor.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/es.array.splice.js");
-
-require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.string.match.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.object.entries.js");
-
-require("core-js/modules/es.string.search.js");
-
-require("core-js/modules/es.object.to-string.js");
-
 var _type = _interopRequireDefault(require("@trz/type"));
+
+var _serialize = _interopRequireDefault(require("@trz/serialize"));
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
@@ -80,70 +82,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var rProtocol = '((?<protocol>(^[^/]+:)(?=//))(//))?';
-var rUserInfo = '((?<username>[^:]+(?=(:|@)))(:(?<password>.+(?=@)))?@)?';
-var rHostName = '(?<hostname>([a-z0-9-]+\\.)+([a-z0-9-]+))?';
-var rPort = '(:(?<port>\\d{1,5}))?';
-var rHost = "((^//)?(?<host>".concat(rHostName).concat(rPort, "))?");
-var rPath = '(?<pathname>((\\.{1,2})?(/*?)[^/?#]*)+)?';
-var rSearch = '(?<search>\\?[^#]*)?';
-var rHash = '(?<hash>#.*$)?';
-var reg = new RegExp("".concat(rProtocol).concat(rUserInfo).concat(rHost).concat(rPath).concat(rSearch).concat(rHash), 'i');
-var rOrigin = /^((?:[^/]+:)(?=\/\/))?\/\/(?:([^:@]+)(?::([^@]+))?@)?(((?:[a-z0-9-]+\.)+[a-z0-9-]+)(?::(\d{1,5}))?)?/i;
-var rPathname = /([^?#]+)?(\?[^#]*)?(#.*)?$/i;
-
-var urlParse = function urlParse(url) {
-  if (_type.default.is(url, 'undefined')) {
-    url = window.location.href;
-  }
-
-  if (_type.default.is(url, 'string') && url !== '') {
-    var _rOrigin$exec, _rPathname$exec;
-
-    var href = decodeURIComponent(url);
-
-    var _ref = (_rOrigin$exec = rOrigin.exec(href)) !== null && _rOrigin$exec !== void 0 ? _rOrigin$exec : [],
-        _ref2 = (0, _slicedToArray2.default)(_ref, 7),
-        _ref2$ = _ref2[1],
-        protocol = _ref2$ === void 0 ? '' : _ref2$,
-        _ref2$2 = _ref2[2],
-        username = _ref2$2 === void 0 ? '' : _ref2$2,
-        _ref2$3 = _ref2[3],
-        password = _ref2$3 === void 0 ? '' : _ref2$3,
-        _ref2$4 = _ref2[4],
-        host = _ref2$4 === void 0 ? '' : _ref2$4,
-        _ref2$5 = _ref2[5],
-        hostname = _ref2$5 === void 0 ? '' : _ref2$5,
-        _ref2$6 = _ref2[6],
-        port = _ref2$6 === void 0 ? '' : _ref2$6;
-
-    var _ref3 = (_rPathname$exec = rPathname.exec(href.replace(rOrigin, ''))) !== null && _rPathname$exec !== void 0 ? _rPathname$exec : [],
-        _ref4 = (0, _slicedToArray2.default)(_ref3, 4),
-        _ref4$ = _ref4[1],
-        pathname = _ref4$ === void 0 ? '' : _ref4$,
-        _ref4$2 = _ref4[2],
-        search = _ref4$2 === void 0 ? '' : _ref4$2,
-        _ref4$3 = _ref4[3],
-        hash = _ref4$3 === void 0 ? '' : _ref4$3;
-
-    return {
-      hash: hash,
-      host: host,
-      hostname: hostname,
-      href: href,
-      origin: host ? "".concat(protocol, "//").concat(host) : '',
-      password: password,
-      pathname: pathname,
-      port: port,
-      protocol: protocol,
-      search: search,
-      username: username
-    };
-  }
-
-  throw new TypeError('The parameter must be a legal value.');
-};
 
 var ParamsError = function (_Error) {
   (0, _inherits2.default)(ParamsError, _Error);
@@ -168,77 +106,6 @@ var ParamsError = function (_Error) {
   return ParamsError;
 }((0, _wrapNativeSuper2.default)(Error));
 
-var Serialize = function () {
-  function Serialize(source) {
-    var _source$match;
-
-    (0, _classCallCheck2.default)(this, Serialize);
-    var matches = ((_source$match = source.match(/([^=&]+(?:=[^&]+)?)/g)) !== null && _source$match !== void 0 ? _source$match : []).map(function (i) {
-      return i.split(/=/i);
-    });
-
-    var _iterator = _createForOfIteratorHelper(matches),
-        _step;
-
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var _step$value = (0, _toArray2.default)(_step.value),
-            key = _step$value[0],
-            value = _step$value.slice(1);
-
-        this[key] = value.join('=');
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-  }
-
-  (0, _createClass2.default)(Serialize, [{
-    key: "toString",
-    value: function toString() {
-      return this.stringify();
-    }
-  }, {
-    key: "stringify",
-    value: function stringify() {
-      return Object.entries(this).map(function (arr) {
-        return arr.join('=');
-      }).join('&');
-    }
-  }, {
-    key: "set",
-    value: function set(key, value) {
-      this[key] = !value || _type.default.is(value, 'string') || _type.default.is(value, 'number') ? String(value || (value === 0 ? value : '')) : JSON.stringify(value);
-    }
-  }, {
-    key: "delete",
-    value: function _delete() {
-      for (var _len = arguments.length, keys = new Array(_len), _key = 0; _key < _len; _key++) {
-        keys[_key] = arguments[_key];
-      }
-
-      for (var _i = 0, _keys = keys; _i < _keys.length; _i++) {
-        var key = _keys[_i];
-
-        if (_type.default.is(key, 'string') && this.hasOwnProperty(key)) {
-          delete this[key];
-        }
-      }
-    }
-  }]);
-  return Serialize;
-}();
-
-exports.Serialize = Serialize;
-
-var isUri = function isUri(source) {
-  return rOrigin.test(source);
-};
-
-exports.isUri = isUri;
-
 var SearchParams = function (_Serialize) {
   (0, _inherits2.default)(SearchParams, _Serialize);
 
@@ -256,16 +123,14 @@ var SearchParams = function (_Serialize) {
   }
 
   (0, _createClass2.default)(SearchParams, [{
-    key: "stringify",
-    value: function stringify() {
-      return '?' + Object.entries(this).map(function (arr) {
-        arr[1] = encodeURIComponent(arr[1]);
-        return arr.join('=');
-      }).join('&');
+    key: "toString",
+    value: function toString() {
+      var str = this.stringify();
+      return str && "?".concat(str);
     }
   }]);
   return SearchParams;
-}(Serialize);
+}(_serialize.default);
 
 exports.SearchParams = SearchParams;
 
@@ -286,56 +151,114 @@ var HashParams = function (_Serialize2) {
   }
 
   (0, _createClass2.default)(HashParams, [{
-    key: "stringify",
-    value: function stringify() {
-      return '#' + Object.entries(this).map(function (arr) {
-        arr[1] = encodeURIComponent(arr[1]);
-        return arr.join('=');
-      }).join('&');
+    key: "toString",
+    value: function toString() {
+      var str = this.stringify();
+      return str && "#".concat(str);
     }
   }]);
   return HashParams;
-}(Serialize);
+}(_serialize.default);
 
 exports.HashParams = HashParams;
 
-var Uri = function () {
-  function Uri(url) {
-    (0, _classCallCheck2.default)(this, Uri);
-    var properties = urlParse(url);
-    properties.hashParams = new HashParams(properties.hash || '#');
-    properties.searchParams = new SearchParams(properties.search || '?');
+var mergeUri = function mergeUri() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
 
-    for (var key in properties) {
-      var _properties$key;
+  var url = new URL(window.location.toString());
+  args = Array.from(args);
 
-      var value = (_properties$key = properties[key]) !== null && _properties$key !== void 0 ? _properties$key : '';
-      Object.defineProperty(this, key, {
-        writable: false,
-        configurable: false,
-        enumerable: true,
-        value: value
-      });
+  var _iterator = _createForOfIteratorHelper(args),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var element = _step.value;
+      url = new URL(element, url);
     }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return url;
+};
+
+var Uri = function (_URL) {
+  (0, _inherits2.default)(Uri, _URL);
+
+  var _super4 = _createSuper(Uri);
+
+  function Uri() {
+    (0, _classCallCheck2.default)(this, Uri);
+    return _super4.call(this, mergeUri.apply(void 0, arguments));
   }
 
   (0, _createClass2.default)(Uri, [{
-    key: "toString",
-    value: function toString() {
-      return this.stringify();
+    key: "setSearch",
+    value: function setSearch(name, value) {
+      var _this2 = this;
+
+      var params = [];
+
+      if (_type.default.is(name, 'string')) {
+        params = [[name, value]];
+      } else if (_type.default.is(name, 'object')) {
+        params = Object.entries(name);
+      } else if (_type.default.is(name, 'array')) {
+        params = name;
+      } else {
+        throw TypeError('参数类型错误，请使用正确的参数。');
+      }
+
+      params.forEach(function (_ref) {
+        var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+            k = _ref2[0],
+            v = _ref2[1];
+
+        console.log([k, v]);
+
+        _this2.searchParams.set(k, JSON.stringify(v));
+      });
     }
   }, {
-    key: "stringify",
-    value: function stringify() {
-      var domain = this.host !== '' ? this.protocol + '//' + this.host : '';
-      var search = this.searchParams.toString() === '?' ? '' : this.searchParams;
-      var hash = this.hashParams.toString() === '#' ? '' : this.hashParams;
-      return domain + this.pathname + search + hash;
+    key: "appendSearch",
+    value: function appendSearch(name, value) {
+      var _this3 = this;
+
+      var params = [];
+
+      if (_type.default.is(name, 'string')) {
+        params = [[name, value]];
+      } else if (_type.default.is(name, 'object')) {
+        params = Object.entries(name);
+      } else if (_type.default.is(name, 'array')) {
+        params = name;
+      } else {
+        throw TypeError('参数类型错误，请使用正确的参数。');
+      }
+
+      params.forEach(function (_ref3) {
+        var _ref4 = (0, _slicedToArray2.default)(_ref3, 2),
+            k = _ref4[0],
+            v = _ref4[1];
+
+        _this3.searchParams.append(k, JSON.stringify(v));
+      });
     }
+  }, {
+    key: "removeSearch",
+    value: function removeSearch() {}
   }]);
   return Uri;
-}();
+}((0, _wrapNativeSuper2.default)(URL));
 
 exports.Uri = Uri;
+Object.defineProperty(Uri.prototype, Symbol.toStringTag, {
+  value: 'Uri'
+});
 var _default = Uri;
 exports.default = _default;

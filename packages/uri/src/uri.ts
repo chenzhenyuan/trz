@@ -49,7 +49,7 @@ export class HashParams extends Serialize {
 }
 
 
-const uriParser = (...args: any): URL | string => {
+const mergeUri = (...args: any): URL | string => {
   let url = new URL(window.location.toString());
 
   args = Array.from(args);
@@ -64,7 +64,7 @@ const uriParser = (...args: any): URL | string => {
 
 export class Uri extends URL {
   constructor(...args: any[]) {
-    super(uriParser(...args));
+    super(mergeUri(...args));
   }
 
   setSearch(name: any, value?: any) {
@@ -106,7 +106,6 @@ export class Uri extends URL {
     }
 
     params.forEach(([ k, v ]) => {
-      console.log([ k, v ]);
       this.searchParams.append(k, JSON.stringify(v));
     });
   }
