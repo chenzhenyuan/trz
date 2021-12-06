@@ -3,6 +3,9 @@ import type from '@trz/type';
 type ArgumentsItem = string | { [ k: string ]: boolean; };
 type Arguments = Array<ArgumentsItem | ArgumentsItem[]>;
 
+
+export type ClassName = ArgumentsItem | ClassName[] | { [classname : string] : ClassName};
+
 interface ClassNamesInterface {
   (...args: Arguments): string;
 }
@@ -12,24 +15,24 @@ const classnames: ClassNamesInterface = (...args) => {
   let classes: string[] = [];
 
   function pushClasses(cls: string): void {
-    classes = classes.concat(cls.split(" "));
+    classes = classes.concat(cls.split(' '));
   }
 
   Array.from(args).forEach((classname: any) => {
-    if (type.is(classname, "string")) {
+    if (type.is(classname, 'string')) {
       pushClasses(`${classname}`);
     }
-    else if (type.is(classname, "object")) {
+    else if (type.is(classname, 'object')) {
       for (const [ c, b ] of Object.entries(classname)) {
         if (b === true) pushClasses(c);
       }
     }
-    else if (type.is(classname, "array")) {
+    else if (type.is(classname, 'array')) {
       pushClasses(classnames(...classname));
     }
   });
 
-  return Array.from(new Set(classes)).join(" ").replace(/(^\s|\s$)/g, "").replace(/\s+/g, " ");
+  return Array.from(new Set(classes)).join(' ').replace(/(^\s|\s$)/g, '').replace(/\s+/g, ' ');
 };
 
 export { classnames as default, classnames };
