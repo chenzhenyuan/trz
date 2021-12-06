@@ -39,5 +39,8 @@
   },
   "devDependencies": {
     "jest": "^27.1.0"
+  },
+  "dependencies": {
+    "@trz/type": "^0.3.2"
   }
 }

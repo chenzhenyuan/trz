@@ -3,10 +3,10 @@ import util, { guid, ty } from '@trz/util';
 import Uri from '@trz/uri';
 
 interface RequestOptionInterface extends RequestInit {
-  url: string;
   host?: string;
-  timeout?: number;
   pathname?: string;
+  url: string;
+  timeout?: number;
   withUserAuth?: boolean | RequestCredentials,
 }
 interface RequestCoreInterface {
@@ -72,6 +72,7 @@ class RequestError extends Error {
 
 // 默认请求超时时间
 export const DEFAULT_TIMEOUT = 30;
+
 // --------------------------------------------------------------------------------------------------------------------
 export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionInterface) => {
   let reqTimeoutId: number | NodeJS.Timeout;
@@ -79,15 +80,10 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   const abortController = new AbortController();
   const { signal } = abortController;
 
-
   const { host, pathname: prefix, url, method, withUserAuth } = requestOptions || {};
 
   /* 处理请求的超时时间，将传入的秒转换为毫秒，为 0 或不传时，则使用默认值 */
   const timeout = (requestOptions?.timeout || DEFAULT_TIMEOUT) * 1000;
-
-  const domain = (new Uri(host)).origin;
-  const uri = new Uri(requestOptions.url);
-  const pathname = util.pathname.resolve(window.location.pathname, util.pathname.join(prefix ?? '', uri.pathname));
 
   const headers: Headers = mergeHeaders(gloHeaders, (requestOptions?.headers ?? {}));
   const cache: RequestCache = requestOptions.cache ?? 'no-cache';
@@ -96,6 +92,8 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   const redirect: RequestRedirect = 'follow';
   const referrer = '';
   const referrerPolicy: ReferrerPolicy = 'no-referrer';
+
+
 
   const reqTimeout = () => {
     return (
@@ -109,34 +107,43 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   };
 
   const reqFetch = (): Promise<any> => {
-    const $url = domain + pathname + uri.searchParams.stringify();
-
-    console.log($url);
+    // domain + pathname + uri.searchParams.stringify();
+    const targetUrl =  new Uri(host, prefix, url).toString();
 
     if (headers.has('x-request-id')) {
       headers.set('x-request-id', util.guid(headers.get('x-request-id') ?? void(0)));
     }
 
-    const $reqInit = new Request($url, {
-      // body,
+
+    const origin = new Uri(host, prefix, url).toString();
+
+    const reqInfo = new Request(origin, {
+      /* body, */
       cache, credentials, headers,
-      // integrity,
-      keepalive: false,
-      method,
-      mode, redirect, referrer, referrerPolicy, signal,
+      /* integrity, */
+      method, mode, redirect, referrer, referrerPolicy,
+      signal, keepalive: false,
     });
 
+    console.log(reqInfo);
 
-    // console.debug('%c[请求开始]', 'color: #0000ff', $reqInit);
-    return fetch($reqInit).then((response) => (response.status >= 400 ? Promise.reject(response) : response));
+    return (
+      fetch(reqInfo).finally(() => {
+        if (reqTimeoutId) {
+          clearTimeout(<number>reqTimeoutId);
+        }
+      }).then((response) => {
+        if (response.status >= 400) {
+          return Promise.reject(response);
+        }
+
+        return response;
+      })
+    );
   };
 
-  return (
-    Promise.race([ reqTimeout(), reqFetch() ]).finally(() => {
-      clearTimeout(<number>reqTimeoutId);
-      // console.debug('%c[请求结束]', 'color: #559955', headers.get('x-request-id'));
-    })
-  );
+  return Promise.race([ reqTimeout(), reqFetch() ]);
 };
+
 
 export default requestCore;

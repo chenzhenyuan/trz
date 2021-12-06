@@ -13,7 +13,7 @@
 
 
 
-import Uri, { SearchParams } from '@trz/uri/src/uri';
+import Uri, { SearchParams } from '@trz/uri';
 // // console.log(new Uri());
 // new Uri('//asdf@120.356.2.44///demo/pathname/filename.ext?searchKey=1&searchString=2#hashKey=1&hashString=2');
 
