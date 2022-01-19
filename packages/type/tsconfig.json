@@ -3,10 +3,8 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "baseUrl": "./",
+    "outDir": ".",
     "rootDir": "./src",
-    "outDir": "./lib",
-    /* 指定类型的描述文件存放的目录 */
-    // "declarationDir": "./types",
   },
 
   "include": ["src", "global.d.ts"],
