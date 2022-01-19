@@ -1,3 +1,13 @@
+/*
+ * @since        : 2021/10/24 16:32:47 +0800
+ * @filePath     : /webpack.config.ts
+ * @updated      : 2022/01/19 14:53:43 +0800
+ * @lastEditors  : JAYNE·CHEN
+ * @creator      : JAYNE·CHEN
+ * @description  : Webpack 配置文件
+ */
+
+
 import * as path from 'path';
 import * as fs from 'fs';
 import * as webpack from 'webpack';
@@ -13,7 +23,7 @@ export default {
 
   target: 'web',
 
-  entry: './development.ts',
+  entry: './development/index',
 
   output: {
     path: path.resolve(__dirname, 'dist'),
