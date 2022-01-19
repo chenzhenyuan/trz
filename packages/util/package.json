@@ -1,14 +1,20 @@
+
 {
+  "name": "@trz/util",
+  "description": "> 常用工具库",
+  "version": "0.3.2",
+  "license": "MIT",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
+  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/util#readme",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc",
+    "clean": "rimraf lib",
+    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
+    "test": "npm run build && jest"
+  },
   "bugs": {
     "url": "https://github.com/chenzhenyuan/trz/issues"
-  },
-  "dependencies": {
-    "@trz/type": ">=0.2.8"
-  },
-  "description": "> 常用工具库",
-  "devDependencies": {
-    "jest": "^27.4.7"
   },
   "directories": {
     "lib": "lib",
@@ -19,10 +25,6 @@
     "README_CN.md",
     "README.md"
   ],
-  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/util#readme",
-  "license": "MIT",
-  "main": "lib/index.js",
-  "name": "@trz/util",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
@@ -30,11 +32,10 @@
     "type": "git",
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
-  "scripts": {
-    "build": "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc",
-    "clean": "rimraf lib",
-    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
-    "test": "npm run build && jest"
+  "dependencies": {
+    "@trz/type": "^0.3.2"
   },
-  "version": "0.3.2"
+  "devDependencies": {
+    "jest": "^27.4.7"
+  }
 }

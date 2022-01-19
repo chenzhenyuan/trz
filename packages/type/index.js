@@ -20,7 +20,6 @@ exports.ENUM_TYPE = ENUM_TYPE;
   ENUM_TYPE["list"] = "array";
   ENUM_TYPE["number"] = "number";
   ENUM_TYPE["string"] = "string";
-  ENUM_TYPE["arraylike"] = "arraylike";
 })(ENUM_TYPE || (exports.ENUM_TYPE = ENUM_TYPE = {}));
 
 var types = function types(any) {
