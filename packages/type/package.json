@@ -4,11 +4,13 @@
   "version": "0.3.2",
   "license": "MIT",
   "author": "CHEN·ZHENYUA <JAYNE@CHENZHENYUAN.COM>",
-  "main": "lib/type.js",
+  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/type#readme",
+  "main": "./index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "npm run clean && babel src --out-dir lib --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc ",
-    "clean": "rimraf lib",
-    "obsolete::build": "npm run clean && babel src --out-dir=lib --source-maps --extensions=.ts,.tsx",
+    "clean": "rimraf ./index.js ./index.d.ts",
+    "build": "npm run clean && babel src --out-dir . --extensions .ts,.tsx --delete-dir-on-start --no-comments --config-file='../../.babelrc' && tsc ",
+    "build::obsolete": "npm run clean && babel src --out-dir=lib --source-maps --extensions=.ts,.tsx",
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
     "test": "npm run build && jest"
   },
@@ -25,8 +27,6 @@
   "files": [
     "lib/*"
   ],
-
-  "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/type#readme",
 
   "keywords": [
     "type",
