@@ -45,6 +45,8 @@ require("core-js/modules/es.object.entries.js");
 
 require("core-js/modules/web.dom-collections.for-each.js");
 
+require("core-js/modules/es.object.define-property.js");
+
 require("core-js/modules/es.symbol.to-string-tag.js");
 
 require("core-js/modules/es.json.to-string-tag.js");
@@ -103,7 +105,7 @@ var ParamsError = function (_Error) {
     return _this;
   }
 
-  return ParamsError;
+  return (0, _createClass2.default)(ParamsError);
 }((0, _wrapNativeSuper2.default)(Error));
 
 var SearchParams = function (_Serialize) {

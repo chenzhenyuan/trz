@@ -27,8 +27,8 @@
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
   "scripts": {
-    "clean": "rimraf ./index.js ./index.d.ts",
     "build": "npm run clean && babel src --out-dir . --extensions .ts,.tsx --no-comments --source-type=module --config-file='../../.babelrc' && tsc",
+    "clean": "rimraf ./index.js ./index.d.ts",
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "bugs": {
