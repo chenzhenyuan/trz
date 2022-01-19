@@ -3,7 +3,7 @@
  * @since        : 2022/01/19 15:18:11 +0800
  * @filePath     : /packages/type/src/index.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/01/19 15:39:24 +0800
+ * @updated      : 2022/01/19 15:55:33 +0800
  * @description  : A tool for real type validate.
  */
 
@@ -14,7 +14,7 @@ export enum ENUM_TYPE {
   list = 'array',
   number = 'number',
   string = 'string',
-  arraylike = 'arraylike',
+  // arraylike = 'arraylike',
 }
 
 const types = (any: unknown): string => {
