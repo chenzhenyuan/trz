@@ -1,18 +1,26 @@
 /*
- * @since        : 2021/10/24 16:27:12 +0800
- * @description  : file content
- * @filePath     : /packages/type/src/type.ts
- * @updated      : 2022/01/19 11:42:39 +0800
- * @lastEditors  : JAYNE·CHEN
  * @creator      : JAYNE·CHEN
+ * @since        : 2022/01/19 15:18:11 +0800
+ * @filePath     : /packages/type/src/index.ts
+ * @lastEditors  : JAYNE·CHEN
+ * @updated      : 2022/01/19 15:39:24 +0800
+ * @description  : A tool for real type validate.
  */
 
+
+export enum ENUM_TYPE {
+  int = 'number',
+  array = 'array',
+  list = 'array',
+  number = 'number',
+  string = 'string',
+  arraylike = 'arraylike',
+}
 
 const types = (any: unknown): string => {
   const ty: string = Object.prototype.toString.call(any).slice(8, -1);
   return ty.toLowerCase();
 };
-
 
 export const is = (source: unknown, assert: string | unknown): boolean => {
   if (types(assert) !== 'string') {
@@ -44,4 +52,4 @@ export const isArray = (source: unknown): boolean => is(source, 'array');
 
 export const of = types;
 
-export default { of, is, some, isString, isNumber, isArray, isNull, isBoolean, isObject, isUndefined };
+export default { enum: ENUM_TYPE, is, some, isString, isNumber, isArray, isNull, isBoolean, isObject, isUndefined };

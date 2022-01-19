@@ -9,7 +9,7 @@
   "types": "index.d.ts",
   "scripts": {
     "clean": "rimraf ./index.js ./index.d.ts",
-    "build": "npm run clean && babel src --out-dir . --extensions .ts,.tsx --no-comments --source-type=module --config-file='../../.babelrc' && tsc",
+    "build": "npm run clean && babel src --out-dir . --extensions .ts --no-comments --source-type=module --config-file='../../.babelrc' && tsc",
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
     "test": "npm run build && jest"
   },
