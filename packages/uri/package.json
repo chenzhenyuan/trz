@@ -1,26 +1,23 @@
 {
   "name": "@trz/uri",
+  "description": "一个简单的Uri工具库",
   "version": "0.3.0",
-  "main": "./uri.js",
   "license": "MIT",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
+  "main": "./uri.js",
+  "types": "./uri.d.ts",
+  "scripts": {
+    "build": "npm run clean && babel src --out-dir . --extensions .ts,.tsx --no-comments --source-type=module --config-file='../../.babelrc' && tsc",
+    "clean": "rimraf ./uri.js ./uri.d.ts",
+    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
+  },
   "bugs": {
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
-  "dependencies": {
-    "@trz/serialize": ">=0.1.0",
-    "@trz/type": ">=0.1.0"
-  },
-  "description": "一个简单的Uri工具库",
-  "devDependencies": {
-    "jest": "^27.4.7"
-  },
   "directories": {
-    "lib": "lib",
     "test": "__tests__"
   },
   "files": [
-    "lib",
     "uri.js",
     "uri.d.ts",
     "README_CN.md"
@@ -33,10 +30,11 @@
     "type": "git",
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
-  "scripts": {
-    "build": "npm run clean && babel src --out-dir . --extensions .ts,.tsx --no-comments --source-type=module --config-file='../../.babelrc' && tsc",
-    "clean": "rimraf ./uri.js ./uri.d.ts",
-    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
+  "dependencies": {
+    "@trz/serialize": "^0.1.0",
+    "@trz/type": "^0.3.2"
   },
-  "types": "uri.d.ts"
+  "devDependencies": {
+    "jest": "^27.4.7"
+  }
 }

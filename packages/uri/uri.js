@@ -2,6 +2,8 @@
 
 require("core-js/modules/es.reflect.construct.js");
 
+require("core-js/modules/es.array.slice.js");
+
 require("core-js/modules/es.symbol.iterator.js");
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -20,8 +22,6 @@ require("core-js/modules/es.string.split.js");
 require("core-js/modules/es.array.splice.js");
 
 require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.array.slice.js");
 
 require("core-js/modules/es.string.replace.js");
 
@@ -71,9 +71,9 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 
 var _wrapNativeSuper2 = _interopRequireDefault(require("@babel/runtime/helpers/wrapNativeSuper"));
 
-var _type = _interopRequireDefault(require("@trz/type"));
-
 var _serialize = _interopRequireDefault(require("@trz/serialize"));
+
+var _type = _interopRequireDefault(require("@trz/type"));
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
@@ -116,11 +116,6 @@ var SearchParams = function (_Serialize) {
   function SearchParams() {
     var search = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     (0, _classCallCheck2.default)(this, SearchParams);
-
-    if (search.slice(0, 1) != '?') {
-      throw new ParamsError('The params must be a search string.');
-    }
-
     return _super2.call(this, (typeof search === 'string' ? search : '').replace(/#.*$/i, '').replace(/^\?/i, ''));
   }
 
@@ -144,11 +139,6 @@ var HashParams = function (_Serialize2) {
   function HashParams() {
     var hash = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     (0, _classCallCheck2.default)(this, HashParams);
-
-    if (hash.slice(0, 1) != '#') {
-      throw new ParamsError('The params must be a hash string.');
-    }
-
     return _super3.call(this, (typeof hash === 'string' ? hash : '').replace(/\?[^#]*/i, '').replace(/^#/i, ''));
   }
 
@@ -206,7 +196,7 @@ var Uri = function (_URL) {
 
       var params = [];
 
-      if (_type.default.is(name, 'string')) {
+      if (_type.default.is(name, 'string') && name.length) {
         params = [[name, value]];
       } else if (_type.default.is(name, 'object')) {
         params = Object.entries(name);
@@ -218,12 +208,12 @@ var Uri = function (_URL) {
 
       params.forEach(function (_ref) {
         var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
-            k = _ref2[0],
-            v = _ref2[1];
+            key = _ref2[0],
+            val = _ref2[1];
 
-        console.log([k, v]);
+        var v = val !== null && val !== void 0 ? val : '';
 
-        _this2.searchParams.set(k, JSON.stringify(v));
+        _this2.searchParams.set(key, _type.default.is(v, 'string') ? v : JSON.stringify(v));
       });
     }
   }, {
@@ -233,7 +223,7 @@ var Uri = function (_URL) {
 
       var params = [];
 
-      if (_type.default.is(name, 'string')) {
+      if (_type.default.is(name, 'string') && name.length) {
         params = [[name, value]];
       } else if (_type.default.is(name, 'object')) {
         params = Object.entries(name);
@@ -245,10 +235,12 @@ var Uri = function (_URL) {
 
       params.forEach(function (_ref3) {
         var _ref4 = (0, _slicedToArray2.default)(_ref3, 2),
-            k = _ref4[0],
-            v = _ref4[1];
+            key = _ref4[0],
+            val = _ref4[1];
 
-        _this3.searchParams.append(k, JSON.stringify(v));
+        var v = val !== null && val !== void 0 ? val : '';
+
+        _this3.searchParams.append(key, _type.default.is(v, 'string') ? v : JSON.stringify(v));
       });
     }
   }, {
