@@ -1,3 +1,13 @@
+/*
+ * @creator      : JAYNE·CHEN
+ * @since        : 2021/10/20 12:38:12 +0800
+ * @filePath     : /development/index.ts
+ * @lastEditors  : JAYNE·CHEN
+ * @updated      : 2022/01/19 15:03:38 +0800
+ * @description  : 调试模块入口文件
+ */
+
+
 // import pathname from '@trz/util/lib/pathname';
 // const targetUri = '../wordpress/2019/08/js-dom-mutation-observer/a';
 // console.group(targetUri);
@@ -10,10 +20,11 @@
 // console.log('path.resolve() ::', pathname.resolve('./bar', '../111', './baz'));
 // console.groupEnd();
 
+import "./@trz-type"
 
 
 
-import Uri, { SearchParams } from '@trz/uri';
+// import Uri, { SearchParams } from '@trz/uri';
 // // console.log(new Uri());
 // new Uri('//asdf@120.356.2.44///demo/pathname/filename.ext?searchKey=1&searchString=2#hashKey=1&hashString=2');
 
@@ -45,15 +56,12 @@ import Uri, { SearchParams } from '@trz/uri';
 // console.log('after::', uri.host);
 
 
-const uri = new Uri('./prefix/user/', '../UserId');
+// const uri = new Uri('./prefix/user/', '../UserId');
 
-console.log(uri);
-uri.appendSearch('sss', {a: 1});
-uri.appendSearch({ 'mmm': '23412' });
-uri.appendSearch([[ 'a', 2 ], [ 'a', 3 ]]);
+// console.log(uri);
+// uri.appendSearch('sss', {a: 1});
+// uri.appendSearch({ 'mmm': '23412' });
+// uri.appendSearch([[ 'a', 2 ], [ 'a', 3 ]]);
 
-// uri.appendSearch({ aa: 'aa' });
-console.log(decodeURIComponent(uri.searchParams + ''));
-
-
-
+// // uri.appendSearch({ aa: 'aa' });
+// console.log(decodeURIComponent(uri.searchParams + ''));
