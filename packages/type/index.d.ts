@@ -3,8 +3,7 @@ export declare enum ENUM_TYPE {
     array = "array",
     list = "array",
     number = "number",
-    string = "string",
-    arraylike = "arraylike"
+    string = "string"
 }
 export declare const is: (source: unknown, assert: string | unknown) => boolean;
 export declare const some: (source: unknown, assertList: string[]) => boolean;
