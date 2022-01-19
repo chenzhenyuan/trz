@@ -1,4 +1,13 @@
-import type from '@trz/type';
+/*
+ * @creator      : JAYNE·CHEN
+ * @since        : 2021/09/17 12:57:26 +0800
+ * @filePath     : /packages/classnames/src/classnames.ts
+ * @lastEditors  : JAYNE·CHEN
+ * @updated      : 2022/01/19 13:28:47 +0800
+ */
+
+
+import t from '@trz/type';
 
 type ArgumentsItem = string | { [ k: string ]: boolean; };
 type Arguments = Array<ArgumentsItem | ArgumentsItem[]>;
@@ -11,6 +20,7 @@ interface ClassNamesInterface {
 }
 /* ************************************************************************* */
 
+
 const classnames: ClassNamesInterface = (...args) => {
   let classes: string[] = [];
 
@@ -19,15 +29,15 @@ const classnames: ClassNamesInterface = (...args) => {
   }
 
   Array.from(args).forEach((classname: any) => {
-    if (type.is(classname, 'string')) {
+    if (t.is(classname, 'string')) {
       pushClasses(`${classname}`);
     }
-    else if (type.is(classname, 'object')) {
+    else if (t.is(classname, 'object')) {
       for (const [ c, b ] of Object.entries(classname)) {
         if (b === true) pushClasses(c);
       }
     }
-    else if (type.is(classname, 'array')) {
+    else if (t.is(classname, 'array')) {
       pushClasses(classnames(...classname));
     }
   });

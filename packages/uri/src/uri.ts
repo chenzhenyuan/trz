@@ -33,6 +33,7 @@ export class SearchParams extends Serialize {
   }
 }
 
+
 export class HashParams extends Serialize {
   constructor(hash = '') {
     if (hash.slice(0, 1) != '#') {
@@ -114,9 +115,6 @@ export class Uri extends URL {
   }
 }
 
-Object.defineProperty(
-  Uri.prototype,
-  Symbol.toStringTag, { value: 'Uri' }
-);
+Object.defineProperty(Uri.prototype, Symbol.toStringTag, { value: 'Uri' });
 
 export default Uri;

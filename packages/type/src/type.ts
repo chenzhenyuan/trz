@@ -1,3 +1,11 @@
+/*
+ * @since        : 2021/10/24 16:27:12 +0800
+ * @description  : file content
+ * @filePath     : /packages/type/src/type.ts
+ * @updated      : 2022/01/19 11:42:39 +0800
+ * @lastEditors  : JAYNE·CHEN
+ * @creator      : JAYNE·CHEN
+ */
 
 
 const types = (any: unknown): string => {
@@ -36,15 +44,4 @@ export const isArray = (source: unknown): boolean => is(source, 'array');
 
 export const of = types;
 
-export default {
-  of,
-  is,
-  some,
-  isString,
-  isNumber,
-  isArray,
-  isNull,
-  isBoolean,
-  isObject,
-  isUndefined
-};
+export default { of, is, some, isString, isNumber, isArray, isNull, isBoolean, isObject, isUndefined };
