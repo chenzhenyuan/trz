@@ -93,8 +93,6 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   const referrer = '';
   const referrerPolicy: ReferrerPolicy = 'no-referrer';
 
-
-
   const reqTimeout = () => {
     return (
       new Promise((resolve, reject) => {
@@ -113,7 +111,6 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
     if (headers.has('x-request-id')) {
       headers.set('x-request-id', util.guid(headers.get('x-request-id') ?? void(0)));
     }
-
 
     const origin = new Uri(host, prefix, url).toString();
 

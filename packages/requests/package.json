@@ -22,18 +22,21 @@
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
   "scripts": {
-    "clean"  : "npx rimraf dist",
-    "build"  : "npm run clean && npx tsc && npx babel src --out-dir dist --extensions .ts,.tsx --no-comments --config-file='../../.babelrc' --source-type=module",
-    "test"   : "npm run build && jest",
+    "clean": "npx rimraf dist",
+    "build": "npm run clean && npx tsc && npx babel src --out-dir dist --extensions .ts,.tsx --no-comments --config-file='../../.babelrc' --source-type=module",
+    "test": "npm run build && jest",
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "bugs": {
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
   "dependencies": {
-    "whatwg-fetch": "^3.6.2",
     "@trz/type": ">=0.2.8",
+    "@trz/uri": ">=0.2.0",
     "@trz/util": ">=0.3.0",
-    "@trz/uri": ">=0.2.0"
+    "whatwg-fetch": "^3.6.2"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7"
   }
 }
