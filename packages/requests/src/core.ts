@@ -84,7 +84,7 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
 
   // console.debug('>> %crequestOptions:::', 'color: #f0f', requestOptions);
 
-  const { url = './', method = 'GET', withUserAuth = false } = requestOptions || {};
+  const { url = '', method = 'GET', withUserAuth = false } = requestOptions || {};
 
 
   /* 处理请求的超时时间，将传入的秒转换为毫秒，不传时，则使用默认值 */
@@ -119,12 +119,9 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
     const baseUrl = new Uri(host, affix, url).toString();
     // console.log('>> baseUrl: %s', baseUrl);
 
-
     if (headers.has('x-request-id')) {
       headers.set('x-request-id', util.guid(headers.get('x-request-id') ?? void(0)));
     }
-
-
 
     const reqInfo = new Request(baseUrl, {
       /* body, */

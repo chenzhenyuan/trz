@@ -46,14 +46,15 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
 
     descriptor.value = function(url: string, data?: any, opts?: Record<string, any>): typeof fnOriginCaller {
       const method = propertyName.toUpperCase();
-      const uri = new Uri(<string>url);
-      console.log('** uri::', url, uri);
+      console.debug('** method:::', method);
+
+      // const uri = new Uri(<string>url);
+      // console.log('**    uri:::', url, uri);
       // url = uri.origin + uri.pathname;
 
       opts = { ...(opts || {}) };
 
-      console.debug('** opts:::', opts);
-      console.debug('** method:::', method);
+      console.debug('**   opts:::', opts);
       if (method === 'GET' && util.type.is(data, 'string')) {
         //  new Serialize(data)
       }
