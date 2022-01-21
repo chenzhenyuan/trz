@@ -2,16 +2,11 @@
 import util, { guid, ty } from '@trz/util';
 import Uri from '@trz/uri';
 
-interface RequestOptionInterface extends RequestInit {
-  host?: string;
-  pathname?: string;
-  url: string;
-  timeout?: number;
-  withUserAuth?: boolean | RequestCredentials,
-}
-interface RequestCoreInterface {
-  (P: RequestOptionInterface): PromiseLike<any>;
-}
+
+
+export const ERR_REQUSST_TIMEOUT = 100504;
+// 默认请求超时时间
+export const DEFAULT_TIMEOUT = 30;
 
 
 const gloHeaders = {
@@ -19,7 +14,6 @@ const gloHeaders = {
   'x-request-id': '-********'.repeat(4).slice(1),
   'x-request-client': 'TrzRequests/0.1.0',
 };
-
 
 export const mergeHeaders = (...args: HeadersInit[]): Headers => {
   const singularKey = [ 'x-request-id', 'authorization' ];
@@ -51,8 +45,6 @@ export const mergeHeaders = (...args: HeadersInit[]): Headers => {
   return headers;
 };
 
-
-const ERR_REQUSST_TIMEOUT = 100504;
 class RequestError extends Error {
   code: number | string = 10000;
 
@@ -69,23 +61,39 @@ class RequestError extends Error {
   }
 }
 
-
-// 默认请求超时时间
-export const DEFAULT_TIMEOUT = 30;
-
 // --------------------------------------------------------------------------------------------------------------------
-export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionInterface) => {
+type RequestCoreType = Promise<Record<string, any> | string>;
+
+interface RequestOptionInterface extends RequestInit {
+  host?: string;
+  pathname?: string;
+  url: string;
+  timeout?: number;
+  withUserAuth?: boolean | RequestCredentials,
+}
+
+interface RequestCoreInterface {
+  (P: RequestOptionInterface): RequestCoreType;
+}
+
+export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionInterface):RequestCoreType => {
   let reqTimeoutId: number | NodeJS.Timeout;
 
   const abortController = new AbortController();
   const { signal } = abortController;
 
-  const { host, pathname: prefix, url, method, withUserAuth } = requestOptions || {};
+  // console.debug('>> %crequestOptions:::', 'color: #f0f', requestOptions);
 
-  /* 处理请求的超时时间，将传入的秒转换为毫秒，为 0 或不传时，则使用默认值 */
-  const timeout = (requestOptions?.timeout || DEFAULT_TIMEOUT) * 1000;
+  const { url = './', method = 'GET', withUserAuth = false } = requestOptions || {};
+
+
+  /* 处理请求的超时时间，将传入的秒转换为毫秒，不传时，则使用默认值 */
+  const timeout = (requestOptions?.timeout ?? DEFAULT_TIMEOUT) * 1000;
+  // console.debug('>> 超时时长：%dms (默认超时：%dms)', timeout, DEFAULT_TIMEOUT * 1000);
 
   const headers: Headers = mergeHeaders(gloHeaders, (requestOptions?.headers ?? {}));
+  // console.debug('>> headers::: %o', headers);
+
   const cache: RequestCache = requestOptions.cache ?? 'no-cache';
   const credentials: RequestCredentials  = (<RequestCredentials>([ 'omit', 'include' ][+(withUserAuth as boolean)]) || (withUserAuth as RequestCredentials)) ?? 'same-origin';
   const mode: RequestMode = 'cors';
@@ -93,7 +101,7 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   const referrer = '';
   const referrerPolicy: ReferrerPolicy = 'no-referrer';
 
-  const reqTimeout = () => {
+  const reqTimeout = (): Promise<unknown> => {
     return (
       new Promise((resolve, reject) => {
         reqTimeoutId = setTimeout(() => {
@@ -105,42 +113,59 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   };
 
   const reqFetch = (): Promise<any> => {
-    // domain + pathname + uri.searchParams.stringify();
-    const targetUrl =  new Uri(host, prefix, url).toString();
+    const host = (requestOptions?.host ?? '').slice(-1) === '/' ? requestOptions?.host : `${requestOptions?.host}/`;
+    const affix = (requestOptions?.pathname ?? '').slice(-1) === '/' ? requestOptions?.pathname : `${requestOptions?.pathname}/`;
+
+    const baseUrl = new Uri(host, affix, url).toString();
+    // console.log('>> baseUrl: %s', baseUrl);
+
 
     if (headers.has('x-request-id')) {
       headers.set('x-request-id', util.guid(headers.get('x-request-id') ?? void(0)));
     }
 
-    const origin = new Uri(host, prefix, url).toString();
 
-    const reqInfo = new Request(origin, {
+
+    const reqInfo = new Request(baseUrl, {
       /* body, */
-      cache, credentials, headers,
+      cache,
+      credentials,
+      headers,
       /* integrity, */
-      method, mode, redirect, referrer, referrerPolicy,
-      signal, keepalive: false,
+      method,
+      mode,
+      redirect,
+      referrer,
+      referrerPolicy,
+      signal,
+      keepalive: false,
     });
 
-    console.log(reqInfo);
+    // console.log('>> ReqInfo:::', reqInfo);
 
     return (
-      fetch(reqInfo).finally(() => {
-        if (reqTimeoutId) {
-          clearTimeout(<number>reqTimeoutId);
-        }
-      }).then((response) => {
+      fetch(reqInfo).finally((): void => {
+        reqTimeoutId && clearTimeout(<number>reqTimeoutId);
+      }).then((response: Response): Promise<Response> | Response => {
         if (response.status >= 400) {
           return Promise.reject(response);
         }
-
         return response;
       })
     );
   };
 
-  return Promise.race([ reqTimeout(), reqFetch() ]);
-};
 
+  return Promise.race([ reqTimeout(), reqFetch() ]).then((response: Response): Promise<string | Record<string, any>> => {
+    // console.log('%cresponse:::', 'color: #00f;', response);
+    const responseHeaders: string[] = (response.headers.get('content-type') || '').split('; ');
+    // console.log('%cresponse:::', 'color: #00f;', responseHeaders);
+
+    if (responseHeaders.some((predicate: string): boolean => predicate.includes('json'))) {
+      return response.json();
+    }
+    return response.text();
+  });
+};
 
 export default requestCore;

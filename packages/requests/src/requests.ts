@@ -1,7 +1,8 @@
 import { mergeHeaders, requestCore } from './core';
-import type from '@trz/type';
-import Uri, { Serialize } from '@trz/uri';
-import util from '@trz/util/src';
+// import T from '@trz/type';
+import Uri  from '@trz/uri/src/uri';
+import Serialize from '@trz/serialize';
+import util from '@trz/util';
 import { RequestsConstructor, RequestConfigsInterface } from '../index.d';
 
 
@@ -45,25 +46,25 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
 
     descriptor.value = function(url: string, data?: any, opts?: Record<string, any>): typeof fnOriginCaller {
       const method = propertyName.toUpperCase();
-      const uri = new Uri(url as string);
+      const uri = new Uri(<string>url);
+      console.log('** uri::', url, uri);
+      // url = uri.origin + uri.pathname;
 
-      url = uri.origin + uri.pathname;
       opts = { ...(opts || {}) };
 
-      if (method === 'GET' && type.is(data, 'string')) {
-        new Serialize(data);
+      console.debug('** opts:::', opts);
+      console.debug('** method:::', method);
+      if (method === 'GET' && util.type.is(data, 'string')) {
+        //  new Serialize(data)
       }
 
-      console.log(uri.searchParams);
-
-
       data = { ...(new Uri(url).searchParams), ...data };
-      opts = { ...opts, [propertyName.toLowerCase() === 'get' ? 'searchParams' : 'body']: data };
 
       const headers: Headers = mergeHeaders(properties?.headers ?? {}, opts?.headers);
       const options = { url, ...properties, ...opts, headers, method };
-      console.log('options::', options);
-      return fnOriginCaller.call(this, url, options);
+
+      console.debug('** %coptions::: url: %s, data: %o, options: %o', 'color: #8177e1', url, data, options);
+      return fnOriginCaller.call(this, url, data, options);
     };
   };
 
@@ -73,7 +74,7 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
     constructor(cfgs: RequestConfigsInterface | string = {}) {
       let basicConfigs: RequestConfigsInterface = <RequestConfigsInterface>cfgs;
 
-      if (type.is(cfgs, 'string')) {
+      if (util.type.is(cfgs, 'string')) {
         const { origin: host, pathname } = new Uri(<string>cfgs);
         basicConfigs = { host, pathname };
       }
@@ -82,58 +83,58 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
 
       defineProperty(this, 'headers', headers);
 
-      if (type.isNumber(+(<number | string>timeout)) && +(<number | string>timeout) >= 0) {
+      if (util.type.isNumber(+(<number | string>timeout)) && +(<number | string>timeout) >= 0) {
         defineProperty(this, 'timeout', +(<number | string>timeout));
       }
 
-      if (type.is(host, 'string') && host) {
-        defineProperty(this, 'host', (new Uri(host)).host);
+      if (util.type.is(host, 'string') && host) {
+        defineProperty(this, 'host', (new Uri(host)).toString());
       }
 
-      if (type.is(pathname, 'string') && pathname) {
+      if (util.type.is(pathname, 'string') && pathname) {
         defineProperty(this, 'pathname', pathname);
       }
 
-      if (type.isBoolean(withUserAuth)) {
+      if (util.type.isBoolean(withUserAuth)) {
         defineProperty(this, 'withUserAuth', withUserAuth);
       }
 
-      if (type.isNumber(timeout) || (type.isString(timeout) && +(<string>timeout) == timeout)) {
+      if (util.type.isNumber(timeout) || (util.type.isString(timeout) && +(<string>timeout) == timeout)) {
         defineProperty(this, 'timeout', +(<string | number>timeout));
       }
 
-      if (type.isNumber(retryDelay) || (type.isString(retryDelay) && +(<string>retryDelay) == retryDelay)) {
+      if (util.type.isNumber(retryDelay) || (util.type.isString(retryDelay) && +(<string>retryDelay) == retryDelay)) {
         defineProperty(this, 'retryDelay', +(<string | number>retryDelay));
       }
 
-      if (type.isNumber(retry) || (type.isString(retry) && parseInt(<string>retry) > 0 )) {
+      if (util.type.isNumber(retry) || (util.type.isString(retry) && parseInt(<string>retry) > 0 )) {
         defineProperty(this, 'retry', parseInt(<string>retry));
       }
     }
 
     @RequestMethodAgent
-    get(url: string, opts?: any): PromiseLike<any> {
-      return requestCore({...opts, url});
+    get(url: string, data?: any, opts?: any): PromiseLike<any> {
+      return requestCore({...opts, data, url});
     }
 
     @RequestMethodAgent
-    post(url: string, opts?: any) {
-      return requestCore({...opts, url});
+    post(url: string, data?:any, opts?: any) {
+      return requestCore({...opts, data, url});
     }
 
     @RequestMethodAgent
-    put(url: string, opts?: any) {
-      return requestCore({...opts, url});
+    put(url: string, data?:any, opts?: any) {
+      return requestCore({...opts, data, url});
     }
 
     @RequestMethodAgent
-    patch(url: string, opts?: any) {
-      return requestCore({...opts, url});
+    patch(url: string, data?:any, opts?: any) {
+      return requestCore({...opts, data, url});
     }
 
     @RequestMethodAgent
-    delete(url: string, opts?: any) {
-      return requestCore({...opts, url});
+    delete(url: string, data?:any, opts?: any) {
+      return requestCore({...opts, data, url});
     }
 
     @RequestMethodAgent
@@ -151,6 +152,8 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
       throw new Error('Nothing todo');
     }
   }
+
+  // Requests.prototype
 
   return new Requests(instanceConfigs);
 };

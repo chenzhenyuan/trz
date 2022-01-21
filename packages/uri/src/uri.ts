@@ -52,13 +52,18 @@ export class HashParams extends Serialize {
 
 const mergeUri = (...args: any): URL | string => {
   let url = new URL(window.location.toString());
+  console.groupCollapsed('mergeUri()');
+  console.log('url', url);
 
   args = Array.from(args);
+  console.log('args', args);
 
-  for (const element of args) {
-    url = new URL(element, url);
+  for (const s of args) {
+    url = new URL(s, url);
   }
 
+  console.log('url', url);
+  console.groupEnd();
   return url;
 };
 
