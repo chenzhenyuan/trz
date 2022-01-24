@@ -51,20 +51,13 @@ export class HashParams extends Serialize {
 
 
 const mergeUri = (...args: any): URL | string => {
-  let url = new URL(window.location.toString());
-  console.groupCollapsed('mergeUri()');
-  console.log('url', url);
+  let targetUri: URL = new URL(window.location.href);
+  args = Array.from(args).reverse();
 
-  args = Array.from(args);
-  console.log('args', args);
-
-  for (const s of args) {
-    url = new URL(s, url);
+  for (const suffix of args) {
+    targetUri = new URL(suffix, targetUri);
   }
-
-  console.log('url', url);
-  console.groupEnd();
-  return url;
+  return targetUri;
 };
 
 
@@ -118,8 +111,6 @@ export class Uri extends URL {
   }
 }
 
-
 Object.defineProperty(Uri.prototype, Symbol.toStringTag, { value: 'Uri' });
-
 
 export default Uri;
