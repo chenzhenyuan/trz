@@ -1,25 +1,40 @@
 {
   "name": "@trz/type",
+
   "description": "A tool for real type validate.",
+
   "version": "0.4.2",
-  "license": "MIT",
+
   "author": "CHEN·ZHENYUA <JAYNE@CHENZHENYUAN.COM>",
+
+  "license": "MIT",
+
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/type#readme",
-  "main": "./index.js",
-  "types": "./index.d.ts",
-  "scripts": {
-    "clean": "rimraf ./index.js ./index.d.ts",
-    "build": "npm run clean && babel src --out-dir . --extensions .ts --no-comments --config-file='../../.babelrc' && tsc ",
-    "build::obsolete": "npm run clean && babel src --out-dir=lib --source-maps --extensions=.ts,.tsx",
-    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
-    "test": "npm run build && jest"
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
 
   "bugs": {
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
 
-  "directories": { "test": "__tests__" },
+  "main": "./index.js",
+
+  "types": "./index.d.ts",
+
+  "scripts": {
+    "clean": "rimraf ./index.js ./index.d.ts",
+    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
+    "build": "npm run clean && babel src --out-dir . --extensions .ts --no-comments --config-file='../../.babelrc' && tsc ",
+    "build::obsolete": "npm run clean && babel src --out-dir=lib --source-maps --extensions=.ts,.tsx",
+    "test": "npm run build && jest"
+  },
+
+  "directories": {
+    "test": "__tests__"
+  },
 
   "files": [ "./index.js", "./index.d.ts" ],
 
@@ -29,9 +44,8 @@
     "registry": "https://registry.npmjs.org"
   },
 
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chenzhenyuan/trz.git"
+  "dependencies": {
+    "core-js": "^3.20.3"
   },
 
   "devDependencies": {
