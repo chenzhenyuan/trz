@@ -1,7 +1,7 @@
 {
   "name": "@trz/type",
   "description": "A tool for real type validate.",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "license": "MIT",
   "author": "CHEN·ZHENYUA <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/type#readme",

@@ -1,20 +1,5 @@
-import type from '@trz/type';
-
-type SerializeItemType = [ string, any ];
-
-// class TypeError extends Error {
-//   name = 'ParamsError';
-
-//   constructor(message: string) {
-//     super(message);
-
-//     this.message = message;
-
-//     const stack = this.stack?.split('\n') || [];
-//     stack.splice(1, 2);
-//     this.stack = stack.join('\n');
-//   }
-// }
+import t from '@trz/type';
+export type SerializeItemType = any[];
 
 const properties = new WeakMap();
 
@@ -97,15 +82,15 @@ export class Serialize {
   stringify(): string {
     return (
       properties.get(this).map(([ k, v ]: SerializeItemType) => {
-        if (type.is(v, 'undefined')) {
+        if (t.is(v, 'undefined')) {
           return k;
         }
 
-        if (type.is(v, 'null')) {
+        if (t.is(v, 'null')) {
           return k+'=';
         }
 
-        if (type.is(v, 'string') || type.is(v, 'number') || type.is(v, 'boolean') || type.is(v, 'null')) {
+        if (t.some(v, [ 'string', 'number', 'boolean', 'null' ])) {
           return [ k, v ].join('=');
         }
 

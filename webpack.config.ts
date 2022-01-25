@@ -1,7 +1,7 @@
 /*
  * @since        : 2021/10/24 16:32:47 +0800
  * @filePath     : /webpack.config.ts
- * @updated      : 2022/01/19 14:53:43 +0800
+ * @updated      : 2022/01/25 10:53:43 +0800
  * @lastEditors  : JAYNE·CHEN
  * @creator      : JAYNE·CHEN
  * @description  : Webpack 配置文件
@@ -31,10 +31,11 @@ export default {
   },
 
   devServer: {
-    historyApiFallback: true,
-    port: 8905,
-    hot: true,
+    allowedHosts: 'all',
     compress: true,
+    historyApiFallback: true,
+    hot: true,
+    port: 8905,
     static: {
       serveIndex: true,
       publicPath: '/static',

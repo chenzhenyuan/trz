@@ -3,7 +3,7 @@
  * @since        : 2022/01/19 15:18:11 +0800
  * @filePath     : /packages/type/src/index.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/01/19 15:55:33 +0800
+ * @updated      : 2022/01/25 14:31:56 +0800
  * @description  : A tool for real type validate.
  */
 
@@ -52,4 +52,4 @@ export const isArray = (source: unknown): boolean => is(source, 'array');
 
 export const of = types;
 
-export default { enum: ENUM_TYPE, is, some, isString, isNumber, isArray, isNull, isBoolean, isObject, isUndefined };
+export default { enum: ENUM_TYPE, is, of, some, isString, isNumber, isArray, isNull, isBoolean, isObject, isUndefined };

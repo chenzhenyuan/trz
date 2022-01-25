@@ -5,6 +5,9 @@
 	"workspaces": [
 		"packages/*"
 	],
+  "scripts": {
+    "start": "npx webpack s"
+  },
 	"publishConfig": {
 		"access": "public"
 	},
