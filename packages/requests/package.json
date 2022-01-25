@@ -1,12 +1,12 @@
 {
   "name": "@trz/requests",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "> 一个简单的网络请求库",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/requests#readme",
   "license": "MIT",
   "main": "dist/requests.js",
-  "private":true,
+  "private": true,
   "types": "index.d.ts",
   "directories": {
     "lib": "lib",
@@ -32,10 +32,10 @@
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
   "dependencies": {
-    "@trz/serialize": "^0.4.2",
-    "@trz/type": "^0.4.3",
-    "@trz/uri": "^0.4.2",
-    "@trz/util": "^0.4.2",
+    "@trz/serialize": "^0.4.3",
+    "@trz/type": "^0.4.4",
+    "@trz/uri": "^0.4.3",
+    "@trz/util": "^0.4.3",
     "core-js": "^3.20.3",
     "whatwg-fetch": "^3.6.2"
   },
