@@ -8,7 +8,10 @@
 	"scripts": {
 		"start": "npx webpack s",
 		"build:all": "lerna run build --ignore=@trz/requests",
-		"build:type": "lerna run build --scope=@trz/type"
+		"build:type": "lerna run build --scope=@trz/type",
+		"build:serialize": "npm run build:type && lerna run build --scope=@trz/serialize",
+		"build:uri": "npm run build:type && npm run build:serialize && lerna run build --scope=@trz/uri",
+		"build:util": "npm run build:type && lerna run build --scope=@trz/util"
 	},
 	"publishConfig": {
 		"access": "public"

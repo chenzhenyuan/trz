@@ -29,7 +29,8 @@
     "jest": "^27.4.7"
   },
   "dependencies": {
-    "@trz/type": "^0.4.2"
+    "@trz/type": "^0.4.2",
+    "core-js": "^3.20.3"
   },
   "gitHead": "176e63f2e3b2b98ffc646644ce145b592b080c11"
 }

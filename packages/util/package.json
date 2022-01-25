@@ -1,4 +1,3 @@
-
 {
   "name": "@trz/util",
   "description": "> 常用工具库",
@@ -33,7 +32,8 @@
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
   "dependencies": {
-    "@trz/type": "^0.4.2"
+    "@trz/type": "^0.4.2",
+    "core-js": "^3.20.3"
   },
   "devDependencies": {
     "jest": "^27.4.7"

@@ -13,9 +13,14 @@
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
     "test": "npm run build && jest"
   },
-
+  "keywords": [
+    "serialize",
+    "trz/serialize",
+    "trz",
+    "序列化",
+    "字符串"
+  ],
   "directories": {},
-  "keywords": [ "serialize", "trz/serialize", "trz", "序列化", "字符串" ],
   "files": [
     "index.js",
     "index.d.ts"
@@ -31,7 +36,8 @@
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
   "dependencies": {
-    "@trz/type": "^0.4.2"
+    "@trz/type": "^0.4.2",
+    "core-js": "^3.20.3"
   },
   "devDependencies": {
     "jest": "^27.4.7"

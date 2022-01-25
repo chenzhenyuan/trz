@@ -209,7 +209,7 @@ var Serialize = function () {
           return k + '=';
         }
 
-        if (_type.default.is(v, 'string') || _type.default.is(v, 'number') || _type.default.is(v, 'boolean') || _type.default.is(v, 'null')) {
+        if (_type.default.some(v, ['string', 'number', 'boolean', 'null'])) {
           return [k, v].join('=');
         }
 

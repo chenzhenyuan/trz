@@ -37,8 +37,6 @@ require("core-js/modules/web.url.js");
 
 require("core-js/modules/web.url-search-params.js");
 
-require("core-js/modules/es.regexp.to-string.js");
-
 require("core-js/modules/es.array.from.js");
 
 require("core-js/modules/es.object.entries.js");
@@ -159,16 +157,16 @@ var mergeUri = function mergeUri() {
     args[_key] = arguments[_key];
   }
 
-  var url = new URL(window.location.toString());
-  args = Array.from(args);
+  var targetUri = new URL(window.location.href);
+  args = Array.from(args).reverse();
 
   var _iterator = _createForOfIteratorHelper(args),
       _step;
 
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var element = _step.value;
-      url = new URL(element, url);
+      var suffix = _step.value;
+      targetUri = new URL(suffix, targetUri);
     }
   } catch (err) {
     _iterator.e(err);
@@ -176,7 +174,7 @@ var mergeUri = function mergeUri() {
     _iterator.f();
   }
 
-  return url;
+  return targetUri;
 };
 
 var Uri = function (_URL) {

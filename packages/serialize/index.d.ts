@@ -1,3 +1,4 @@
+export declare type SerializeItemType = any[];
 export declare class Serialize {
     constructor(source: string);
     append(name: string, value: any): void;
