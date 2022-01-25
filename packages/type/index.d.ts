@@ -3,8 +3,7 @@ export declare enum ENUM_TYPE {
     array = "array",
     list = "array",
     number = "number",
-    string = "string",
-    arraylike = "arraylike"
+    string = "string"
 }
 export declare const is: (source: unknown, assert: string | unknown) => boolean;
 export declare const some: (source: unknown, assertList: string[]) => boolean;
@@ -19,6 +18,7 @@ export declare const of: (any: unknown) => string;
 declare const _default: {
     enum: typeof ENUM_TYPE;
     is: (source: unknown, assert: unknown) => boolean;
+    of: (any: unknown) => string;
     some: (source: unknown, assertList: string[]) => boolean;
     isString: (source: unknown) => boolean;
     isNumber: (source: unknown) => boolean;

@@ -91,6 +91,7 @@ exports.of = of;
 var _default = {
   enum: ENUM_TYPE,
   is: is,
+  of: of,
   some: some,
   isString: isString,
   isNumber: isNumber,
