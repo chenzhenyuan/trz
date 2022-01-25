@@ -39,7 +39,6 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "@trz/type": "^0.4.5",
     "core-js": "^3.20.3"
   },
   "devDependencies": {
