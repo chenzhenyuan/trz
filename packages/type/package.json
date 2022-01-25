@@ -1,7 +1,7 @@
 {
   "name": "@trz/type",
   "description": "A tool for real type validate.",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "author": "CHEN·ZHENYUA <JAYNE@CHENZHENYUAN.COM>",
   "license": "MIT",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/type#readme",
@@ -39,7 +39,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "@trz/type": "^0.4.4",
+    "@trz/type": "^0.4.5",
     "core-js": "^3.20.3"
   },
   "devDependencies": {
