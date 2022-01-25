@@ -1,12 +1,15 @@
 /** --- */
 import util, { guid, ty } from '@trz/util';
 import Uri from '@trz/uri';
+import Serialize from '@trz/serialize';
 
 
 
 export const ERR_REQUSST_TIMEOUT = 100504;
 // 默认请求超时时间
 export const DEFAULT_TIMEOUT = 30;
+// 重试延迟时长默认值，单位：毫秒
+export const DEFAULT_RETRY_DELAY = 1000;
 
 
 const gloHeaders = {
@@ -64,67 +67,121 @@ class RequestError extends Error {
 // --------------------------------------------------------------------------------------------------------------------
 type RequestCoreType = Promise<Record<string, any> | string>;
 
-interface RequestOptionInterface extends RequestInit {
+export type RequestsError = {
+  code: number;
+  message: string;
+};
+
+interface RequestOptionInterface extends Omit<RequestInit, 'host' | 'url' | 'timeout' | 'withUserAuth' |'abortController' | 'body'> {
   host?: string;
-  pathname?: string;
   url: string;
   timeout?: number;
   withUserAuth?: boolean | RequestCredentials,
+  abortController?: AbortController,
+  searchParams?: Record<string, unknown> | URLSearchParams | string;
+  body?: Record<string, unknown> | URLSearchParams | string | FormData |  Blob | BufferSource;
 }
 
 interface RequestCoreInterface {
   (P: RequestOptionInterface): RequestCoreType;
 }
 
+function getRequestHost(requestHost: any): string {
+  requestHost = requestHost ?? '.';
+
+  return (
+    (requestHost).slice(-1) === '/'
+      ? requestHost
+      : `${requestHost}/`
+  );
+}
+
+function getRequestBody(options: any) {
+  const { body = null, method = 'GET' } = options;
+  if ([ 'GET', 'HEAD' ].includes(options.method?.toUpperCase())) return null;
+
+  if (util.type.is(body, 'string') || body instanceof FormData || body instanceof Blob || body instanceof ArrayBuffer) {
+    return body;
+  }
+
+  return JSON.stringify(body);
+}
+
+function getMethod(method: string): string {
+  return method.toUpperCase();
+}
+
+function getUrlSearchParams(searchParams?: string | Serialize | URLSearchParams | Record<any, unknown>): Record<any, unknown> {
+
+  searchParams = searchParams ?? {};
+  console.log(searchParams.entries());
+
+  console.log('searchParams instanceof URLSearchParams::', searchParams instanceof URLSearchParams);
+  if (searchParams instanceof Serialize) {
+    return Object.fromEntries(searchParams.entries());
+  }
+  else if (util.type.is(searchParams, 'string')) {
+    return Object.fromEntries(new Serialize(searchParams as string).entries());
+  }
+  else if (util.type.is(searchParams, 'object')){
+    return <Record<any, unknown>>searchParams;
+  }
+
+  return {};
+}
+
+function getCredentials(withUserAuth?: boolean | RequestCredentials): RequestCredentials {
+  return (([ 'omit', 'include' ][+(withUserAuth as boolean)]) as RequestCredentials || (withUserAuth as RequestCredentials)) ?? 'same-origin';
+}
+
 export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionInterface):RequestCoreType => {
   let reqTimeoutId: number | NodeJS.Timeout;
 
-  const abortController = new AbortController();
-  const { signal } = abortController;
+  const { withUserAuth = false } = requestOptions || {};
 
-  // console.debug('>> %crequestOptions:::', 'color: #f0f', requestOptions);
-
-  const { url = '', method = 'GET', withUserAuth = false } = requestOptions || {};
-
-
-  /* 处理请求的超时时间，将传入的秒转换为毫秒，不传时，则使用默认值 */
-  const timeout = (requestOptions?.timeout ?? DEFAULT_TIMEOUT) * 1000;
-  // console.debug('>> 超时时长：%dms (默认超时：%dms)', timeout, DEFAULT_TIMEOUT * 1000);
+  const abortController =  (
+    requestOptions.abortController instanceof AbortController
+      ? requestOptions.abortController
+      : new AbortController()
+  );
+  const method: string = (requestOptions.method ?? 'GET').toUpperCase();
 
   const headers: Headers = mergeHeaders(gloHeaders, (requestOptions?.headers ?? {}));
   // console.debug('>> headers::: %o', headers);
 
+  /* 处理请求的超时时间，将传入的秒转换为毫秒，不传时，则使用默认值 */
+  const timeout = (requestOptions?.timeout ?? DEFAULT_TIMEOUT) * 1000;
   const cache: RequestCache = requestOptions.cache ?? 'no-cache';
-  const credentials: RequestCredentials  = (<RequestCredentials>([ 'omit', 'include' ][+(withUserAuth as boolean)]) || (withUserAuth as RequestCredentials)) ?? 'same-origin';
+  const credentials: RequestCredentials  = getCredentials(requestOptions?.withUserAuth);
   const mode: RequestMode = 'cors';
   const redirect: RequestRedirect = 'follow';
   const referrer = '';
   const referrerPolicy: ReferrerPolicy = 'no-referrer';
 
   const reqTimeout = (): Promise<unknown> => {
-    return (
-      new Promise((resolve, reject) => {
-        reqTimeoutId = setTimeout(() => {
-          abortController.abort();
-          reject(new RequestError(ERR_REQUSST_TIMEOUT, 'The request timeout.'));
-        }, timeout);
-      })
-    );
+    return (new Promise((resolve, reject) => {
+      // console.debug('>> 当前超时：%dms (默认超时：%dms)', timeout, DEFAULT_TIMEOUT * 1000);
+      if (timeout < 0) return;
+
+      reqTimeoutId = setTimeout(() => {
+        abortController.abort();
+        reject(new RequestError(ERR_REQUSST_TIMEOUT, 'The request timeout.'));
+      }, timeout);
+    }));
   };
 
   const reqFetch = (): Promise<any> => {
-    const host = (requestOptions?.host ?? '').slice(-1) === '/' ? requestOptions?.host : `${requestOptions?.host}/`;
-    const affix = (requestOptions?.pathname ?? '').slice(-1) === '/' ? requestOptions?.pathname : `${requestOptions?.pathname}/`;
-
-    const baseUrl = new Uri(host, affix, url).toString();
-    // console.log('>> baseUrl: %s', baseUrl);
+    const targetUrl = new Uri(getRequestHost(requestOptions.host), requestOptions.url);
+    targetUrl.setSearch(getUrlSearchParams(requestOptions.searchParams));
 
     if (headers.has('x-request-id')) {
       headers.set('x-request-id', util.guid(headers.get('x-request-id') ?? void(0)));
     }
 
-    const reqInfo = new Request(baseUrl, {
-      /* body, */
+
+
+    const reqInfo = new Request(targetUrl.toString(), {
+      body: getRequestBody(requestOptions),
       cache,
       credentials,
       headers,
@@ -134,12 +191,11 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
       redirect,
       referrer,
       referrerPolicy,
-      signal,
+      signal: abortController.signal,
       keepalive: false,
     });
 
-    // console.log('>> ReqInfo:::', reqInfo);
-
+    console.log('>> %cReqInfo:::', 'color: #00a700', reqInfo);
     return (
       fetch(reqInfo).finally((): void => {
         reqTimeoutId && clearTimeout(<number>reqTimeoutId);
@@ -147,6 +203,8 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
         if (response.status >= 400) {
           return Promise.reject(response);
         }
+
+        console.log(response);
         return response;
       })
     );
@@ -156,11 +214,12 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
   return Promise.race([ reqTimeout(), reqFetch() ]).then((response: Response): Promise<string | Record<string, any>> => {
     // console.log('%cresponse:::', 'color: #00f;', response);
     const responseHeaders: string[] = (response.headers.get('content-type') || '').split('; ');
-    // console.log('%cresponse:::', 'color: #00f;', responseHeaders);
+    console.log('%cresponse:::', 'color: #00f;', responseHeaders);
 
     if (responseHeaders.some((predicate: string): boolean => predicate.includes('json'))) {
-      return response.json();
+      return response.json().catch((e): any=> response.text());
     }
+
     return response.text();
   });
 };
