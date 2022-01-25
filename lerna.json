@@ -11,17 +11,11 @@
     "bootstrap": {
       "hoist": true,
       "ignore": "component-*",
-      "npmClientArgs": [
-        "--no-package-lock"
-      ]
+      "npmClientArgs": [ "--no-package-lock" ]
     },
     "publish": {
       "access": "public",
-      "allowBranch": [
-        "release",
-        "release/*",
-        "feature/*"
-      ],
+      "allowBranch": [ "development", "release", "release/*", "feature/*" ],
       "conventionalCommits": true,
       "npmClient": "npm",
       "registry": "https://registry.npmjs.org"

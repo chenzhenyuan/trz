@@ -6,6 +6,7 @@
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/requests#readme",
   "license": "MIT",
   "main": "dist/requests.js",
+  "private":true,
   "types": "index.d.ts",
   "directories": {
     "lib": "lib",
