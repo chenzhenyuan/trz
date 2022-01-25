@@ -31,7 +31,7 @@
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
   "dependencies": {
-    "@trz/type": "^0.4.0"
+    "@trz/type": "^0.4.2"
   },
   "devDependencies": {
     "jest": "^27.4.7"
