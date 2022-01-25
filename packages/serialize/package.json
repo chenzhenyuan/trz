@@ -1,7 +1,7 @@
 {
   "name": "@trz/serialize",
   "description": "一个简单的字符串序列化操作工具",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "license": "MIT",
   "author": "CHEN·ZHENYUA <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/serialize#readme",
@@ -36,7 +36,7 @@
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
   "dependencies": {
-    "@trz/type": "^0.4.5",
+    "@trz/type": "^0.4.6",
     "core-js": "^3.20.3"
   },
   "devDependencies": {
