@@ -13,7 +13,7 @@
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
   "main": "./index.js",
-  "types": "./index.d.ts",
+  "types": "index.d.ts",
   "scripts": {
     "clean": "rimraf ./index.js ./index.d.ts",
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",

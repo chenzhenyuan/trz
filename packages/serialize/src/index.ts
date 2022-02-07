@@ -3,6 +3,12 @@ export type SerializeItemType = any[];
 
 const properties = new WeakMap();
 
+function* entriesIterator(items: any[]): Generator<any, void, unknown> {
+  for (let i=0; i<items.length; i++) {
+    yield items[i];
+  }
+}
+
 export class Serialize {
   constructor(source: string) {
     const matches: string[][] = source ? source.split('&').map((item: string) => (item.replace('=', '&').split('&'))) : [];
@@ -71,7 +77,7 @@ export class Serialize {
   }
 
   entries(): IterableIterator<[string, any]> {
-    return properties.get(this).entries();
+    return entriesIterator(properties.get(this));
   }
 
   toString(): string {

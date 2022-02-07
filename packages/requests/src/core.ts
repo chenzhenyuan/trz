@@ -1,54 +1,54 @@
 /** --- */
 import util, { guid, ty } from '@trz/util';
-import Uri from '@trz/uri';
+import Uri, { SearchParams } from '@trz/uri';
 import Serialize from '@trz/serialize';
 
 
+type HeaderType = string[][] | Record<string, string>;
 
-export const ERR_REQUSST_TIMEOUT = 100504;
+interface RequestOptionInterface extends Omit<RequestInit, 'host' | 'url' | 'timeout' | 'signal' | 'body' | 'headers'> {
+  host?: string;
+  url: string;
+  timeout?: number;
+  withUserAuth?: boolean | RequestCredentials,
+  abortController?: AbortController,
+  searchParams?: Record<string, unknown> | URLSearchParams | SearchParams | string;
+  headers: HeaderType;
+  body?: Record<string, unknown> | URLSearchParams | string | FormData |  Blob | BufferSource | null;
+}
+
+type RequestCoreType = Promise<Record<string, any> | string>;
+
+interface RequestCoreInterface {
+  (P: RequestOptionInterface): RequestCoreType;
+}
+
+export type RequestsError = {
+  code: number;
+  message: string;
+};
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 // 默认请求超时时间
 export const DEFAULT_TIMEOUT = 30;
 // 重试延迟时长默认值，单位：毫秒
 export const DEFAULT_RETRY_DELAY = 1000;
+export const ERR_REQUSST_TIMEOUT = 100504;
 
 
-const gloHeaders = {
-  'accept': '*/*',
-  'x-request-id': '-********'.repeat(4).slice(1),
-  'x-request-client': 'TrzRequests/0.1.0',
-};
+enum RequestErrorMessage {
+  'ERR_REQUSST_TIMEOUT' = '超时了'
+}
 
-export const mergeHeaders = (...args: HeadersInit[]): Headers => {
-  const singularKey = [ 'x-request-id', 'authorization' ];
-  const headers = new Headers();
+enum RequestErrorCode {
+  'ERR_REQUEST_TIMEOUT',
+  'ERR_MISSING_PAGE'
+}
 
-  const headerSetter = (v: string, k: string): void => {
-    if (singularKey.includes(k.toLowerCase())) {
-      headers.set(k, v);
-    }
-    else {
-      headers.append(k, v);
-    }
-  };
-
-  for (let head of args) {
-    if (head instanceof Headers) {
-      head.forEach(headerSetter);
-      continue;
-    }
-    else if (ty.isObject(head)) {
-      head = Object.entries(head);
-    }
-
-    if (ty.isArray(head)) {
-      (<string[][]>head).forEach(([ k, v ]) => headerSetter(v, k));
-    }
-  }
-
-  return headers;
-};
 
 class RequestError extends Error {
+  static ERR_REQUSST_TIMEOUT = '100504';
+
   code: number | string = 10000;
 
   message = '';
@@ -57,46 +57,43 @@ class RequestError extends Error {
     return 'RequestError';
   }
 
-  constructor(stateCode: number | string, message?: string) {
-    super(message);
-    this.code = stateCode;
-    this.message = <string>message;
+  constructor(stateCode: number | string) {
+    super(RequestErrorMessage[stateCode] ?? '未知类型错误');
+    this.message = RequestErrorMessage[stateCode] ?? '未知类型错误';
+    this.code = stateCode || 0;
   }
 }
 
-// --------------------------------------------------------------------------------------------------------------------
-type RequestCoreType = Promise<Record<string, any> | string>;
 
-export type RequestsError = {
-  code: number;
-  message: string;
+export const mergeHeaders: (...args: HeaderType[]) => HeaderType = (...args: HeaderType[]): HeaderType => {
+  // const singularKey = [ 'x-request-id', 'authorization' ];
+  // const headers = new Headers();
+
+  const headers: string[][] = [];
+
+  // for (const header of args) {
+  //   if (util.type.isArray(header)) {
+  //     headers = { ...headers, ...(Object.fromEntries(header as any)) };
+  //   }
+  //   else {
+  //     headers = { ...headers, ...header };
+  //   }
+  // }
+
+  return Object.fromEntries(headers);
 };
 
-interface RequestOptionInterface extends Omit<RequestInit, 'host' | 'url' | 'timeout' | 'withUserAuth' |'abortController' | 'body'> {
-  host?: string;
-  url: string;
-  timeout?: number;
-  withUserAuth?: boolean | RequestCredentials,
-  abortController?: AbortController,
-  searchParams?: Record<string, unknown> | URLSearchParams | string;
-  body?: Record<string, unknown> | URLSearchParams | string | FormData |  Blob | BufferSource;
-}
+const getRequestHost = (opts: RequestOptionInterface): string => {
+  const requestHost = opts.host ?? '';
 
-interface RequestCoreInterface {
-  (P: RequestOptionInterface): RequestCoreType;
-}
+  if (requestHost === '') {
+    return requestHost;
+  }
 
-function getRequestHost(requestHost: any): string {
-  requestHost = requestHost ?? '.';
+  return ( (requestHost).slice(-1) === '/' ? requestHost : `${requestHost}/`);
+};
 
-  return (
-    (requestHost).slice(-1) === '/'
-      ? requestHost
-      : `${requestHost}/`
-  );
-}
-
-function getRequestBody(options: any) {
+const getRequestBody = (options: any) => {
   const { body = null, method = 'GET' } = options;
   if ([ 'GET', 'HEAD' ].includes(options.method?.toUpperCase())) return null;
 
@@ -105,83 +102,90 @@ function getRequestBody(options: any) {
   }
 
   return JSON.stringify(body);
-}
+};
 
-function getMethod(method: string): string {
-  return method.toUpperCase();
-}
+const getCredentials = ( opts: RequestOptionInterface): RequestCredentials => {
+  return ((
+    ([ 'omit', 'include' ][+(opts.withUserAuth as boolean)]) as RequestCredentials)
+      || (opts.withUserAuth as RequestCredentials)) ?? 'same-origin';
+};
 
-function getUrlSearchParams(searchParams?: string | Serialize | URLSearchParams | Record<any, unknown>): Record<any, unknown> {
+const getHeaders = (opts: RequestOptionInterface): HeaderType => {
+  return mergeHeaders({
+    'Accept': 'application/json,text/*;q=0.99,*/*;q=0.8',
+    'Cache-Control': 'no-cache',
+    'Content-Type': 'application/json;charset=utf-8',
+    'X-Request-ID': `-${'*'.repeat(4)}`.repeat(4).slice(1),
+    'X-Request-Client': 'TrzRequests/0.1.0',
+  }, (opts?.headers ?? {}));
+};
 
-  searchParams = searchParams ?? {};
-  console.log(searchParams.entries());
+const getRequestUrl = (opts: RequestOptionInterface): string => {
+  const getUrlSearchParams = (searchParams?: string | Serialize | URLSearchParams | Record<any, unknown>): Record<any, unknown> => {
+    searchParams = searchParams ?? {};
+    if (searchParams instanceof Serialize || searchParams instanceof URLSearchParams) {
+      return Object.fromEntries(searchParams.entries());
+    }
+    if (util.type.is(searchParams, 'object')){
+      return <Record<any, unknown>>searchParams;
+    }
+    return {};
+  };
 
-  console.log('searchParams instanceof URLSearchParams::', searchParams instanceof URLSearchParams);
-  if (searchParams instanceof Serialize) {
-    return Object.fromEntries(searchParams.entries());
-  }
-  else if (util.type.is(searchParams, 'string')) {
-    return Object.fromEntries(new Serialize(searchParams as string).entries());
-  }
-  else if (util.type.is(searchParams, 'object')){
-    return <Record<any, unknown>>searchParams;
-  }
+  const url = new Uri(getRequestHost(opts), opts.url);
 
-  return {};
-}
 
-function getCredentials(withUserAuth?: boolean | RequestCredentials): RequestCredentials {
-  return (([ 'omit', 'include' ][+(withUserAuth as boolean)]) as RequestCredentials || (withUserAuth as RequestCredentials)) ?? 'same-origin';
-}
+  url.setSearch(getUrlSearchParams(opts?.searchParams));
+
+  return url.toString();
+};
 
 export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionInterface):RequestCoreType => {
-  let reqTimeoutId: number | NodeJS.Timeout;
+  const reqOpts = { ...requestOptions };
 
-  const { withUserAuth = false } = requestOptions || {};
+  let reqTimeoutId: number | NodeJS.Timeout;
 
   const abortController =  (
     requestOptions.abortController instanceof AbortController
       ? requestOptions.abortController
       : new AbortController()
   );
-  const method: string = (requestOptions.method ?? 'GET').toUpperCase();
-
-  const headers: Headers = mergeHeaders(gloHeaders, (requestOptions?.headers ?? {}));
-  // console.debug('>> headers::: %o', headers);
 
   /* 处理请求的超时时间，将传入的秒转换为毫秒，不传时，则使用默认值 */
-  const timeout = (requestOptions?.timeout ?? DEFAULT_TIMEOUT) * 1000;
-  const cache: RequestCache = requestOptions.cache ?? 'no-cache';
-  const credentials: RequestCredentials  = getCredentials(requestOptions?.withUserAuth);
+
+
   const mode: RequestMode = 'cors';
   const redirect: RequestRedirect = 'follow';
   const referrer = '';
   const referrerPolicy: ReferrerPolicy = 'no-referrer';
 
-  const reqTimeout = (): Promise<unknown> => {
+
+  reqOpts.method = (reqOpts.method ?? 'GET').toUpperCase();
+  reqOpts.body = getRequestBody(reqOpts);
+  reqOpts.cache = reqOpts.cache ?? 'no-cache';
+  reqOpts.credentials = getCredentials(reqOpts);
+  reqOpts.headers = getHeaders(reqOpts);
+
+  const reqTimeout: () => Promise<unknown> = (): Promise<unknown> => {
+    const timeout = (requestOptions?.timeout ?? DEFAULT_TIMEOUT) * 1000;
+
     return (new Promise((resolve, reject) => {
-      // console.debug('>> 当前超时：%dms (默认超时：%dms)', timeout, DEFAULT_TIMEOUT * 1000);
       if (timeout < 0) return;
 
+      // console.debug('>> 当前超时：%dms (默认超时：%dms)', timeout, DEFAULT_TIMEOUT * 1000);
       reqTimeoutId = setTimeout(() => {
         abortController.abort();
-        reject(new RequestError(ERR_REQUSST_TIMEOUT, 'The request timeout.'));
+        reject(new RequestError(RequestError.ERR_REQUSST_TIMEOUT));
       }, timeout);
     }));
   };
 
-  const reqFetch = (): Promise<any> => {
-    const targetUrl = new Uri(getRequestHost(requestOptions.host), requestOptions.url);
-    targetUrl.setSearch(getUrlSearchParams(requestOptions.searchParams));
 
-    if (headers.has('x-request-id')) {
-      headers.set('x-request-id', util.guid(headers.get('x-request-id') ?? void(0)));
-    }
+  const reqFetch: () => Promise<any> = (): Promise<any> => {
+    const { body = null, cache, credentials, headers, method } = reqOpts;
 
-
-
-    const reqInfo = new Request(targetUrl.toString(), {
-      body: getRequestBody(requestOptions),
+    const requestInfo = new Request(getRequestUrl(reqOpts), {
+      body: null,
       cache,
       credentials,
       headers,
@@ -195,9 +199,11 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
       keepalive: false,
     });
 
-    console.log('>> %cReqInfo:::', 'color: #00a700', reqInfo);
+    console.log('>> %cRequestInfo:::', 'color: #00a700', requestInfo);
+
+
     return (
-      fetch(reqInfo).finally((): void => {
+      fetch(requestInfo).finally((): void => {
         reqTimeoutId && clearTimeout(<number>reqTimeoutId);
       }).then((response: Response): Promise<Response> | Response => {
         if (response.status >= 400) {
@@ -210,7 +216,6 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
     );
   };
 
-
   return Promise.race([ reqTimeout(), reqFetch() ]).then((response: Response): Promise<string | Record<string, any>> => {
     // console.log('%cresponse:::', 'color: #00f;', response);
     const responseHeaders: string[] = (response.headers.get('content-type') || '').split('; ');
@@ -221,6 +226,9 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
     }
 
     return response.text();
+  }).catch((e: any) => {
+    console.dir(e);
+    return Promise.reject({});
   });
 };
 

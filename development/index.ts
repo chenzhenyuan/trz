@@ -3,16 +3,17 @@
  * @since        : 2021/10/20 12:38:12 +0800
  * @filePath     : /development/index.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/01/25 13:51:04 +0800
+ * @updated      : 2022/01/26 17:39:51 +0800
  * @description  : 调试模块入口文件
  */
 
 // import "./type";
 // import "./uri";
 
+
 import requestCore, { RequestsError } from '../packages/requests/src/core';
 import request, { Requests } from '../packages/requests/src/requests';
-import Serialize from '../packages/uri/node_modules/@trz/serialize';
+import Serialize from '../packages/uri/node_modules/@trz/serialize/src';
 
 // console.log('request::', request);
 
@@ -25,25 +26,26 @@ const requestBody = {
 };
 
 const shantai = new Requests({
-  timeout: -1,
+  timeout: 0,
   withUserAuth: true,
   host: "//api.dev.shantaijk.cn/api/",
   searchParams: { x: 'x', y: 'y', z: 'y'},
-  body: { unik: 456789 }
+  body: { unik: 456789 },
+  headers: {
+    'Content-Type': 'application-x/json;charset=UTF-8',
+  }
 });
 
-// console.log('github api::', shantai);
-// shantai.post('./cif-login/cif/loginService/login', requestBody).then((response) => {
-//   console.log(response);
-// }).catch((err: RequestsError) => {
-//   console.error(err);
-// });
+shantai.post('./cif-login/cif/loginService/login', requestBody).then((response) => {
+  // console.error(err);
+});
 
-requestCore({
+const kk = requestCore({
   method: "POST",
-  url: '//api.test.shantaijk.cn/api/cif-login/cif/loginService/login?b=2',
-  searchParams: new Serialize('j=344'),
+  url: '//api.test.shantaijk.cn/api/cif-login/cif/loginService/login?v=1.0.0',
+  searchParams: 'j=1',
   body: requestBody,
+  headers: {'Content-Type': 'application/json;charset=UTF-8',}
 }).then((resp) => {
-  console.log(typeof resp, resp.length);
-})
+  console.log(typeof resp, resp);
+});

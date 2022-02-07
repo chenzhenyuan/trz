@@ -63,15 +63,10 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
 
 
 
-      const headers: Headers = mergeHeaders(properties?.headers ?? {}, opts?.headers);
+      const headers = mergeHeaders(properties?.headers ?? {}, opts?.headers);
       const options = { url, ...properties, ...opts, headers, method };
 
-      console.debug(`** %coptions:::
-      url    : %s,
-      data   : %o,
-      options: %o`, 'color: #8177e1', url, data, options);
-
-      console.debug('** RequestMethodAgent::', this);
+      // console.debug('** RequestMethodAgent::', this);
 
       return fnOriginCaller.call(this, url, data, options);
     };
