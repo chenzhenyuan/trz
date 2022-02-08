@@ -6,6 +6,8 @@ import util from '@trz/util';
 import { RequestsConstructor, RequestConfigsInterface } from '../index.d';
 
 
+const DEFAULT_REQUEST_ID_TEMPLATE = '****-*****-*****-****';
+
 class TypeError extends Error {
   constructor(message?: string) {
     super(message);
@@ -47,28 +49,28 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
     descriptor.value = function(url: string, data?: any, opts?: Record<string, any>): typeof fnOriginCaller {
       const method = propertyName.toUpperCase();
       console.debug('** method:::', method);
-
-      // const uri = new Uri(<string>url);
-      // console.log('**    uri:::', url, uri);
-      // url = uri.origin + uri.pathname;
-
       opts = { ...(opts || {}) };
-
       console.debug('**   opts:::', opts);
+
       if (method !== 'GET') {
         console.log(data);
       }
 
-      data = { ...(new Uri(url).searchParams), ...data };
 
+      data = { ...(new Uri(url).searchParams), ...data };
 
 
       const headers = mergeHeaders(properties?.headers ?? {}, opts?.headers);
       const options = { url, ...properties, ...opts, headers, method };
 
       // console.debug('** RequestMethodAgent::', this);
-
-      return fnOriginCaller.call(this, url, data, options);
+      return (
+        fnOriginCaller.call(this, url, data, options).catch((err: any) => {
+          return Promise.reject(err);
+        }).catch((err: any) => {
+          console.log('******', err);
+        })
+      );
     };
   };
 
@@ -140,8 +142,6 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
   return new Requests(instanceConfigs);
 };
 
-
-const DEFAULT_REQUEST_ID_TEMPLATE = '****-*****-*****-****';
 
 ReqConstructor.getRequestId = (tpl = DEFAULT_REQUEST_ID_TEMPLATE): string => {
   return util.guid(tpl);
