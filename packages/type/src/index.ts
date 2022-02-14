@@ -3,7 +3,7 @@
  * @since        : 2022/01/19 15:18:11 +0800
  * @filePath     : /packages/type/src/index.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/01/25 14:31:56 +0800
+ * @updated      : 2022/02/14 14:02:12 +0800
  * @description  : A tool for real type validate.
  */
 
@@ -18,8 +18,8 @@ export enum ENUM_TYPE {
 }
 
 const types = (any: unknown): string => {
-  const ty: string = Object.prototype.toString.call(any).slice(8, -1);
-  return ty.toLowerCase();
+  const typeName: string = Object.prototype.toString.call(any).slice(8, -1);
+  return typeName.slice(0, 1).toLowerCase() + typeName.slice(1);
 };
 
 export const is = (source: unknown, assert: string | unknown): boolean => {
