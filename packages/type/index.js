@@ -23,8 +23,8 @@ exports.ENUM_TYPE = ENUM_TYPE;
 })(ENUM_TYPE || (exports.ENUM_TYPE = ENUM_TYPE = {}));
 
 var types = function types(any) {
-  var ty = Object.prototype.toString.call(any).slice(8, -1);
-  return ty.toLowerCase();
+  var typeName = Object.prototype.toString.call(any).slice(8, -1);
+  return typeName.slice(0, 1).toLowerCase() + typeName.slice(1);
 };
 
 var is = function is(source, assert) {

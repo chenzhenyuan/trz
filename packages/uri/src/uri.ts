@@ -1,3 +1,13 @@
+/*
+ * @creator      : JAYNE·CHEN
+ * @since        : 2022/01/25 15:52:49 +0800
+ * @filePath     : /packages/uri/src/uri.ts
+ * @lastEditors  : JAYNE·CHEN
+ * @updated      : 2022/02/14 15:55:59 +0800
+ * @description  : file content
+ */
+
+
 
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -49,17 +59,20 @@ export class HashParams extends Serialize {
   }
 }
 
-
-const mergeUri = (...args: any): URL | string => {
+/**
+ * @param         {array} args
+ * @return        {URL}
+ */
+const mergeUri = (...args: Array<URL | string>): URL => {
+  const argList: Array<URL | string> = Array.from(args).reverse();
   let targetUri: URL = new URL(window.location.href);
-  args = Array.from(args).reverse();
 
-  for (const suffix of args) {
+  for (const suffix of argList) {
     targetUri = new URL(suffix, targetUri);
   }
+
   return targetUri;
 };
-
 
 export class Uri extends URL {
   constructor(...args: any[]) {
