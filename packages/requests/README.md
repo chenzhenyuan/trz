@@ -53,24 +53,24 @@ requests.post(
 );
 ```
 
-#### GET 请求：Requests.prototype.get
+#### + GET 请求：Requests.prototype.get
 语法：
-> requests.get(url);
+> requests.get( url );
 > ```ts
 > requests.get('//example.domain.com/apis/interface');
 > 
 > requests.get('//example.domain.com/apis/interface?search=something');
 > ```
-> requests.get(url, searchParams);
+> requests.get( url, searchParams );
 > 
-> requests.get(url, searchParams, requestConfigs);
+> requests.get( url, searchParams, requestConfigs );
 
 
-#### POST 请求：Requests.prototype.post
+#### + POST 请求：Requests.prototype.post
 语法：
 > 
-> requests.post(url);
+> requests.post( url );
 > 
->     requests.post(url, requestbody);
+>     requests.post( url, requestbody );
 > 
->     requests.post(url, requestbody, requestConfigs);
+>     requests.post( url, requestbody, requestConfigs );
