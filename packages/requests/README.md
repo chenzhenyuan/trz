@@ -83,31 +83,31 @@ requests.post(
 
 - 示例：
 
-```ts
-import { Request } from '@trz/requests';
+  ```ts
+  import { Request } from '@trz/requests';
 
-const requestConfigs: RequestConfigsInterface = {
-  host         : "//example.domain.com/api/v2/"
-  withUserAuth : true,
-  timeout      : 30,
-  body         : { "traceId": 12345678 },
-  searchParams : { "version": "1.0.0" },
-  headers      : { "Content-Type": "application/json;charset=utf8" },
-};
+  const requestConfigs: RequestConfigsInterface = {
+    host         : "//example.domain.com/api/v2/"
+    withUserAuth : true,
+    timeout      : 30,
+    body         : { "traceId": 12345678 },
+    searchParams : { "version": "1.0.0" },
+    headers      : { "Content-Type": "application/json;charset=utf8" },
+  };
 
-const api: RequestsInterface = new Requests( requestConfigs );
+  const api: RequestsInterface = new Requests( requestConfigs );
 
 
-api.get('./interface').then((rsp) => rsp)
+  api.get('./interface').then((rsp) => rsp)
 
-api.post('./interface', {}).then((rsp) => rsp)
+  api.post('./interface', {}).then((rsp) => rsp)
 
-api.post('./interface', { bodyKey: 1234 }, { timeout: 10 }).then((rsp) => {
-  return rsp;
-}).catch((err) => {
-  return Promise.reject(err);
-})
-```
+  api.post('./interface', { bodyKey: 1234 }, { timeout: 10 }).then((rsp) => {
+    return rsp;
+  }).catch((err) => {
+    return Promise.reject(err);
+  })
+  ```
 
 
 - *RequestConfigsInterface* 说明
