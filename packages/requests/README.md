@@ -5,71 +5,72 @@
 ## 安装
 
 ```zsh
-npm install @trz/fetch
+npm install @trz/requests
 
 # 或者
 
-yarn add @trz/fetch
+yarn add @trz/requests
 ```
 
 ## 使用
 
+引用 `Requests` 包
 ```ts
-import http, { FetchRequest } from '@trz/fetch';
-// 或者 `es5` 的引用方式
-// const http = require('@trz/fetch');
+import { Requests } from '@trz/requests';
 
-http.[REQUSET_METHOD]('URL', REQUSET_CONFIGS);
+/* 或者 */
 
-/** GET 方法 */
-http.GET('//example.com/biz.alias/version.code/interface_name?filterKey=filterValue&extraKey=extraValue');
-
-
-http.GET('//example.com/biz.alias/version.code/interface_name', {
-  filterKey: "filterValue",
-  extraKey: "extraValue"
-});
-
-http.GET('//example.com/biz.alias/version.code/interface_name', null, {params: {
-  filterKey: "filterValue",
-  extraKey: "extraValue"
-}});
-
-/** POST 方法 */
-http.POST('//example.com/biz.alias/version.code/interface_name?filterKey=filterValue&extraKey=extraValue');
-
-http.POST('//example.com/biz.alias/version.code/interface_name', {
-  filterKey: "filterValue",
-  extraKey: "extraValue"
-});
-
-http.POST('//example.com/biz.alias/version.code/interface_name', null, { params: {
-  filterKey: "filterValue",
-  extraKey: "extraValue"
-}});
-
+const { Requests } = require("@trz/requests");
 ```
 
-## 使用定制的请求实例
+
+## API
+
+### 使用默认实例
+
 
 ```ts
-import { fetch } from '@trz/fetch';
+import requests from '@trz/requests';
 
-const api = new fetch({
-  domain: "//example.com/biz.alias",
-  bizName: "/bizName/subBizName",
-  // queryString: "filterKey=filterValue&extraKey=extraValue"
-  params: {
-    'search_param_a': 'search_value_a',
-    'search_param_b': 'search_value_b',
+// Get 请求
+requests.get('//example.domian.com/api/interface');
+
+requests.get('//example.domian.com/api/interface?params=string&search=someone');
+
+requests.get('//example.domian.com/api/interface?params=string', {"search": "someone"});
+
+// POST、PUT、DELETE、PATCH
+
+requests.post(
+  '//example.domian.com/api/interface?params=string',
+  {
+    "body": "something"
   },
-  body: {
-    'body_a': 'value_a',
-    'body_b': 'value_b',
+  {
+    searchParame: "111",
+    body: {} || new FormData()
   }
-});
-
-
-api.GET('/version.code/interface.name?filterKey=filterValue&extraKey=extraValue');
-
+);
 ```
+
+### GET 请求：Requests.prototype.get
+语法：
+> requests.get(url);
+> ```ts
+> requests.get('//example.domain.com/apis/interface');
+> 
+> requests.get('//example.domain.com/apis/interface?search=something');
+> ```
+> requests.get(url, searchParams);
+> 
+> requests.get(url, searchParams, requestConfigs);
+
+
+### POST 请求：Requests.prototype.post
+语法：
+> 
+> requests.get(url);
+> 
+>     requests.get(url, searchParams);
+> 
+>     requests.get(url, searchParams, requestConfigs);

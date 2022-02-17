@@ -1,23 +1,23 @@
 
 
 /** --- */
-import util, { guid, ty } from '@trz/util';
-import Uri, { SearchParams } from '@trz/uri';
-import Serialize from '@trz/serialize';
-import RequestError, { ERR_REQUSST_TIMEOUT } from './RequestsError';
-
+import util, { guid, ty } from '@trz/util/src';
+import Serialize from '@trz/serialize/src';
+import Uri, { SearchParams } from '@trz/uri/src/uri';
+import RequestsException from './RequestsException';
+import merge from 'lodash.merge';
 
 type HeaderType = Record<string, any> | any[][] | HeadersInit;
 
-interface RequestOptionInterface extends Omit<RequestInit, 'host' | 'url' | 'timeout' | 'signal' | 'body' | 'headers'> {
-  host?: string;
-  url: string;
-  timeout?: number;
-  withUserAuth?: boolean | RequestCredentials,
+export interface RequestOptionInterface extends Omit<RequestInit, 'host' | 'url' | 'timeout' | 'signal' | 'body' | 'headers'> {
   abortController?: AbortController,
-  searchParams?: Record<string, unknown> | URLSearchParams | SearchParams | string;
+  body?: Record<string, unknown> | ReadableStream | Blob | BufferSource | FormData | URLSearchParams | string | null;
   headers: HeaderType;
-  body?: Record<string, unknown> | URLSearchParams | string | FormData |  Blob | BufferSource | null;
+  host?: string;
+  searchParams?: string | URLSearchParams | Serialize | Record<string, unknown>;
+  timeout?: number;
+  url: string;
+  withUserAuth?: boolean | RequestCredentials,
 }
 
 // type RequestCoreType = Promise<string | Record<string, any>>;
@@ -48,7 +48,7 @@ export const mergeHeaders = (...argumentList: HeaderType[]):  Record<string, str
       headerCfg = Object.fromEntries(headerCfg as any);
     }
 
-    Object.keys(headerCfg).forEach((headerKey) => {
+    Object.keys(headerCfg ?? {}).forEach((headerKey) => {
       const headerValue = (
         util.type.isArray(headerCfg[headerKey])
           ? headerCfg[headerKey].join(',')
@@ -60,13 +60,21 @@ export const mergeHeaders = (...argumentList: HeaderType[]):  Record<string, str
         return;
       }
 
-      if ((new RegExp(`${headerValue}(;|,)?`, 'img')).test(headers[headerKey]) === false) {
-        headers[headerKey] = [ headerValue, headers[headerKey] ].join(',');
-      }
+      headerValue.split(',').reverse().forEach(( item: string ) => {
+        const sourceHeaders: string[] = headers[headerKey].split(',');
+        const sameItemIndex: number = sourceHeaders.findIndex((i) => i.toLowerCase() === item.toLowerCase());
+
+        if (sameItemIndex > -1) {
+          sourceHeaders.splice(sameItemIndex, 1);
+        }
+
+        sourceHeaders.unshift(item);
+        headers[headerKey] = sourceHeaders.join(',');
+      });
     });
   });
 
-  console.log('** mergeHeaders:::', headers);
+  // console.log('** mergeHeaders:::', headers);
   return headers;
 };
 
@@ -79,7 +87,7 @@ export const DEFAULT_RETRY_DELAY = 1000;
 const basic = {
   'Accept': 'text/*;q=0.99,*/*;q=0.8',
   'Cache-Control': 'no-cache',
-  'Content-Type': 'application/json;charset=utf8',
+  'Content-Type': 'application/json;charset=utf-8',
   // 'x-request-id': `-${'*'.repeat(4)}`.repeat(4).slice(1),
   'x-request-client': 'TrzRequests/0.1.0',
 };
@@ -95,24 +103,32 @@ const getRequestHost = (opts: RequestOptionInterface): string => {
   return ( (requestHost).slice(-1) === '/' ? requestHost : `${requestHost}/`);
 };
 
+/**
+ * @description  : 从配置中提取请求体
+ * @param         {RequestOptionInterface} opts - 配置参数
+ * @return        {ReadableStream | XMLHttpRequestBodyInit | null}
+ */
+const getRequestBody = (opts: RequestOptionInterface): ReadableStream | XMLHttpRequestBodyInit | null => {
+  const { body = null, method = 'GET' } = opts;
 
-const getRequestBody = (options: any) => {
-  const { body = null, method = 'GET' } = options;
-  if ([ 'GET', 'HEAD' ].includes(options.method?.toUpperCase())) return null;
-
-  if (util.type.is(body, 'string') || body instanceof FormData || body instanceof Blob || body instanceof ArrayBuffer) {
-    return body;
+  if ([ 'GET', 'HEAD', 'OPTION' ].includes(method?.toUpperCase())) {
+    return null;
   }
 
-  return JSON.stringify(body);
+  if (util.type.is(body, 'object')) {
+    return JSON.stringify(body);
+  }
+
+  return body as (ReadableStream | XMLHttpRequestBodyInit | null);
 };
+
 
 /**
  * @description   从配置中提取Cookie认证携带方式
  * @param         {RequestOptionInterface} opts
  * @return        {RequestCredentials}
  */
-const getCredentials = ( opts: RequestOptionInterface): RequestCredentials => {
+const getRequestCredentials = ( opts: RequestOptionInterface): RequestCredentials => {
   return (
     (([ 'omit', 'include' ][+(opts.withUserAuth as boolean)]) as RequestCredentials)
       || (opts.withUserAuth as RequestCredentials)
@@ -126,19 +142,25 @@ const getCredentials = ( opts: RequestOptionInterface): RequestCredentials => {
  * @return        {string}
  */
 const getRequestUrl = (opts: RequestOptionInterface): string => {
-  const url = new Uri(getRequestHost(opts), opts.url);
-  const getUrlSearchParams = (searchParams?: string | Serialize | URLSearchParams | Record<any, unknown>): Record<any, unknown> => {
+  const url = new Uri(opts.url, getRequestHost(opts));
+
+  const getUrlSearchParams = (searchParams?: string | URLSearchParams | Serialize | Record<any, unknown>): Record<any, unknown> => {
     searchParams = searchParams ?? {};
+
     if (searchParams instanceof Serialize || searchParams instanceof URLSearchParams) {
       return Object.fromEntries(searchParams.entries());
     }
+
     if (util.type.is(searchParams, 'object')){
       return <Record<any, unknown>>searchParams;
     }
+
     return {};
   };
 
+  // merge
   url.setSearch(getUrlSearchParams(opts?.searchParams));
+
   return url.toString();
 };
 
@@ -160,7 +182,6 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
 
   /* 处理请求的超时时间，将传入的秒转换为毫秒，不传时，则使用默认值 */
 
-
   const mode: RequestMode = 'cors';
   const redirect: RequestRedirect = 'follow';
   const referrer = '';
@@ -168,8 +189,7 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
 
 
   reqOpts.method = (reqOpts.method ?? 'GET').toUpperCase();
-  reqOpts.body = getRequestBody(reqOpts);
-  reqOpts.credentials = getCredentials(reqOpts);
+  reqOpts.credentials = getRequestCredentials(reqOpts);
 
   const reqTimeout: () => Promise<unknown> = (): Promise<unknown> => {
     const timeout = (requestOptions?.timeout ?? DEFAULT_TIMEOUT) * 1000;
@@ -180,7 +200,7 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
       // console.debug('>> 当前超时：%dms (默认超时：%dms)', timeout, DEFAULT_TIMEOUT * 1000);
       reqTimeoutId = setTimeout(() => {
         abortController.abort();
-        reject(new RequestError(ERR_REQUSST_TIMEOUT));
+        reject(new RequestsException(RequestsException.ERR_REQUEST_TIMEOUT));
       }, timeout);
     }));
   };
@@ -189,10 +209,9 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
     const { body = null, cache, credentials, method } = reqOpts;
 
     const requestInfo: Request = new Request(getRequestUrl(reqOpts), {
-      body: null,
+      body: getRequestBody(reqOpts),
       cache: reqOpts.cache ?? 'no-cache',
       credentials,
-      headers: mergeHeaders(basic, reqOpts.headers ?? {}),
       /* integrity, */
       method,
       mode,
@@ -203,19 +222,15 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
       keepalive: false,
     });
 
-    console.log('>> %cRequestInfo:::', 'color: #00a700', requestInfo);
+    // console.log('>> %cRequestInfo:::', 'color: #00a700', requestInfo);
     return (
-      fetch(requestInfo).finally((): void => {
+      fetch(requestInfo, {headers: mergeHeaders(basic, reqOpts.headers ?? {})}).finally((): void => {
         reqTimeoutId && clearTimeout(<number>reqTimeoutId);
       }).then((response: Response): Promise<Response> | Response => {
-
         if (response.status >= 400) {
-          const err = new RequestError('ERR_NET');
-          err.response = response;
-          return Promise.reject(err);
+          return Promise.reject(new RequestsException(response));
         }
-
-        return response;
+        return Promise.resolve(response);
       })
     );
   };
@@ -229,9 +244,6 @@ export const requestCore: RequestCoreInterface = (requestOptions: RequestOptionI
     }
 
     return response.text();
-  }).catch((err: any) => {
-    console.log('>>>', typeof err, err);
-    return Promise.reject(err);
   });
 };
 

@@ -37,6 +37,7 @@
     "@trz/uri": "^0.4.5",
     "@trz/util": "^0.4.5",
     "core-js": "^3.20.3",
+    "lodash.merge": "^4.6.2",
     "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {

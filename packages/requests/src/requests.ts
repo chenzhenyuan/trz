@@ -1,22 +1,23 @@
-import { DEFAULT_RETRY_DELAY, DEFAULT_TIMEOUT, mergeHeaders, requestCore } from './core';
 // import T from '@trz/type';
 import Uri  from '@trz/uri/src/uri';
-import Serialize from '@trz/serialize';
-import util from '@trz/util';
+import util from '@trz/util/src';
 import { RequestsConstructor, RequestConfigsInterface } from '../index.d';
+import { DEFAULT_TIMEOUT, mergeHeaders, requestCore } from './core';
+import merge from 'lodash.merge';
 
 
-const DEFAULT_REQUEST_ID_TEMPLATE = '****-*****-*****-****';
+const DEFAULT_REQUEST_ID = '****-*****-*****-****';
 
-class TypeError extends Error {
-  constructor(message?: string) {
-    super(message);
-    this.name = 'TypeError';
-    const stack = this.stack?.split('\n');
-    stack?.splice(1, 1);
-    this.stack = stack?.join('\n');
-  }
-}
+
+// class TypeError extends Error {
+//   constructor(message?: string) {
+//     super(message);
+//     this.name = 'TypeError';
+//     const stack = this.stack?.split('\n');
+//     stack?.splice(1, 1);
+//     this.stack = stack?.join('\n');
+//   }
+// }
 
 
 // @ts-ignores
@@ -26,19 +27,18 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
     throw new TypeError('Cannot call a class as a function.');
   }
 
+  /* 私有属性 */
   const properties: RequestConfigsInterface & { [ p: string ]: any; } = {};
 
   // util
-  function defineProperty(that: any, propertyKey: string, attributes: any): void {
+  function defineProperty(main: any, propertyKey: string, attributes: any): void {
     if (attributes === undefined) return;
 
     properties[propertyKey] = attributes;
 
-    Object.defineProperty(that, propertyKey, {
-      value: attributes,
-      writable: false,
-      enumerable: true,
-      configurable: false
+    Object.defineProperty(main, propertyKey, {
+      writable: false, enumerable: true, configurable: false,
+      value: attributes
     });
   }
 
@@ -48,29 +48,17 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
 
     descriptor.value = function(url: string, data?: any, opts?: Record<string, any>): typeof fnOriginCaller {
       const method = propertyName.toUpperCase();
-      console.debug('** method:::', method);
-      opts = { ...(opts || {}) };
-      console.debug('**   opts:::', opts);
+      opts = { ...(opts ?? { method }) };
 
-      if (method !== 'GET') {
-        console.log(data);
+      const headers: Record<string, any> = mergeHeaders(properties?.headers ?? {}, opts?.headers ?? {});
+
+      const options: any = { ...(merge({}, properties, opts)), headers, method };
+
+      if (method === 'GET') {
+        data = merge({}, data, options?.searchParams);
       }
 
-
-      data = { ...(new Uri(url).searchParams), ...data };
-
-
-      const headers = mergeHeaders(properties?.headers ?? {}, opts?.headers);
-      const options = { url, ...properties, ...opts, headers, method };
-
-      // console.debug('** RequestMethodAgent::', this);
-      return (
-        fnOriginCaller.call(this, url, data, options).catch((err: any) => {
-          return Promise.reject(err);
-        }).catch((err: any) => {
-          console.log('******', err);
-        })
-      );
+      return fnOriginCaller.call(this, url, data, options);
     };
   };
 
@@ -84,21 +72,27 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
         basicConfigs = { host: new Uri(<string>cfgs).toString()};
       }
 
-      const { host, headers, withUserAuth, timeout, retry, retryDelay } = basicConfigs;
+      const { host, headers, withUserAuth, timeout/* , retry, retryDelay */ } = basicConfigs;
 
       defineProperty(this, 'host', new Uri(util.type.is(host, 'string') ? host : '.').toString());
       defineProperty(this, 'headers', headers);
-      defineProperty(this, 'withUserAuth', util.type.isBoolean(withUserAuth) ? withUserAuth : false);
+      defineProperty(this, 'withUserAuth', util.type.some(withUserAuth, [ 'boolean', 'string' ]) ? withUserAuth : false);
       defineProperty(this, 'timeout', isNaN(+(timeout as Pick<RequestConfigsInterface, 'timeout'>)) ? DEFAULT_TIMEOUT : timeout);
-      defineProperty(this, 'body', basicConfigs.body ?? null);
 
-      // defineProperty(this, 'retryDelay', isNaN(+(retryDelay as Pick<RequestConfigsInterface, 'retryDelay'>)) ? DEFAULT_RETRY_DELAY : retryDelay);
-      // defineProperty(this, 'retry', parseInt(<string>retry));
+      console.log(properties);
+
+      if (basicConfigs.hasOwnProperty('searchParams')) {
+        defineProperty(this, 'searchParams', basicConfigs.searchParams);
+      }
+
+      if (basicConfigs.hasOwnProperty('body')) {
+        defineProperty(this, 'body', basicConfigs.body);
+      }
     }
 
     @RequestMethodAgent
-    get(url: string, data?: any, opts?: any): PromiseLike<any> {
-      return requestCore({...opts, data, url});
+    get(url: string, searchParams?: any, opts?: any): PromiseLike<any> {
+      return requestCore({...opts, searchParams, url});
     }
 
     @RequestMethodAgent
@@ -120,33 +114,15 @@ const ReqConstructor: RequestsConstructor = function(this: any, instanceConfigs?
     delete(url: string, body?:any, opts?: any) {
       return requestCore({...opts, body, url});
     }
-
-    @RequestMethodAgent
-    head(url: string, opts?: any) {
-      throw new Error('Nothing todo');
-    }
-
-    @RequestMethodAgent
-    options(url: string, opts?: any) {
-      throw new Error('Nothing todo');
-    }
-
-    @RequestMethodAgent
-    connect(url: string, opts?: any) {
-      throw new Error('Nothing todo');
-    }
   }
-
-  // Requests.prototype
 
   return new Requests(instanceConfigs);
 };
 
 
-ReqConstructor.getRequestId = (tpl = DEFAULT_REQUEST_ID_TEMPLATE): string => {
-  return util.guid(tpl);
-};
+ReqConstructor.getRequestId = (tpl = DEFAULT_REQUEST_ID): string => util.Guid(tpl);
 
 export { ReqConstructor as Requests };
 
-export default new ReqConstructor();
+
+export default new ReqConstructor({});
