@@ -94,6 +94,6 @@ const api: RequestsInterface = new Requests( requestConfigs: RequestConfigsInter
 | 　　　　参数名称　　　　 | 　　　　参数取值类型　　　　 | 　　　　示例　　　　 |
 | :------------------- | :--------------------- | :--------------- |
 | host | string | https://example.domain.com/api/v2 |
-| headers | HeadersInit | `{ "Content-Type": "application/json;charset=utf8" }`<br><br>`[["Content-Type", "application/json;charset=utf8"]]` |
+| headers | HeadersInit | {<br>&nbsp;&nbsp;&nbsp;&nbsp;"Content-Type": "application/json;charset=utf8"<br>}<br>或者<br>[<br>&nbsp;&nbsp;["Content-Type", "application/json;charset=utf8"]<br>] |
 | withUserAuth | boolean \| "include" \| "omit" \| "same-origin" | true |
 
