@@ -81,7 +81,7 @@ requests.post(
 
 ### 创建私有实例
 
-示例：
+- 示例：
 
 ```ts
 import { Request } from '@trz/requests';
@@ -110,14 +110,14 @@ api.post('./interface', { bodyKey: 1234 }, { timeout: 10 }).then((rsp) => {
 ```
 
 
-#### · *RequestConfigsInterface* 说明
+- *RequestConfigsInterface* 说明
 
-参数名称 | 参数取值类型 | 示例 |
-:------------------- | :--------------------- | :---------------
-host | string | https://example.domain.com/api/v2/
-withUserAuth | boolean \| "include" \| "omit" \| "same-origin" | true
-timeout | number \| string | 30
-headers | string[][] | -
-searchParams | string \| Record\<string, any\> | -
-body | string \| number \| FormData \| Record\<string, any\> \| null | -
+  参数名称 | 参数取值类型 | 示例 |
+  :------------------- | :--------------------- | :---------------
+  host | string | https://example.domain.com/api/v2/
+  withUserAuth | boolean \| "include" \| "omit" \| "same-origin" | true
+  timeout | number \| string | 30
+  headers | string[][] | -
+  searchParams | string \| Record\<string, any\> | -
+  body | string \| number \| FormData \| Record\<string, any\> \| null | -
 
