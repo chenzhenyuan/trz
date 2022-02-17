@@ -96,6 +96,17 @@ const requestConfigs: RequestConfigsInterface = {
 };
 
 const api: RequestsInterface = new Requests( requestConfigs );
+
+
+api.get('./interface').then((rsp) => rsp)
+
+api.post('./interface', {}).then((rsp) => rsp)
+
+api.post('./interface', { bodyKey: 1234 }, { timeout: 10 }).then((rsp) => {
+  return rsp;
+}).catch((err) => {
+  return Promise.reject(err);
+})
 ```
 
 
