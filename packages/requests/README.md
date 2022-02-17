@@ -55,7 +55,7 @@ requests.post(
 
 #### + GET 请求：Requests.prototype.get
 语法：
-> requests.get( url );
+> __requests.get( url );__
 > ```ts
 > requests.get('//example.domain.com/apis/interface');
 > 
