@@ -24,7 +24,7 @@ const { Requests } = require("@trz/requests");
 ```
 
 
-## API
+## 接口说明
 
 ### 使用默认实例
 
