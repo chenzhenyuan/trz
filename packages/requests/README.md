@@ -77,6 +77,7 @@ requests.post(
 
 
 #### · PUT、DELETE、PATCH 参考 POST
+<!-- #-post-请求requestsprototypepost -->
 
 ### 创建私有实例
 
@@ -90,11 +91,8 @@ const api: RequestsInterface = new Requests( requestConfigs: RequestConfigsInter
 
 #### *RequestConfigsInterface*
 
- - | - | - 
-
-
-> { string[][] | Record\<string, string\> } headers - 通用请求头配置
-
-
-
+| 　　　　参数名称　　　　\\| | 参数取值类型　\\| 　 | 示例 |
+| :------ | :-------: | :--: |
+| host | string | https://example.domain.com/api/v2 |
+| headers | HeadersInit | { \n "Content-Type": "application/json;charset=utf8"\r }
 
