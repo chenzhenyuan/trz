@@ -53,7 +53,7 @@ requests.post(
 );
 ```
 
-### GET 请求：Requests.prototype.get
+#### GET 请求：Requests.prototype.get
 语法：
 > requests.get(url);
 > ```ts
@@ -66,7 +66,7 @@ requests.post(
 > requests.get(url, searchParams, requestConfigs);
 
 
-### POST 请求：Requests.prototype.post
+#### POST 请求：Requests.prototype.post
 语法：
 > 
 > requests.get(url);
