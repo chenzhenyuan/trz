@@ -53,7 +53,7 @@ requests.post(
 );
 ```
 
-#### * GET 请求：Requests.prototype.get
+#### · GET 请求：Requests.prototype.get
 语法：
 > **requests.get( url );**
 > ```ts
@@ -66,11 +66,35 @@ requests.post(
 > **requests.get( url, searchParams, requestConfigs );**
 
 
-#### * POST 请求：Requests.prototype.post
+#### · POST 请求：Requests.prototype.post
 语法：
 > 
-> requests.post( url );
+> **requests.post( url );**
 > 
->     requests.post( url, requestbody );
+> **requests.post( url, requestbody );**
 > 
->     requests.post( url, requestbody, requestConfigs );
+> **requests.post( url, requestbody, requestConfigs );**
+
+
+#### · PUT、DELETE、PATCH 参考 POST
+
+### 创建私有实例
+
+示例：
+
+```ts
+import { Request } from '@trz/requests';
+
+const api: RequestsInterface = new Requests( requestConfigs: RequestConfigsInterface );
+```
+
+#### *RequestConfigsInterface*
+
+ - | - | - 
+
+
+> { string[][] | Record\<string, string\> } headers - 通用请求头配置
+
+
+
+
