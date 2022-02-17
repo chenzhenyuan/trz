@@ -91,10 +91,12 @@ const api: RequestsInterface = new Requests( requestConfigs: RequestConfigsInter
 
 #### *RequestConfigsInterface*
 
-| 参数名称 | 参数取值类型 | 示例 |
-| :------------------- | :--------------------- | :--------------- |
-| host | string | https://example.domain.com/api/v2/ |
-| headers | string[][] | {<br>&nbsp;&nbsp;&nbsp;&nbsp;"Content-Type": "application/json;charset=utf8"<br>} |
-| headers | Record\<string, string\> | [<br>&nbsp;&nbsp;["Content-Type", "application/json;charset=utf8"]<br>] |
-| withUserAuth | boolean \| "include" \| "omit" \| "same-origin" | true |
+参数名称 | 参数取值类型 | 示例 |
+:------------------- | :--------------------- | :---------------
+host | string | https://example.domain.com/api/v2/
+withUserAuth | boolean \| "include" \| "omit" \| "same-origin" | true
+timeout | number \| string | 30
+headers | string[][] | -
+searchParams | string \| Record\<string, any\> | -
+body | string \| number \| FormData \| Record\<string, any\> \| null | -
 
