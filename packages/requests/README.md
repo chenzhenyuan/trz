@@ -86,10 +86,20 @@ requests.post(
 ```ts
 import { Request } from '@trz/requests';
 
-const api: RequestsInterface = new Requests( requestConfigs: RequestConfigsInterface );
+const requestConfigs: RequestConfigsInterface = {
+  host         : "//example.domain.com/api/v2/"
+  withUserAuth : true,
+  timeout      : 30,
+  body         : { "traceId": 12345678 },
+  searchParams : { "version": "1.0.0" },
+  headers      : { "Content-Type": "application/json;charset=utf8" },
+};
+
+const api: RequestsInterface = new Requests( requestConfigs );
 ```
 
-#### *RequestConfigsInterface*
+
+#### · *RequestConfigsInterface* 说明
 
 参数名称 | 参数取值类型 | 示例 |
 :------------------- | :--------------------- | :---------------
