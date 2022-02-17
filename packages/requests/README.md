@@ -69,8 +69,8 @@ requests.post(
 #### POST 请求：Requests.prototype.post
 语法：
 > 
-> requests.get(url);
+> requests.post(url);
 > 
->     requests.get(url, searchParams);
+>     requests.post(url, requestbody);
 > 
->     requests.get(url, searchParams, requestConfigs);
+>     requests.post(url, requestbody, requestConfigs);
