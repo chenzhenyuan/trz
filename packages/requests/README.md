@@ -1,4 +1,4 @@
-# `@trz/fetch`
+# `@trz/requests`
 
 > TODO: description
 
