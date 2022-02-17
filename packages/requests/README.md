@@ -55,15 +55,15 @@ requests.post(
 
 #### + GET 请求：Requests.prototype.get
 语法：
-> __requests.get( url );__
+> **requests.get( url );**
 > ```ts
 > requests.get('//example.domain.com/apis/interface');
 > 
 > requests.get('//example.domain.com/apis/interface?search=something');
 > ```
-> requests.get( url, searchParams );
+> **requests.get( url, searchParams );**
 > 
-> requests.get( url, searchParams, requestConfigs );
+> **requests.get( url, searchParams, requestConfigs );**
 
 
 #### + POST 请求：Requests.prototype.post
