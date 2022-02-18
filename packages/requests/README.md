@@ -53,7 +53,15 @@ requests.post(
 );
 ```
 
-#### · GET 请求：Requests.prototype.get
+#### · GET 请求：__*Requests.prototype.get(url, searchParams?: string | Dictionary, requestOptions?: RequestConfigsInterface)*__
+
+参数 | 类型 | 默认值 | 说明
+:- | :- | :-: | -
+url | string | - | -
+searchParams | string \| {[key: string]: unkonw} | {} | -
+requestOptions | RequestConfigsInterface | - | 参考底部 `RequestConfigsInterface` 说明
+
+
 语法：
 > **requests.get( url );**
 > ```ts
@@ -97,17 +105,26 @@ requests.post(
 
   const api: RequestsInterface = new Requests( requestConfigs );
 
+  api.get('./interface').then((response) => {
+    return response;
+  });
+  
+  api.get('./interface', { search: 'something', params: 'something' }).then((response) => {
+    return response;
+  });
 
-  api.get('./interface').then((rsp) => rsp)
+  api.post('./interface', {}).then((rsp) => rsp);
 
-  api.post('./interface', {}).then((rsp) => rsp)
-
-  api.post('./interface', { bodyKey: 1234 }, { timeout: 10 }).then((rsp) => {
-    return rsp;
-  }).catch((err) => {
-    return Promise.reject(err);
+  api.post('./interface', { bodyKey: 1234 }, { timeout: 10 }).then((response) => {
+    return response;
+  }).catch((responseErr) => {
+    return Promise.reject(responseErr);
   })
   ```
+
+
+---
+
 
 
 - *RequestConfigsInterface* 说明
