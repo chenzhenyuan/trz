@@ -58,6 +58,7 @@ requests.post(
   * __*Requests.prototype.get(url, searchParams?: string | Dictionary)*__
   * __*Requests.prototype.get(url, searchParams?: string | Dictionary, requestOptions?: RequestConfigsInterface)*__
 
+
   参数 | 类型 | 默认值 | 说明
   :- | :- | :-: | -
   url | string | - | -
@@ -65,16 +66,16 @@ requests.post(
   requestOptions | RequestConfigsInterface | - | 参考底部 `RequestConfigsInterface` 说明
 
 
-语法：
-> **requests.get( url );**
-> ```ts
-> requests.get('//example.domain.com/apis/interface');
-> 
-> requests.get('//example.domain.com/apis/interface?search=something');
-> ```
-> **requests.get( url, searchParams );**
-> 
-> **requests.get( url, searchParams, requestConfigs );**
+  示例：
+  > **requests.get( url );**
+  > ```ts
+  > requests.get('//example.domain.com/apis/interface');
+  > 
+  > requests.get('//example.domain.com/apis/interface?search=something');
+  > ```
+  > **requests.get( url, searchParams );**
+  > 
+  > **requests.get( url, searchParams, requestConfigs );**
 
 
 #### · POST 请求：Requests.prototype.post
