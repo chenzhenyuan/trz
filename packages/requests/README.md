@@ -163,12 +163,12 @@ requests.post(
 
 - *RequestConfigsInterface* 说明
 
-  参数名称 | 参数取值类型 | 示例 |
-  :------------------- | :--------------------- | :---------------
-  host | string | https://example.domain.com/api/v2/
-  withUserAuth | boolean \| "include" \| "omit" \| "same-origin" | true
-  timeout | number \| string | 30
-  headers | string[][] | -
-  searchParams | string \| Record\<string, any\> | -
-  body | string \| number \| FormData \| Record\<string, any\> \| null | -
+  配置名称 | 取值类型 | 配置描述 | 默认值 |
+  :-: | :- | :- | :-
+  host | string | 统一主机的地址 | https://example.domain.com/api/v2/
+  withUserAuth | boolean \| "include" \| "omit" \| "same-origin" | 是否携带授权标识 | true
+  timeout | number \| string | 客户端的请求超时时长（单位秒） | 30
+  headers | string[][] |  请求头配置，参考 `Headers` | -
+  searchParams | string \| Record\<string, any\> | 通用请求查询参数 | -
+  body | string \| number \| FormData \| Record\<string, any\> \| null | 通用请求体 | -
 
