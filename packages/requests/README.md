@@ -12,7 +12,7 @@ npm install @trz/requests
 yarn add @trz/requests
 ```
 
-## 使用
+## 引入包
 
 引用 `Requests` 包
 ```ts
