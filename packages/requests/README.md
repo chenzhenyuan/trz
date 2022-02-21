@@ -54,9 +54,9 @@ requests.post(
 ```
 
 - GET 请求：
-  * __*Requests.prototype.get(url)*__
-  * __*Requests.prototype.get(url, searchParams?: string | Dictionary)*__
-  * __*Requests.prototype.get(url, searchParams?: string | Dictionary, requestOptions?: RequestConfigsInterface)*__
+  * __*Requests.prototype.get(url: `string`)*__
+  * __*Requests.prototype.get(url: `string`, searchParams?: `string | Dictionary`)*__
+  * __*Requests.prototype.get(url: `string`, searchParams?: `string | Dictionary`, requestOptions?: `RequestConfigsInterface`)*__
 
     参数 | 类型 | 默认值 | 说明
     :- | :- | :-: | -
