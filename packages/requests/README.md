@@ -132,7 +132,7 @@ requests.post(
     host         : "//example.domain.com/api/v2/"
     withUserAuth : true,
     timeout      : 30,
-    body         : { "traceId": 12345678 },
+    body         : { "traceLogId": 12345678 },
     searchParams : { "version": "1.0.0" },
     headers      : { "Content-Type": "application/json;charset=utf8" },
   };
@@ -170,3 +170,14 @@ requests.post(
   searchParams | string \| Record\<string, any\> | 通用请求查询参数 | -
   body | string \| number \| FormData \| Record\<string, any\> \| null | 通用请求体 | -
 
+#### *Headers* 说明：
+<!-- 
+  配置名称 | 取值类型 | 配置描述 | 默认值 |
+  :-: | :- | :- | :-
+  sss | ss | ss | ss
+-->
+
+  - 类型：Record\<string, string\>;
+  - 类型：string[][]
+  
+  
