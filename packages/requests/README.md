@@ -159,7 +159,7 @@ requests.post(
 
 ---
 
-#### *RequestConfigsInterface* 说明
+#### *RequestConfigsInterface* 说明：
 
   配置名称 | 取值类型 | 配置描述 | 默认值 |
   :-: | :- | :- | :-
