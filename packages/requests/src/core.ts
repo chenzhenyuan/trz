@@ -7,12 +7,11 @@ import Uri, { SearchParams } from '@trz/uri/src/uri';
 import RequestsException from './RequestsException';
 import merge from 'lodash.merge';
 
-type HeaderType = Record<string, any> | any[][] | HeadersInit;
 
 export interface RequestOptionInterface extends Omit<RequestInit, 'host' | 'url' | 'timeout' | 'signal' | 'body' | 'headers'> {
   abortController?: AbortController,
   body?: Record<string, unknown> | ReadableStream | Blob | BufferSource | FormData | URLSearchParams | string | null;
-  headers: HeaderType;
+  headers: Record<string, any> | any[][] | HeadersInit;
   host?: string;
   searchParams?: string | URLSearchParams | Serialize | Record<string, unknown>;
   timeout?: number;
@@ -20,21 +19,21 @@ export interface RequestOptionInterface extends Omit<RequestInit, 'host' | 'url'
   withUserAuth?: boolean | RequestCredentials,
 }
 
+// type HeaderType = Record<string, any> | any[][] | HeadersInit;
+
+type HeaderType = RequestOptionInterface['headers']
+
 // type RequestCoreType = Promise<string | Record<string, any>>;
 
 interface RequestCoreInterface {
   (P: RequestOptionInterface): Promise<string | Record<string, any>>;
 }
 
-export type RequestsError = {
-  code: number;
-  message: string;
-};
+export type RequestsError = { code: number; message: string; };
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /**
- * @description   -
- * @param         {HeaderType} header1
+ * 一个合并Headers对象的工具
  * @param         {HeaderType} header2
  * @param         {HeaderType} ...
  * @return        {Record<string, string>}
@@ -83,16 +82,19 @@ export const DEFAULT_TIMEOUT = 30;
 // 重试延迟时长默认值，单位：毫秒
 export const DEFAULT_RETRY_DELAY = 1000;
 
-
 const basic = {
-  'Accept': 'text/*;q=0.99,*/*;q=0.8',
-  'Cache-Control': 'no-cache',
+  // 'Accept': 'text/*;q=0.99,*/*;q=0.8',
+  // 'Cache-Control': 'no-cache',
   // 'Content-Type': 'application/json;charset=utf-8',
-  // 'x-request-id': `-${'*'.repeat(4)}`.repeat(4).slice(1),
   'x-request-client': 'TrzRequests/0.1.0',
+  // 'x-request-id': `-${'*'.repeat(4)}`.repeat(4).slice(1),
 };
 
-
+/**
+ * 一个从配置中提取通用服务地址的工具
+ * @param         {RequestOptionInterface} opts
+ * @return        {string}
+ */
 const getRequestHost = (opts: RequestOptionInterface): string => {
   const requestHost = opts.host ?? '';
 
@@ -104,7 +106,7 @@ const getRequestHost = (opts: RequestOptionInterface): string => {
 };
 
 /**
- * @description  : 从配置中提取请求体
+ * 一个从配置中提取请求体的工具
  * @param         {RequestOptionInterface} opts - 配置参数
  * @return        {ReadableStream | XMLHttpRequestBodyInit | null}
  */
