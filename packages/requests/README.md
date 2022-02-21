@@ -57,7 +57,9 @@ requests.post(
   1. __*Requests.prototype.get(`url`: string)*__
   2. __*Requests.prototype.get(`url`: string, `searchParams`?: string | Dictionary)*__
   3. __*Requests.prototype.get(`url`: string, `searchParams`?: string | Dictionary, `requestOptions`?: RequestConfigsInterface)*__
-
+  
+  <br />
+  
   参数 | 类型 | 默认值 | 说明
   :- | :- | :-: | -
   url | string | - | -
@@ -100,6 +102,8 @@ requests.post(
   2. __*Requests.prototype.post(`url`: string, `requestBody`?: string | Dictionary)*__
   3. __*Requests.prototype.post(`url`: string, `requestBody`?: string | Dictionary, `requestOptions`?: RequestConfigsInterface)*__
 
+  <br />
+  
   参数 | 类型 | 默认值 | 说明
   :- | :- | :-: | -
   url | string | - | -
