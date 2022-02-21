@@ -58,12 +58,11 @@ requests.post(
   * __*Requests.prototype.get(url, searchParams?: string | Dictionary)*__
   * __*Requests.prototype.get(url, searchParams?: string | Dictionary, requestOptions?: RequestConfigsInterface)*__
 
-
-  参数 | 类型 | 默认值 | 说明
-  :- | :- | :-: | -
-  url | string | - | -
-  searchParams | string \| {[key: string]: unkonw} | {} | -
-  requestOptions | RequestConfigsInterface | - | 参考底部 `RequestConfigsInterface` 说明
+    参数 | 类型 | 默认值 | 说明
+    :- | :- | :-: | -
+    url | string | - | -
+    searchParams | string \| {[key: string]: unkonw} | {} | -
+    requestOptions | RequestConfigsInterface | - | 参考底部 `RequestConfigsInterface` 说明
 
 
   示例：
