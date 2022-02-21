@@ -3,7 +3,7 @@
  * @since        : 2022/02/14 14:03:53 +0800
  * @filePath     : /development/requests.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/02/21 11:17:51 +0800
+ * @updated      : 2022/02/21 11:31:00 +0800
  * @description  : file content
  */
 
@@ -38,7 +38,8 @@ console.log("shantai 实例：", shantai);
 shantai.post('./cif-login/cif/loginService/login?sss=3333', requestBody, { searchParams: {a: 1234} });
 
 const api = new Requests({
-  body: { a: 123 }
+  body: { a: 123 },
+  headers: {}
 });
 console.log('api:', api);
 

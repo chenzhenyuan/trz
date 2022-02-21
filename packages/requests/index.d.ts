@@ -3,10 +3,8 @@
  * @since        : 2022/01/19 16:59:56 +0800
  * @filePath     : /packages/requests/index.d.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/02/21 11:26:15 +0800
+ * @updated      : 2022/02/21 11:30:52 +0800
  */
-
-
 
 interface SeriesInterface {
   [ key: string ]: string | number | boolean | SeriesInterface | SeriesInterface[] | void;
