@@ -3,7 +3,7 @@
  * @since        : 2022/02/14 14:03:53 +0800
  * @filePath     : /development/requests.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/02/17 15:44:13 +0800
+ * @updated      : 2022/02/18 16:10:57 +0800
  * @description  : file content
  */
 
@@ -29,7 +29,7 @@ const shantai = new Requests({
   // searchParams: { x: 'x', y: 'y', z: 'y' },
   // body: '{ "unikey": "456789", "traceLogId": 1234 }',
   headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
+    // 'Content-Type': 'application/json;charset=UTF-8',
   }
 });
 
@@ -38,11 +38,16 @@ console.log("shantai 实例：", shantai);
 shantai.post('./cif-login/cif/loginService/login?sss=3333', requestBody, { searchParams: {a: 1234} });
 
 const api = new Requests({
-  headers: [],
+  headers: [["content-type", "text/xml;charset=gb2312"]],
   body: { a: 123 }
 });
 
-api.post("aaa", { a: 'aaaa' }, { searchParams: { ca: 'bbbb' }}).catch((err) => {
+api.get("aaa", { a: 'aaaa' }, {
+  searchParams: { ca: 'bbbb' },
+  headers: {
+    "content-type": "ssss"
+  }
+}).catch((err) => {
   console.dir(err);
 })
 

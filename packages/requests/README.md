@@ -67,19 +67,47 @@ requests.post(
 
 
   示例：
-  > **requests.get( url );**
-  > ```ts
-  > requests.get('//example.domain.com/apis/interface');
-  > 
-  > requests.get('//example.domain.com/apis/interface?search=something');
-  > ```
-  > **requests.get( url, searchParams );**
-  > 
-  > **requests.get( url, searchParams, requestConfigs );**
+  
+  ```ts
+  import requests from '@trz/requests';
+  
+  requests.get('//example.domain.com/apis/interface');
+  /*
+   * GET  https://example.domain.com/apis/interface
+   * 
+   * accept: text/*;q=0.99
+   * accept-encoding: gzip, deflate, br
+   * content-type: application/json;charset=UTF-8
+   * x-request-client: TrzRequests/0.1.0
+   */
+  
+  requests.get('//example.domain.com/apis/interface', {search: 'something'});
+  /*
+   * GET  https://example.domain.com/apis/interface?search=something
+   * 
+   * accept: text/*;q=0.99
+   * accept-encoding: gzip, deflate, br
+   * content-type: application/json;charset=UTF-8
+   * x-request-client: TrzRequests/0.1.0
+   */
+  
+  ```
 
 
-#### · POST 请求：Requests.prototype.post
-语法：
+
+
+- POST 请求：Requests.prototype.post
+  * __*Requests.prototype.post(url)*__
+  * __*Requests.prototype.post(url, requestBody?: string | Dictionary)*__
+  * __*Requests.prototype.post(url, requestBody?: string | Dictionary, requestOptions?: RequestConfigsInterface)*__
+
+
+  参数 | 类型 | 默认值 | 说明
+  :- | :- | :-: | -
+  url | string | - | -
+  searchParams | string \| {[key: string]: unkonw} | {} | -
+  requestOptions | RequestConfigsInterface | - | 参考底部 `RequestConfigsInterface` 说明
+  
 > 
 > **requests.post( url );**
 > 
