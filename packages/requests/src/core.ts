@@ -87,7 +87,7 @@ export const DEFAULT_RETRY_DELAY = 1000;
 const basic = {
   'Accept': 'text/*;q=0.99,*/*;q=0.8',
   'Cache-Control': 'no-cache',
-  'Content-Type': 'application/json;charset=utf-8',
+  // 'Content-Type': 'application/json;charset=utf-8',
   // 'x-request-id': `-${'*'.repeat(4)}`.repeat(4).slice(1),
   'x-request-client': 'TrzRequests/0.1.0',
 };

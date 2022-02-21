@@ -95,8 +95,6 @@ requests.post(
     ```
 
 
-
-
 - POST 请求：Requests.prototype.post
   1. __*Requests.prototype.post(`url`: string)*__
   2. __*Requests.prototype.post(`url`: string, `requestBody`?: string | Dictionary)*__
@@ -118,6 +116,7 @@ requests.post(
     requestTraceLogId: '****-****-********',
   });
   ```
+
 
 - PUT、DELETE、PATCH 参考 POST
 <!-- #-post-请求requestsprototypepost -->
