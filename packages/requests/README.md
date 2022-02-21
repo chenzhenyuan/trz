@@ -67,30 +67,30 @@ requests.post(
 
   示例：
   
-  ```ts
-  import requests from '@trz/requests';
-  
-  requests.get('//example.domain.com/apis/interface');
-  /*
-   * GET  https://example.domain.com/apis/interface
-   * 
-   * accept: text/*;q=0.99
-   * accept-encoding: gzip, deflate, br
-   * content-type: application/json;charset=UTF-8
-   * x-request-client: TrzRequests/0.1.0
-   */
-  
-  requests.get('//example.domain.com/apis/interface', {search: 'something'});
-  /*
-   * GET  https://example.domain.com/apis/interface?search=something
-   * 
-   * accept: text/*;q=0.99
-   * accept-encoding: gzip, deflate, br
-   * content-type: application/json;charset=UTF-8
-   * x-request-client: TrzRequests/0.1.0
-   */
-  
-  ```
+    ```ts
+    import requests from '@trz/requests';
+    
+    requests.get('//example.domain.com/apis/interface');
+    /*
+    * GET  https://example.domain.com/apis/interface
+    * 
+    * accept: text/*;q=0.99
+    * accept-encoding: gzip, deflate, br
+    * content-type: application/json;charset=UTF-8
+    * x-request-client: TrzRequests/0.1.0
+    */
+    
+    requests.get('//example.domain.com/apis/interface', {search: 'something'});
+    /*
+    * GET  https://example.domain.com/apis/interface?search=something
+    * 
+    * accept: text/*;q=0.99
+    * accept-encoding: gzip, deflate, br
+    * content-type: application/json;charset=UTF-8
+    * x-request-client: TrzRequests/0.1.0
+    */
+    
+    ```
 
 
 
