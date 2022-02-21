@@ -115,7 +115,7 @@ requests.post(
   });
   ```
 
-#### · PUT、DELETE、PATCH 参考 POST
+- PUT、DELETE、PATCH 参考 POST
 <!-- #-post-请求requestsprototypepost -->
 
 ### 创建私有实例
