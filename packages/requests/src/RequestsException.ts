@@ -3,13 +3,13 @@
  * @since        : 2022/02/07 14:03:02 +0800
  * @filePath     : /packages/requests/src/RequestsException.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/02/16 15:41:18 +0800
+ * @updated      : 2022/02/21 13:08:39 +0800
  */
 
 import util from '@trz/util';
 import * as language from './i18n';
 
-
+// 参考：https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1
 /* 错误枚举 */
 const ENUM_REQUESTS_EXCEPTION = [
   {code: 400, message: 'Bad Request',                   type: 'ERR_REQUEST_BAD_REQUEST'},
