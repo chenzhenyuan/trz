@@ -29,10 +29,8 @@
   "bugs": {
     "url": "https://github.com/chenzhenyuan/trz/issues"
   },
-  "dependencies": {
-    "react-router": "^5.2.1"
-  },
   "peerDependencies": {
-    "react-router": "^5.2.1"
+    "react-router": "~5.2.1",
+    "react-router-dom": "~5.2.1"
   }
 }
