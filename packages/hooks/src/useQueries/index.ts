@@ -3,7 +3,7 @@
  * @since        : 2021/12/20 13:13:03 +0800
  * @filePath     : /packages/hooks/src/useQueries/index.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/04/09 03:38:14 +0800
+ * @updated      : 2022/04/09 05:11:42 +0800
  * @description  : ****
  */
 
@@ -18,8 +18,10 @@ type DispatchQueries<A> = (queries: A) => void;
 
 type NavigatorAction<S = string> = (search: S) => void;
 
+type InitialQueries<V> = V | (() => V);
+
 export function toSearchString<M>(queriesObj: M): string {
-  const target: string[] = Object.entries(queriesObj ?? {}).map(([ k, v ]) => {
+  const target: string[] = Object.entries(queriesObj ?? {}).map(([ k, v ]: any[]) => {
     if ([ null, undefined ].includes(v)) {
       return `${k}=`;
     }
@@ -34,11 +36,12 @@ export function toSearchString<M>(queriesObj: M): string {
   return target.join('&');
 }
 
-export function toQueriesObject<P>(search: string): P {
+export function toQueriesObject<P>(search: string): any {
   const searchEntries = Array.from((new URLSearchParams(search) as any).entries());
 
-  return Object.fromEntries(searchEntries.map(([ k, v ]) => {
-    let value = decodeURIComponent(v);
+  return Object.fromEntries(searchEntries.map(([ k, v ]: any) => {
+    let value: any = decodeURIComponent(v);
+
     try {
       value = JSON.parse(value);
     }
@@ -50,19 +53,14 @@ export function toQueriesObject<P>(search: string): P {
   }));
 }
 
-export function useQueriesCore<Q>(initialQueries?: Q | (() => Q), navi?: NavigatorAction): [Q, DispatchQueries<SetQueriesAction<Q>>] {
+export function useQueriesCore<Q>(initialQueries?: InitialQueries<Q>, navi?: NavigatorAction): [Q, DispatchQueries<SetQueriesAction<Q>>] {
   const location = useLocation();
   const currentSearch = location.search.replace(/^\?/, '');
   const [ pathname ] = useState<string>(location.pathname);
-  const [ queries, setQueries ] = useState<Q>(currentSearch === '' ? initialQueries : toQueriesObject<Q>(currentSearch));
+  const [ queries, setQueries ] = useState<Q>(currentSearch === '' ?( initialQueries ?? {}) as any : toQueriesObject<Q>(currentSearch));
   // --------
-  const dispatch = useCallback((nextQueries: Q): void => {
-    if (typeof nextQueries === 'function') {
-      setQueries(nextQueries(queries));
-    }
-    else {
-      setQueries({ ...nextQueries });
-    }
+  const dispatch = useCallback((nextQueries: SetQueriesAction<Q>): void => {
+    setQueries(nextQueries);
   }, [ queries ]);
 
   useEffect(() => {
@@ -87,7 +85,7 @@ export function useQueriesCore<Q>(initialQueries?: Q | (() => Q), navi?: Navigat
   return [ queries, dispatch ];
 }
 
-export function useQueries<Q>(initialQueries?: Q | (() => Q)): [Q, DispatchQueries<SetQueriesAction<Q>>] {
+export function useQueries<Q>(initialQueries?: InitialQueries<Q>): [Q, DispatchQueries<SetQueriesAction<Q>>] {
   const syncQueries = useHistory();
   const [ queries, setQueries ] = useQueriesCore<Q>(initialQueries, (search) => {
     syncQueries.replace(search);
