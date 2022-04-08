@@ -1,6 +1,6 @@
 {
   "name": "@trz/hooks",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "> TODO: description",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://github.com/chenzhenyuan/trz/tree/release/packages/hooks#readme",
@@ -14,8 +14,6 @@
     "release": "npm run build && cd ./release && npm publish --access=public --registry=https://registry.npmjs.org",
     "release:cpr": "npx cpr .npmrc release/ && npx cpr LICENSE release/ && npx cpr README.md release/"
   },
-  "directories": {},
-  "files": [],
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
@@ -31,9 +29,7 @@
     "react-router-dom": "~5.2.1"
   },
   "devDependencies": {
+    "cpr": "^3.0.1",
     "@types/react-router-dom": "^5.3.3"
-  },
-  "dependencies": {
-    "cpr": "^3.0.1"
   }
 }
