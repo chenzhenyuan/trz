@@ -3,13 +3,13 @@
  * @since        : 2021/12/20 13:13:03 +0800
  * @filePath     : /packages/hooks/src/useQueries/index.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/04/09 02:57:37 +0800
+ * @updated      : 2022/04/09 03:38:14 +0800
  * @description  : ****
  */
 
 
 import { useEffect, useLayoutEffect, useState, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router';
 
 
 type SetQueriesAction<Q> = Q | ((prevQueries: Q) => Q);
@@ -43,6 +43,7 @@ export function toQueriesObject<P>(search: string): P {
       value = JSON.parse(value);
     }
     catch (err) {
+      //
     }
 
     return [ k, value ];
@@ -87,9 +88,9 @@ export function useQueriesCore<Q>(initialQueries?: Q | (() => Q), navi?: Navigat
 }
 
 export function useQueries<Q>(initialQueries?: Q | (() => Q)): [Q, DispatchQueries<SetQueriesAction<Q>>] {
-  const syncQueries = useNavigate();
+  const syncQueries = useHistory();
   const [ queries, setQueries ] = useQueriesCore<Q>(initialQueries, (search) => {
-    syncQueries(search, { replace: true});
+    syncQueries.replace(search);
   });
 
   return [ queries, setQueries ];

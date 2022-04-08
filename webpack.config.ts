@@ -1,7 +1,7 @@
 /*
  * @since        : 2021/10/24 16:32:47 +0800
  * @filePath     : /webpack.config.ts
- * @updated      : 2022/01/25 10:53:43 +0800
+ * @updated      : 2022/04/09 03:19:19 +0800
  * @lastEditors  : JAYNE·CHEN
  * @creator      : JAYNE·CHEN
  * @description  : Webpack 配置文件
@@ -54,7 +54,7 @@ export default {
     // noParse: /jquery|bootstrap/,
     rules: [
       {
-        test: /\.(ts)$/,
+        test: /\.(t|j)sx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -72,6 +72,14 @@ export default {
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
     new webpack.ProgressPlugin(),
+
+    new webpack.ProvidePlugin({
+      React: 'react',
+      useState: [ 'react', 'useState' ],
+      useEffect: [ 'react', 'useEffect' ],
+      Component: [ 'react', 'Component' ]
+    }),
+
     new HtmlWebpackPlugin({
       title: '开发模式',
       publicPath: '/',

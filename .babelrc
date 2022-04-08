@@ -2,10 +2,10 @@
   "targets": "> 0.25%, not dead",
 
   "presets": [
-    ["@babel/env", {"useBuiltIns": "usage", "corejs": 3}],
+    ["@babel/env", { "modules": "commonjs", "useBuiltIns": "usage", "corejs": 3 }],
     ["@babel/typescript"],
-    ["@babel/react"]/* ,
-    ["minify"] */
+    ["@babel/react"],
+    ["minify"]
   ],
 
   "plugins": [
