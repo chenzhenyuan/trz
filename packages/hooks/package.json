@@ -11,7 +11,7 @@
     "build": "npm run clean && npm run build:babel && tsc && npm run release:cpr",
     "build:babel": "npx babel src --out-dir release --extensions .ts,.tsx --no-comments --source-type=module",
     "clean": "npx rimraf ./release",
-    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
+    "release": "npm run build && cd ./release && npm publish --access=public --registry=https://registry.npmjs.org",
     "release:cpr": "npx cpr .npmrc release/ && npx cpr LICENSE release/ && npx cpr README.md release/"
   },
   "directories": {},
