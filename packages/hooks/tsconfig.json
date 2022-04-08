@@ -1,9 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "skipLibCheck": true,
+    "outDir": "./release/types",
     "baseUrl": "./",
-    "outDir": ".",
     "rootDir": "./src",
   },
 

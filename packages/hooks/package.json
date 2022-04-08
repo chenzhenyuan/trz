@@ -8,9 +8,11 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "build": "npm run clean && babel src --out-dir . --extensions .ts,.tsx --no-comments --source-type=module --config-file=../../.babelrc",
-    "clean": "rimraf ./index.js ./index.d.ts ./useQueries",
-    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
+    "build": "npm run clean && npm run build:babel && tsc && npm run release:cpr",
+    "build:babel": "npx babel src --out-dir release --extensions .ts,.tsx --no-comments --source-type=module",
+    "clean": "npx rimraf ./release",
+    "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org",
+    "release:cpr": "npx cpr .npmrc release/ && npx cpr LICENSE release/ && npx cpr README.md release/"
   },
   "directories": {},
   "files": [],
@@ -30,5 +32,8 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.3.3"
+  },
+  "dependencies": {
+    "cpr": "^3.0.1"
   }
 }
