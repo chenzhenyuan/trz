@@ -112,3 +112,5 @@ bkp/
 
 **/packages/**/index.d.ts
 **/packages/**/index.js
+
+./development

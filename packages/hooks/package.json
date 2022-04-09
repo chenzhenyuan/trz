@@ -23,8 +23,9 @@
     "url": "https://chenzhenyuan.com/trz/bugs"
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.3",
-    "cpr": "^3.0.1",
+    "@types/react-router-dom": "^5.3.3"
+  },
+  "peerDependencies": {
     "react-router": "~5.2.1",
     "react-router-dom": "~5.2.1"
   }
