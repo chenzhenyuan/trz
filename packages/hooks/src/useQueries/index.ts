@@ -3,7 +3,7 @@
  * @since        : 2021/12/20 13:13:03 +0800
  * @filePath     : /packages/hooks/src/useQueries/index.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/04/09 05:11:42 +0800
+ * @updated      : 2022/04/09 06:49:54 +0800
  * @description  : ****
  */
 
@@ -55,6 +55,7 @@ export function toQueriesObject<P>(search: string): any {
 
 export function useQueriesCore<Q>(initialQueries?: InitialQueries<Q>, navi?: NavigatorAction): [Q, DispatchQueries<SetQueriesAction<Q>>] {
   const location = useLocation();
+
   const currentSearch = location.search.replace(/^\?/, '');
   const [ pathname ] = useState<string>(location.pathname);
   const [ queries, setQueries ] = useState<Q>(currentSearch === '' ?( initialQueries ?? {}) as any : toQueriesObject<Q>(currentSearch));
@@ -76,11 +77,6 @@ export function useQueriesCore<Q>(initialQueries?: InitialQueries<Q>, navi?: Nav
       return toQueriesObject(currentSearch);
     });
   }, [ currentSearch, pathname, location.pathname ]);
-
-
-  useLayoutEffect(() => {
-    console.log(location);
-  }, []);
 
   return [ queries, dispatch ];
 }

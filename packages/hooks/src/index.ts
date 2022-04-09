@@ -6,4 +6,4 @@
  * @updated      : 2022/04/09 03:06:17 +0800
  */
 
-export * from './useQueries'
+export * from './useQueries';
