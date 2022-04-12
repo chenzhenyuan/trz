@@ -1,6 +1,6 @@
 {
   "name": "@trz/hooks",
-  "version": "5.2.3",
+  "version": "5.2.5",
   "description": "一个 React Hooks 工具集",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://chenzhenyuan.com",
@@ -23,9 +23,12 @@
     "url": "https://chenzhenyuan.com/trz/bugs"
   },
   "devDependencies": {
+    "@types/react": "^17.0.44",
+    "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3"
   },
   "peerDependencies": {
+    "react": "^17.0.2",
     "react-router": "~5.2.1",
     "react-router-dom": "~5.2.1"
   }
