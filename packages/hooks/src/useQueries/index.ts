@@ -3,7 +3,7 @@
  * @since        : 2021/12/20 13:13:03 +0800
  * @filePath     : /packages/hooks/src/useQueries/index.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/04/09 06:49:54 +0800
+ * @updated      : 2022/04/14 15:56:07 +0800
  * @description  : ****
  */
 
@@ -43,7 +43,14 @@ export function toQueriesObject<P>(search: string): any {
     let value: any = decodeURIComponent(v);
 
     try {
-      value = JSON.parse(value);
+      const parsed = JSON.parse(value);
+
+      if (typeof parsed === 'number') {
+        value = value === parsed.toString() ? parsed : value;
+      }
+      else {
+        value = parsed;
+      }
     }
     catch (err) {
       //

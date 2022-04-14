@@ -6,7 +6,7 @@
 		"packages/*"
 	],
 	"scripts": {
-		"start": "npx webpack s",
+		"start": "npx webpack server --progress --env=development",
 		"build:all": "lerna run build --ignore=@trz/requests",
 		"build:type": "lerna run build --scope=@trz/type",
 		"build:serialize": "npm run build:type && lerna run build --scope=@trz/serialize",
