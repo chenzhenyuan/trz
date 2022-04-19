@@ -3,7 +3,7 @@
  * @since        : 2021/12/20 13:13:03 +0800
  * @filePath     : /packages/hooks/src/useQueries/index.ts
  * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/04/20 02:03:33 +0800
+ * @updated      : 2022/04/20 02:07:44 +0800
  * @description  : ****
  */
 
@@ -95,7 +95,7 @@ export function useQueriesCore<Q>(initialQueries?: InitialQueries<Q>, navigator?
     });
   }, [ queries ]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (pathname !== routerLocation.pathname) return;
 
     if (current === '') {
@@ -118,7 +118,6 @@ export function useQueriesCore<Q>(initialQueries?: InitialQueries<Q>, navigator?
 }
 
 /* -------------------------------------------------------------------------- */
-/*
 export function useQueries<Q>(initialQueries?: InitialQueries<Q>): [Q, DispatchQueries<Q | SetQueriesAction<Q>>] {
   const syncQueries = useHistory();
   const [ queries, setQueries ] = useQueriesCore<Q>(initialQueries, (search) => {
@@ -126,7 +125,6 @@ export function useQueries<Q>(initialQueries?: InitialQueries<Q>): [Q, DispatchQ
   });
   return [ queries, setQueries ];
 }
-*/
 
 /* -------------------------------------------------------------------------- */
 export default useQueriesCore;
