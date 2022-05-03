@@ -5,7 +5,7 @@ require("core-js/modules/es.object.define-property.js");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.some = exports.of = exports.isUndefined = exports.isString = exports.isObject = exports.isNumber = exports.isNull = exports.isBoolean = exports.isArray = exports.is = exports.default = exports.ENUM_TYPE = void 0;
+exports.some = exports.of = exports.like = exports.isUndefined = exports.isString = exports.isObject = exports.isNumber = exports.isNull = exports.isFunction = exports.isBoolean = exports.isArray = exports.is = exports.default = exports.ENUM_TYPE = void 0;
 
 require("core-js/modules/es.array.slice.js");
 
@@ -15,11 +15,13 @@ var ENUM_TYPE;
 exports.ENUM_TYPE = ENUM_TYPE;
 
 (function (ENUM_TYPE) {
+  ENUM_TYPE["string"] = "string";
+  ENUM_TYPE["number"] = "number";
   ENUM_TYPE["int"] = "number";
   ENUM_TYPE["array"] = "array";
   ENUM_TYPE["list"] = "array";
-  ENUM_TYPE["number"] = "number";
-  ENUM_TYPE["string"] = "string";
+  ENUM_TYPE["object"] = "object";
+  ENUM_TYPE["dict"] = "object";
 })(ENUM_TYPE || (exports.ENUM_TYPE = ENUM_TYPE = {}));
 
 var types = function types(any) {
@@ -44,6 +46,12 @@ var some = function some(source, assertList) {
 };
 
 exports.some = some;
+
+var like = function like(source, mirror) {
+  return types(source) === types(mirror);
+};
+
+exports.like = like;
 
 var isUndefined = function isUndefined(source) {
   return source === undefined;
@@ -86,19 +94,26 @@ var isArray = function isArray(source) {
 };
 
 exports.isArray = isArray;
+
+var isFunction = function isFunction(source) {
+  return is(source, 'function');
+};
+
+exports.isFunction = isFunction;
 var of = types;
 exports.of = of;
 var _default = {
   enum: ENUM_TYPE,
   is: is,
   of: of,
-  some: some,
   isString: isString,
   isNumber: isNumber,
   isArray: isArray,
   isNull: isNull,
   isBoolean: isBoolean,
   isObject: isObject,
-  isUndefined: isUndefined
+  isUndefined: isUndefined,
+  isFunction: isFunction,
+  some: some
 };
 exports.default = _default;

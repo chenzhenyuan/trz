@@ -3,19 +3,19 @@
  * @since        : 2022/01/19 15:18:11 +0800
  * @filePath     : /packages/type/src/index.ts
  * @lastEditors  : Please set LastEditors
- * @updated      : 2022/05/04 04:37:32 +0800
+ * @updated      : 2022/05/04 05:44:27 +0800
  * @description  : A tool for real type validate.
  */
 
 
 export enum ENUM_TYPE {
   string = 'string',
-
   number = 'number',
-  int = 'number',
-
-  array = 'array',
-  list = 'array',
+  int    = 'number',
+  array  = 'array',
+  list   = 'array',
+  object = 'object',
+  dict   = 'object',
   // arraylike = 'arraylike',
 }
 
@@ -37,6 +37,10 @@ export const some = (source: unknown, assertList: string[]): boolean => (
     types(source) === String.prototype.toLowerCase.call(assert)
   ))
 );
+
+export const like = (source: unknown, mirror: unknown): boolean => {
+  return types(source) === types(mirror);
+};
 
 export const isUndefined = (source: unknown): boolean => source === undefined;
 

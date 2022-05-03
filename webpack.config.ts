@@ -1,8 +1,8 @@
 /*
  * @since        : 2021/10/24 16:32:47 +0800
  * @filePath     : /webpack.config.ts
- * @updated      : 2022/04/09 03:19:19 +0800
- * @lastEditors  : JAYNE·CHEN
+ * @updated      : 2022/05/04 06:53:32 +0800
+ * @lastEditors  : Please set LastEditors
  * @creator      : JAYNE·CHEN
  * @description  : Webpack 配置文件
  */
@@ -83,6 +83,7 @@ export default {
     new HtmlWebpackPlugin({
       title: '开发模式',
       publicPath: '/',
+      template: path.resolve(__dirname, 'template.html'),
       filename: 'index.html'
     }),
   ],
