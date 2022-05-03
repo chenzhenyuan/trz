@@ -2,8 +2,8 @@
  * @creator      : JAYNE·CHEN
  * @since        : 2022/01/19 15:18:11 +0800
  * @filePath     : /packages/type/src/index.ts
- * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/02/14 14:02:12 +0800
+ * @lastEditors  : Please set LastEditors
+ * @updated      : 2022/05/04 04:35:27 +0800
  * @description  : A tool for real type validate.
  */
 
@@ -50,6 +50,14 @@ export const isObject = (source: unknown): boolean => is(source, 'object');
 
 export const isArray = (source: unknown): boolean => is(source, 'array');
 
+export const isFunction = (source: unknown): boolean => is(source, 'function');
+
 export const of = types;
 
-export default { enum: ENUM_TYPE, is, of, some, isString, isNumber, isArray, isNull, isBoolean, isObject, isUndefined };
+export default {
+  enum: ENUM_TYPE,
+  is,
+  of,
+  isString, isNumber, isArray, isNull, isBoolean, isObject, isUndefined, isFunction,
+  some,
+};
