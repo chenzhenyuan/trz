@@ -3,17 +3,19 @@
  * @since        : 2022/01/19 15:18:11 +0800
  * @filePath     : /packages/type/src/index.ts
  * @lastEditors  : Please set LastEditors
- * @updated      : 2022/05/04 04:35:27 +0800
+ * @updated      : 2022/05/04 04:37:32 +0800
  * @description  : A tool for real type validate.
  */
 
 
 export enum ENUM_TYPE {
+  string = 'string',
+
+  number = 'number',
   int = 'number',
+
   array = 'array',
   list = 'array',
-  number = 'number',
-  string = 'string',
   // arraylike = 'arraylike',
 }
 
