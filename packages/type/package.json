@@ -15,10 +15,10 @@
   "main": "./index.js",
   "types": "index.d.ts",
   "scripts": {
-    "clean": "npx rimraf ./index.js ./index.d.ts",
-    "build": "npm run clean && npx babel src --out-dir . --extensions .ts --no-comments --config-file='../../.babelrc' && npx tsc ",
-    "build:sh": ". build.sh",
-    "release": "npm run build:sh && npm publish --access=public --registry=https://registry.npmjs.org",
+    "clean": "npx rimraf ./index.js ./index.d.ts ./release",
+    "build": "npm run clean && npx babel src --out-dir='./release' --extensions='.ts' --config-file='../../.babelrc' --no-comments && npx tsc --baseUrl .  --rootDir ./src --outDir ./release",
+    "release:pre": "npm run clean && npm run build && npx cpr package.json release/ && npx cpr README.md release/ && npx cpr LICENSE release/ && npx cpr CHANGELOG.md release/",
+    "release": "npm run release:pre && cd release && npm publish --access=public --registry=https://registry.npmjs.org",
     "test": "npm run build && jest"
   },
   "directories": {
