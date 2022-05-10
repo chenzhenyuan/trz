@@ -26,11 +26,11 @@
     "release": "npm run build && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "devDependencies": {
-    "jest": "^27.4.7"
+    "core-js": "^3.22.4",
+    "jest": "^28.1.0"
   },
   "dependencies": {
-    "@trz/type": "^0.4.6",
-    "core-js": "^3.20.3"
+    "@trz/type": "^0.4.6"
   },
   "gitHead": "176e63f2e3b2b98ffc646644ce145b592b080c11"
 }

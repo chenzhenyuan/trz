@@ -32,10 +32,10 @@
     "url": "git+https://github.com/chenzhenyuan/trz.git"
   },
   "dependencies": {
-    "@trz/type": "^0.4.6",
-    "core-js": "^3.20.3"
+    "@trz/type": "^0.4.6"
   },
   "devDependencies": {
-    "jest": "^27.4.7"
+    "core-js": "^3.22.4",
+    "jest": "^28.1.0"
   }
 }
