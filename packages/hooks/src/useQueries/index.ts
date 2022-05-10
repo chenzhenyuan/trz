@@ -2,21 +2,28 @@
  * @creator      : JAYNE·CHEN
  * @since        : 2021/12/20 13:13:03 +0800
  * @filePath     : /packages/hooks/src/useQueries/index.ts
- * @lastEditors  : JAYNE·CHEN
- * @updated      : 2022/04/20 02:07:44 +0800
+ * @lastEditors  : Please set LastEditors
+ * @updated      : 2022/05/10 10:47:40 +0800
  * @description  : ****
  */
 
 
 import { useEffect, useLayoutEffect, useState, useCallback } from 'react';
-import { useLocation, useHistory } from 'react-router';
+import { useLocation } from 'react-router';
 
+export type DefaultQueries = {[key: string]: any};
 
-export type InitialQueries<V> = V | (() => V);
+export type Queries<S = DefaultQueries> = S | DefaultQueries;
 
-export type SetQueriesAction<Q> = ((prevQueries: Q) => Q);
+export type InitialQueries<V> = Queries<V> | (() => Queries<V>);
 
-export type DispatchQueries<A> = (queries: A) => void;
+export type SetQueriesAction<Q = DefaultQueries> = ((prevQueries: Queries<Q>) => Queries<Q>);
+
+export type DispatchQueries<A = Queries | SetQueriesAction > = (queries?: A) => void;
+
+export type DispatchArgument<Q = DefaultQueries> = Queries<Q> | SetQueriesAction<Q>;
+
+// export type Dispatcher<Q> = DispatchQueries<Queries<Q> | SetQueriesAction<Q>>;
 
 export type NavigatorAction<S = string> = (search: S) => void;
 
@@ -69,61 +76,63 @@ export function toQueriesObject<search = string>(search: string): any {
 
 /* -------------------------------------------------------------------------- */
 /**
- * @param   {InitialQueries}  initialQueries
+ * @param   {Object} initialQueries
  * @param   {NavigatorAction} navigator
  * @return  {*}
  */
-export function useQueriesCore<Q>(initialQueries?: InitialQueries<Q>, navigator?: NavigatorAction): [Q, DispatchQueries<Q | SetQueriesAction<Q>>] {
+export function useQueriesCore<Q>(initialQueries?: Q, navigator?: NavigatorAction): [Queries<Q>, DispatchQueries<DispatchArgument<Q>>] {
   const routerLocation = useLocation();
   const current = routerLocation.search.replace(/^\?/, '');
 
   const [ pathname ] = useState<string>(routerLocation.pathname);
-  const [ queries, setQueries ] = useState<Q>((): Q => {
+
+  const [ queries, setQueries ] = useState<Queries<Q>>(() => {
     if (current === '') {
-      return toQueriesObject(toSearchString(initialQueries));
+      return toQueriesObject(toSearchString<Queries<Q>>(initialQueries ?? {}));
     }
+
     return toQueriesObject(current);
   });
+
   // --------
-  const dispatch = useCallback((nextQueries: Q | SetQueriesAction<Q>): void => {
-    setQueries((searches: Q): Q => {
+  const dispatch = useCallback<DispatchQueries<DispatchArgument<Q>>>((nextQueries?: DispatchArgument<Q>): void => {
+    setQueries((searches) => {
       return toQueriesObject(toSearchString(
         typeof nextQueries === 'function'
           ? (nextQueries as SetQueriesAction<Q>)(searches)
-          : nextQueries as Q
+          : nextQueries
       ));
     });
   }, [ queries ]);
-
-  useLayoutEffect(() => {
-    if (pathname !== routerLocation.pathname) return;
-
-    if (current === '') {
-      navigator && navigator(`?${toSearchString(initialQueries)}`);
-      return;
-    }
-
-    setQueries((queries) => (
-      current === toSearchString(queries)
-        ? queries
-        : toQueriesObject(current)
-    ));
-  }, [ current, pathname, routerLocation.pathname ]);
 
   useEffect(() => {
     navigator && navigator(`?${toSearchString(queries)}`);
   }, [ queries ]);
 
-  return [ queries, dispatch ];
-}
 
-/* -------------------------------------------------------------------------- */
-export function useQueries<Q>(initialQueries?: InitialQueries<Q>): [Q, DispatchQueries<Q | SetQueriesAction<Q>>] {
-  const syncQueries = useHistory();
-  const [ queries, setQueries ] = useQueriesCore<Q>(initialQueries, (search) => {
-    syncQueries.replace(search);
-  });
-  return [ queries, setQueries ];
+  useEffect(() => {
+    if (pathname !== routerLocation.pathname) return;
+
+    if (current === '') {
+      if (initialQueries) {
+        navigator && navigator(`?${toSearchString(initialQueries)}`);
+      }
+      else {
+        setQueries({});
+      }
+      return;
+    }
+
+    setQueries((queries) => {
+      return (
+        current === toSearchString(queries)
+          ? queries
+          : toQueriesObject(current)
+      );
+    });
+  }, [ current, pathname, routerLocation.pathname ]);
+
+  return [ queries, dispatch ];
 }
 
 /* -------------------------------------------------------------------------- */

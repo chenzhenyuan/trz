@@ -1,6 +1,6 @@
 {
   "name": "@trz/hooks",
-  "version": "5.2.7",
+  "version": "6.0.1",
   "description": "一个 React Hooks 工具集",
   "author": "ZHENYUAN <JAYNE@CHENZHENYUAN.COM>",
   "homepage": "https://chenzhenyuan.com",
@@ -8,12 +8,13 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "build": "npm run clean && npx tsc --outDir ./release && npm run build:babel && npm run release:cpr",
-    "build:babel": "npx babel src --out-dir release --extensions .ts,.tsx --no-comments --source-type=module",
     "clean": "npx rimraf ./release",
-    "release:cpr": "npx cpr package.json release/ && npx cpr LICENSE release/ && npx cpr README.md release/",
-    "release:publish": "npm run build && cd ./release && npm publish --access=public --registry=https://registry.npmjs.org",
-    "release:link": "npm run build && cd ./release && npm link"
+    "build:babel": "npx babel src --out-dir=./release --extensions=.ts --config-file=../../.babelrc --no-comments",
+    "build:tsc": "npx tsc --baseUrl .  --rootDir ./src  --outDir ./release",
+    "build:cpr": "npx cpr package.json release/ && npx cpr LICENSE release/ && npx cpr README.md release/ && npx cpr CHANGELOG.md release/",
+    "build": "npm run build:babel && npm run build:tsc",
+    "release:pre": "npm run clean && npm run build && npm run build:cpr",
+    "release": "npm run release:pre && cd ./release && npm publish --access=public --registry=https://registry.npmjs.org"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -23,13 +24,12 @@
     "url": "https://chenzhenyuan.com/trz/bugs"
   },
   "devDependencies": {
-    "@types/react": "^17.0.44",
-    "@types/react-router": "^5.1.18",
-    "@types/react-router-dom": "^5.3.3"
+    "core-js": "^3.22.4",
+    "cpr": "^3.0.1",
+    "jest": "^28.1.0",
+    "rimraf": "^3.0.2"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "react-router": "~5.2.1",
-    "react-router-dom": "~5.2.1"
+    "react": ">=17.0.0"
   }
 }
